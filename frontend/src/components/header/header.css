@@ -1,0 +1,18 @@
+:root {
+  --color-primary: #42C4CF;
+}
+
+.logo-box {
+  background-color: var(--color-primary);
+  padding: 1rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  width: 100px; /* adjust as needed */
+  height: auto;
+}

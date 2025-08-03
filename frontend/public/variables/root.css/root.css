@@ -1,0 +1,13 @@
+:root{
+    :root {
+  --color-primary: #42C4CF;       /* Light Cyan (Header, Buttons) */
+  --color-secondary: #005E7A;     /* Dark Teal (Sidebar, Footer) */
+  --color-accent: #F2F2F2;        /* Light Gray (Background sections) */
+  --color-text-dark: #2E2E2E;     /* Dark Gray (Text) */
+  --color-white: #FFFFFF;         /* White (Text, Icons) */
+  --color-highlight: #00B1BB;     /* Bright Cyan (Map pins, Highlights) */
+  --color-partner-1: #CF9A1C;     /* Gold (Partner logo) */
+  --color-button-dark: #3E4B56;   /* Dark Gray-Blue (Call button) */
+  --color-map-background: #D4E8F0; /* Light Blue (Map background) */
+}
+}
