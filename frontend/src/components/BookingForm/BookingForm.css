@@ -1,98 +1,369 @@
-.booking-form {
-    background-color: #475560;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
-    margin: 20px auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+:root {
+  --background-dark: #1a1d28;
+  --text-light: #f5f5f7;
+  --primary-color: #4bbccc;
+  --primary-hover: #3aa9b8;
+  --text-dark: #1a1d28;
+  --border-light: rgba(255, 255, 255, 0.3);
+  --focus-glow: rgba(75, 188, 204, 0.3);
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Font sizes */
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-md: 16px;
+  --font-lg: 18px;
+  --font-xl: 24px;
+  
+  /* Transition */
+  --transition: all 0.3s ease;
 }
 
-.stacked-input label {
-    display: block;
-    margin-top: 1rem;
+.booking-form {
+  background-color: var(--background-dark);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  color: var(--text-light);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  position: relative;
+  overflow: hidden;
+}
 
+.booking-form::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(75,188,204,0.1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .section-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    display: block;
+  font-size: var(--font-xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-light);
+  padding-bottom: var(--spacing-xs);
+  letter-spacing: 0.5px;
+  width: 100%;
+  text-align: center;
+  position: relative;
 }
 
-.stacked-input input {
-    width: 500px;
-    padding: 6px;
-    box-sizing: border-box;
-    font-size: large;
-    margin-top: 1rem;
-
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  border-radius: 2px;
 }
 
-.submit-button {
-    font-size: 23px; 
-    width: 40%;
-    padding: 10px 20px;
-    background-color: #4BBCCC;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    margin-top: 1rem;
-
+.stacked-input {
+  margin-bottom: var(--spacing-md);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
 }
 
-.submit-button:hover {
-    background-color: #297a85;
+.stacked-input label {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: var(--font-sm);
+  text-align: left;
+  letter-spacing: 0.1px;
+  padding-left: var(--spacing-sm);
 }
 
-.small-input input {
-    width: 200px;
-    padding: 6px;
-    box-sizing: border-box;
-    font-size: large;
-    margin-top: 1rem;
-    margin-left: 1rem;
-
+.input-row {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+  justify-content: space-between;
+  width: 100%;
 }
 
+/* Location fields - smaller */
+.location-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 100px;
+  width: 48%;
+  gap: var(--spacing-xs);
+}
+
+/* Date/Time fields - wider */
+.datetime-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 100px;
+  width: 48%;
+  gap: var(--spacing-xs);
+}
+
+.location-input label,
+.datetime-input label {
+  margin-bottom: 0;
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: var(--font-sm);
+  text-align: left;
+  letter-spacing: 0.1px;
+  padding-left: var(--spacing-sm);
+}
+
+/* Input fields styling */
+.stacked-input input,
+.location-input input,
+.datetime-input input,
 .passenger-input input {
-    width: 150px;
-    padding: 6px;
-    font-size: large;
-    margin-top: 1rem;
-    margin-left: 1rem;
+  width: 100%;
+  padding: 14px 18px;
+  font-size: var(--font-md);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+  transition: var(--transition);
+  outline: none;
+  text-align: left;
+  font-weight: 500;
+  box-sizing: border-box;
+}
 
+.stacked-input input:focus,
+.location-input input:focus,
+.datetime-input input:focus,
+.passenger-input input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--focus-glow);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Passenger field - centered and wider */
+.passenger-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto var(--spacing-md) auto;
+  gap: var(--spacing-xs);
+}
+
+.passenger-input label {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: var(--font-sm);
+  letter-spacing: 0.1px;
+  text-align: center;
+  width: 100%;
 }
 
 .pets-input {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-sm);
+  justify-content: center;
+}
+
+.pets-input > label:first-child {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: var(--font-sm);
+  margin-right: var(--spacing-sm);
+  white-space: nowrap;
 }
 
 .pets-option {
-    display: inline-block;
-    padding: 5px 10px;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    cursor: pointer;
-    color: #475560;
-    user-select: none;
-    transition: all 0.2s ease-in-out;
-    background-color: white;
-    font-size: 22px; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-light);
+  background-color: transparent;
+  font-size: var(--font-sm);
+  font-weight: 600;
+  min-width: 70px;
+  transition: var(--transition);
+  text-align: center;
 }
 
-.pets-option input[type='checkbox'] {
-    display: none;
+.pets-option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--primary-color);
 }
 
 .pets-option.selected {
-    background-color: #4BBCCC;
-    color: white;
-    border-color: #4BBCCC;
+  background-color: white;
+  color: var(--text-dark);
+  border-color: white;
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.pets-option.selected:hover {
+  background-color: white;
+  color: var(--text-dark);
+  transform: translateY(-2px);
+}
+
+.submit-button {
+  font-size: var(--font-md);
+  font-weight: 700;
+  min-width: 140px;
+  width: 100%;
+  padding: 16px 0;
+  background: linear-gradient(135deg, var(--primary-color), #3aa9b8);
+  color: var(--text-dark);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin: var(--spacing-md) auto 0 auto;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  text-align: center;
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(75, 188, 204, 0.3);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.submit-button:hover {
+  box-shadow: 0 6px 20px rgba(75, 188, 204, 0.4);
+  transform: translateY(-3px);
+}
+
+.submit-button:hover::before {
+  left: 100%;
+}
+
+.submit-button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(75, 188, 204, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .booking-form {
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-radius: 16px;
+    max-width: 95vw;
+  }
+  
+  .section-title {
+    font-size: var(--font-lg);
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .input-row {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .location-input,
+  .datetime-input {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .passenger-input {
+    width: 100%;
+  }
+  
+  .pets-input {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+  
+  .submit-button {
+    width: 100%;
+    min-width: 100px;
+    padding: 14px 0;
+    font-size: var(--font-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-form {
+    padding: var(--spacing-md) var(--spacing-sm);
+    border-radius: 14px;
+    gap: var(--spacing-sm);
+  }
+  
+  .section-title {
+    font-size: var(--font-md);
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .stacked-input input,
+  .location-input input,
+  .datetime-input input,
+  .passenger-input input {
+    font-size: var(--font-sm);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  
+  .submit-button {
+    font-size: var(--font-sm);
+    padding: 12px 0;
+    border-radius: 8px;
+  }
+  
+  .pets-option {
+    min-width: 60px;
+    font-size: var(--font-sm);
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
 }

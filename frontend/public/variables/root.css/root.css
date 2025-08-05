@@ -1,13 +1,49 @@
-:root{
-    :root {
-  --color-primary: #42C4CF;       /* Light Cyan (Header, Buttons) */
-  --color-secondary: #005E7A;     /* Dark Teal (Sidebar, Footer) */
-  --color-accent: #F2F2F2;        /* Light Gray (Background sections) */
-  --color-text-dark: #2E2E2E;     /* Dark Gray (Text) */
-  --color-white: #FFFFFF;         /* White (Text, Icons) */
-  --color-highlight: #00B1BB;     /* Bright Cyan (Map pins, Highlights) */
-  --color-partner-1: #CF9A1C;     /* Gold (Partner logo) */
-  --color-button-dark: #3E4B56;   /* Dark Gray-Blue (Call button) */
-  --color-map-background: #D4E8F0; /* Light Blue (Map background) */
+/* Global CSS Custom Properties */
+:root {
+    /* Colors */
+    --primary-color: #4BBCCC;
+    --primary-hover: #297a85;
+    --background-dark: #475560;
+    --text-light: white;
+    --text-dark: #333;
+    --border-light: #ccc;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-hover: rgba(0, 0, 0, 0.15);
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border Radius */
+    --border-radius: 8px;
+    --border-radius-sm: 5px;
+    
+    /* Transitions */
+    --transition: all 0.2s ease-in-out;
+    
+    /* Font Sizes */
+    --font-xs: 0.875rem;
+    --font-sm: 1rem;
+    --font-md: 1.1rem;
+    --font-lg: 1.2rem;
+    --font-xl: 1.8rem;
+    --font-xxl: 2.2rem;
 }
+
+/* Mobile Small - Override root variables */
+@media (max-width: 480px) {
+    :root {
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --font-xs: 0.75rem;
+        --font-sm: 0.875rem;
+        --font-md: 1rem;
+        --font-lg: 1.1rem;
+        --font-xl: 1.5rem;
+    }
 }
