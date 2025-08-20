@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './BookingForm.css';
-import { LoadScript, GoogleMap } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
 
 function BookingForm() {
@@ -9,7 +9,13 @@ function BookingForm() {
   const [pickupDate, setPickupDate] = useState('');
   const [pickupTime, setPickupTime] = useState('');
   const [passengers, setPassengers] = useState('1');
+  const [directions, setDirections] = useState(null);
+  const [boundsSet, setBoundsSet] = useState(false);
+
+
+
   const [pets, setPets] = useState('no');
+
   const containerStyle = {
     width: '100%',
     height: '300px'
@@ -17,10 +23,34 @@ function BookingForm() {
 
   const center = { lat: 41.2853, lng: -70.0988 };
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     alert(`Booking submitted!\nFrom: ${pickupLocation}\nTo: ${dropoffLocation}\nDate: ${pickupDate}\nTime: ${pickupTime}\nPassengers: ${passengers}\nPets: ${pets}`);
   };
+
+
+useEffect(() => {
+  if (pickupLocation && dropoffLocation && window.google) {
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: pickupLocation + ', Nantucket, MA',
+        destination: dropoffLocation + ', Nantucket, MA',
+        travelMode: window.google.maps.TravelMode.DRIVING,
+      },
+      (result, status) => {
+        if (status === 'OK' && result) {
+          setDirections(result);
+          setBoundsSet(false);
+        } else {
+          console.error('Directions request failed: ', status);
+        }
+      }
+    );
+  }
+}, [pickupLocation, dropoffLocation]);
+
 
   return (
     <form className="booking-form" onSubmit={handleSubmit}>
@@ -107,14 +137,32 @@ function BookingForm() {
           </div>
         </div>
         <div className="map-wrapper">
-              <LoadScript googleMapsApiKey="AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54">
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={10}
-              >
-              </GoogleMap>
-            </LoadScript>         
+          <LoadScript googleMapsApiKey="AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54">
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={10}
+            >
+              
+              {directions && (
+                <DirectionsRenderer
+                  options={{
+                    directions: directions,
+
+                  }}
+                  onLoad={(renderer) => {
+                    if (!boundsSet) {
+                      const bounds = renderer.getDirections().routes[0].bounds;
+                      renderer.getMap().fitBounds(bounds);
+                      setBoundsSet(true);
+                    }
+                  }}
+                />
+              )}
+
+
+            </GoogleMap>
+          </LoadScript>
           <button type="submit" className="submit-button">Book Now</button>
           <div className="map-wrapper">
           </div>
@@ -127,3 +175,4 @@ function BookingForm() {
 export default BookingForm;
 
 //<Map pickupLocation={pickupLocation} dropoffLocation={dropoffLocation} />
+//AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54
