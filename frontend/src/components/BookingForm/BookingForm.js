@@ -11,6 +11,8 @@ function BookingForm() {
   const [passengers, setPassengers] = useState('1');
   const [directions, setDirections] = useState(null);
   const [boundsSet, setBoundsSet] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+
 
 
 
@@ -30,26 +32,26 @@ function BookingForm() {
   };
 
 
-useEffect(() => {
-  if (pickupLocation && dropoffLocation && window.google) {
-    const directionsService = new window.google.maps.DirectionsService();
-    directionsService.route(
-      {
-        origin: pickupLocation + ', Nantucket, MA',
-        destination: dropoffLocation + ', Nantucket, MA',
-        travelMode: window.google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        if (status === 'OK' && result) {
-          setDirections(result);
-          setBoundsSet(false);
-        } else {
-          console.error('Directions request failed: ', status);
+  useEffect(() => {
+    if (pickupLocation && dropoffLocation && window.google) {
+      const directionsService = new window.google.maps.DirectionsService();
+      directionsService.route(
+        {
+          origin: pickupLocation + ', Nantucket, MA',
+          destination: dropoffLocation + ', Nantucket, MA',
+          travelMode: window.google.maps.TravelMode.DRIVING,
+        },
+        (result, status) => {
+          if (status === 'OK' && result) {
+            setDirections(result);
+            setBoundsSet(false);
+          } else {
+            console.error('Directions request failed: ', status);
+          }
         }
-      }
-    );
-  }
-}, [pickupLocation, dropoffLocation]);
+      );
+    }
+  }, [pickupLocation, dropoffLocation]);
 
 
   return (
@@ -110,6 +112,23 @@ useEffect(() => {
             />
           </div>
 
+          <div className="passenger-input">
+            <label>Your Phone Number:</label>
+            <input
+              type="tel"
+              inputMode="numeric"
+              value={phoneNumber}
+              maxLength={13} 
+              onChange={(e) => {
+                setPhoneNumber(e.target.value)
+                  const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
+               setPhoneNumber(onlyNums);
+              }}
+              pattern="^\+?[0-9]{7,15}$"
+              required
+            />
+          </div>
+
           <div className="pets-input">
             <label>Traveling with pets?</label>
             <label className={pets === 'yes' ? 'pets-option selected' : 'pets-option'}>
@@ -143,7 +162,7 @@ useEffect(() => {
               center={center}
               zoom={10}
             >
-              
+
               {directions && (
                 <DirectionsRenderer
                   options={{
