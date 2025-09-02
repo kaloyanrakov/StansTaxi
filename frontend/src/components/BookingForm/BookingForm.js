@@ -12,10 +12,6 @@ function BookingForm() {
   const [directions, setDirections] = useState(null);
   const [boundsSet, setBoundsSet] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
-
-
-
-
   const [pets, setPets] = useState('no');
 
   const containerStyle = {
@@ -192,6 +188,3 @@ function BookingForm() {
   );
 }
 export default BookingForm;
-
-//<Map pickupLocation={pickupLocation} dropoffLocation={dropoffLocation} />
-//AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54
