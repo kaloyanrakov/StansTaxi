@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
+
 @Data
 @NoArgsConstructor
 public class Booking {

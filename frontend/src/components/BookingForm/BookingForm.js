@@ -22,9 +22,38 @@ function BookingForm() {
   const center = { lat: 41.2853, lng: -70.0988 };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Booking submitted!\nFrom: ${pickupLocation}\nTo: ${dropoffLocation}\nDate: ${pickupDate}\nTime: ${pickupTime}\nPassengers: ${passengers}\nPets: ${pets}`);
+
+    const booking = {
+      pickUpLocation: pickupLocation,
+      dropOffLocation: dropoffLocation,
+      pickupDate: pickupDate,
+      pickupTime: pickupTime,
+      passengers: parseInt(passengers, 10),
+      pets: pets === "yes",
+      phoneNumber: phoneNumber
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(booking)
+      });
+
+      if (response.ok) {
+        const savedBooking = await response.json();
+        alert(`Booking confirmed! ID: ${savedBooking.bookingId}`);
+      } else {
+        alert("Failed to create booking.");
+      }
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      alert("Error submitting booking.");
+    }
   };
 
 
@@ -114,11 +143,11 @@ function BookingForm() {
               type="tel"
               inputMode="numeric"
               value={phoneNumber}
-              maxLength={13} 
+              maxLength={13}
               onChange={(e) => {
                 setPhoneNumber(e.target.value)
-                  const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
-               setPhoneNumber(onlyNums);
+                const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
+                setPhoneNumber(onlyNums);
               }}
               pattern="^\+?[0-9]{7,15}$"
               required
