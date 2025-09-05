@@ -1,7 +1,45 @@
-import React from 'react';
-import './StansTaxi.css';
+import React, { useState, useEffect } from 'react';
+import './Main.css'; // Import the CSS file
 
-const StansTaxi: React.FC = () => {
+// Define types for our component props
+interface Partner {
+  id: number;
+  name: string;
+  logoUrl: string;
+  websiteUrl: string;
+}
+
+interface MainProps {
+  partners: Partner[];
+}
+
+const Main: React.FC<MainProps> = ({ partners }) => {
+  // State for carousel
+  const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0);
+  
+  // Auto-rotate carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPartnerIndex((prevIndex) => 
+        prevIndex === partners.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [partners.length]);
+
+  const nextPartner = () => {
+    setCurrentPartnerIndex((prevIndex) => 
+      prevIndex === partners.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevPartner = () => {
+    setCurrentPartnerIndex((prevIndex) => 
+      prevIndex === 0 ? partners.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div className="stans-taxi">
       {/* Header Section */}
@@ -9,13 +47,13 @@ const StansTaxi: React.FC = () => {
         <div className="container">
           <div className="header-content">
             <div className="logo">
-              <div className="logo-emblem">
-                <div className="seagull">✈</div>
+              <a href="/">
+                <img src="/images/logo.png" alt="Stan's Taxi Logo" className="logo-image" />
                 <div className="logo-text">
                   <h1>STAN'S TAXI</h1>
                   <p>NANTUCKET</p>
                 </div>
-              </div>
+              </a>
             </div>
             
             <nav className="nav-sidebar">
@@ -39,17 +77,8 @@ const StansTaxi: React.FC = () => {
             </div>
             
             <div className="hero-visual">
-              <div className="taxi-illustration">
-                <div className="taxi-body">
-                  <div className="taxi-stripe"></div>
-                  <div className="taxi-window"></div>
-                </div>
-              </div>
-              <div className="lighthouse-illustration">
-                <div className="lighthouse-body">
-                  <div className="lighthouse-light"></div>
-                </div>
-              </div>
+              <img src="/images/taxi.png" alt="Taxi" className="taxi-image" />
+              <img src="/images/lighthouse.png" alt="Lighthouse" className="lighthouse-image" />
             </div>
           </div>
         </div>
@@ -76,15 +105,51 @@ const StansTaxi: React.FC = () => {
         </div>
       </section>
 
-      {/* Partners Section */}
+      {/* Partners Section with Carousel */}
       <section className="partners">
         <div className="container">
           <h3>Preferred partner of:</h3>
-          <div className="partner-logos">
-            <div className="partner-logo logo-1">21 BROAD</div>
-            <div className="partner-logo logo-2">Veranda</div>
-            <div className="partner-logo logo-3">THE VERANDA HOUSE</div>
-            <div className="partner-logo logo-4">LH</div>
+          
+          <div className="carousel-container">
+            <button className="carousel-button prev" onClick={prevPartner}>
+              &#8249;
+            </button>
+            
+            <div className="carousel">
+              <div className="carousel-inner" style={{ 
+                transform: `translateX(-${currentPartnerIndex * 100}%)` 
+              }}>
+                {partners.map(partner => (
+                  <div key={partner.id} className="carousel-item">
+                    <a href={partner.websiteUrl} target="_blank" rel="noopener noreferrer">
+                      <img 
+                        src={partner.logoUrl} 
+                        alt={partner.name} 
+                        className="partner-logo"
+                        onError={(e) => {
+                          e.currentTarget.src = "/images/placeholder.png";
+                          e.currentTarget.alt = `${partner.name} logo`;
+                        }}
+                      />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <button className="carousel-button next" onClick={nextPartner}>
+              &#8250;
+            </button>
+          </div>
+          
+          <div className="carousel-indicators">
+            {partners.map((_, index) => (
+              <button
+                key={index}
+                className={`indicator ${index === currentPartnerIndex ? 'active' : ''}`}
+                onClick={() => setCurrentPartnerIndex(index)}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -112,9 +177,8 @@ const StansTaxi: React.FC = () => {
           </div>
         </div>
       </section>
-
     </div>
   );
 };
 
-export default StansTaxi;
+export default Main;
