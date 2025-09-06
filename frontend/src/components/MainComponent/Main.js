@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import './components/MainComponent/Maincomponent.css'; // Import the CSS file
+import './Maincomponent.css'; // Import the CSS file
 
-function Main({ partners }) {
+function Main() {
+
+
+ const partners = [
+  { id: 1, name: "21 Broad", logoUrl: "/variables/images/21broad.png", websiteUrl: "" },
+  { id: 2, name: "Veranda", logoUrl: "/variables/images/veranda.png", websiteUrl: "" },
+  { id: 3, name: "The Veranda House", logoUrl: "/variables/images/verandahouse.png", websiteUrl: "" },
+  { id: 4, name: "Luxury Hotel", logoUrl: "/variables/images/lh.png", websiteUrl: "" }
+];
+
+  
   // State for carousel
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0);
 
