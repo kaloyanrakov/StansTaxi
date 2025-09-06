@@ -11,7 +11,7 @@ function App() {
       
       {/* Keep your existing components if needed */}
       <header className="App-header">
-        <Main />
+        <Main/>
         <PhoneNumber/>
         <BookingForm />
         
