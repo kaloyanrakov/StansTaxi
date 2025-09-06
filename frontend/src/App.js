@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.css';
-import Main from './components/Main/Main'; // Import the Main component
+import PhoneNumber from './components/PhoneNumber/PhoneNumber'
+import BookingForm from './components/BookingForm/BookingForm'
+import Header from './components/header/Header';
+import Layout from './components/Layout/Layout';
 
 function App() {
   //partner data
@@ -33,13 +36,14 @@ function App() {
 
   return (
     <div className="App">
-      {/* Render the Main component with partners data */}
-      <Main partners={partners} />
+      {/* Render the Main component with partners data   <Main partners={partners} /> */}
       
       {/* Keep your existing components if needed */}
       <header className="App-header">
+        <Header />
         <PhoneNumber/>
         <BookingForm />
+        
       </header>
     </div>
   );
