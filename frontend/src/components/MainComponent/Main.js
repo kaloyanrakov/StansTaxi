@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './maincomponent.css'; // Import the CSS file
+import './Maincomponent.css'; // Import the CSS file
 
 function Main() {
 
