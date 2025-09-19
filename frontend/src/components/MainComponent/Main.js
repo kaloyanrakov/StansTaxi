@@ -1,19 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import './maincomponent.css'; 
+import React, { useState, useEffect, useRef } from 'react';
+import './maincomponent.css';
 
 function Main() {
   const partners = [
-    { id: 1, name: "21 Broad", logoUrl: "/images/partners/21broad.png", websiteUrl: "#" },
-    { id: 2, name: "Veranda", logoUrl: "/images/partners/veranda.png", websiteUrl: "#" },
-    { id: 3, name: "The Veranda House", logoUrl: "/images/partners/verandahouse.png", websiteUrl: "#" },
-    { id: 4, name: "Luxury Hotel", logoUrl: "/images/partners/lh.png", websiteUrl: "#" }
+    { id: 1, name: "21 Broad", logoUrl: "/variables/images/21-Broad-Nantucket-Logo.png", websiteUrl: "#" },
+    { id: 2, name: "76 Main", logoUrl: "/variables/images/76-main-ink-press-hotel-logo-resized.png", websiteUrl: "#" },
+    { id: 3, name: "Galley Beach", logoUrl: "/variables/images/Galley-Beach.png", websiteUrl: "#" },
+    { id: 4, name: "Nantucket Resort", logoUrl: "/variables/images/nantucketresortcollection.png", websiteUrl: "#" },
+    { id: 5, name: "Veranda House", logoUrl: "/variables/images/veranda_house_logo_color.png", websiteUrl: "#" }
   ];
   
   // State for carousel
-  const [currentPartnerIndex, setCurrentPartnerIndex] = useState(0);
+  const [currentPartnerIndex, setCurrentPartnerIndex] = useState(2); // Start with center position
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const sectionRefs = {
+    home: useRef(null),
+    about: useRef(null),
+    contact: useRef(null),
+    partners: useRef(null)
+  };
 
-  // Auto-rotate carousel
+  // Auto-rotate carousel (pauses when hovered)
   useEffect(() => {
+    if (isHovered) return;
+    
     const interval = setInterval(() => {
       setCurrentPartnerIndex((prevIndex) =>
         prevIndex === partners.length - 1 ? 0 : prevIndex + 1
@@ -21,7 +32,16 @@ function Main() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [partners.length]);
+  }, [partners.length, isHovered]);
+
+  // Scroll to section function
+  const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
+    sectionRefs[sectionId].current.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
 
   const nextPartner = () => {
     setCurrentPartnerIndex((prevIndex) =>
@@ -35,6 +55,26 @@ function Main() {
     );
   };
 
+  // Calculate visible partners for bubble carousel
+  const getVisiblePartners = () => {
+    const visible = [];
+    const total = partners.length;
+    
+    // Always show 5 bubbles with the current one in the center
+    for (let i = -2; i <= 2; i++) {
+      const index = (currentPartnerIndex + i + total) % total;
+      visible.push({
+        ...partners[index],
+        position: i,
+        isCenter: i === 0
+      });
+    }
+    
+    return visible;
+  };
+
+  const visiblePartners = getVisiblePartners();
+
   return (
     <div className="stans-taxi">
       {/* Header Section */}
@@ -42,9 +82,9 @@ function Main() {
         <div className="container">
           <div className="header-content">
             <div className="logo">
-              <a href="/">
+              <a href="/" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
                 <img
-                  src="/images/logo.png"
+                  src="/variables/images/Logo.png"
                   alt="Stan's Taxi Logo"
                   className="logo-image"
                 />
@@ -53,18 +93,23 @@ function Main() {
 
             <nav className="nav-main">
               <ul>
-                <li>
-                  <a href="#">
+                <li className={activeSection === 'home' ? 'active' : ''}>
+                  <a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
                     <i className="fas fa-home"></i> Home
                   </a>
                 </li>
-                <li>
-                  <a href="#">
+                <li className={activeSection === 'about' ? 'active' : ''}>
+                  <a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
                     <i className="fas fa-info-circle"></i> About
                   </a>
                 </li>
-                <li>
-                  <a href="#">
+                <li className={activeSection === 'partners' ? 'active' : ''}>
+                  <a href="#partners" onClick={(e) => { e.preventDefault(); scrollToSection('partners'); }}>
+                    <i className="fas fa-handshake"></i> Partners
+                  </a>
+                </li>
+                <li className={activeSection === 'contact' ? 'active' : ''}>
+                  <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
                     <i className="fas fa-phone"></i> Contact
                   </a>
                 </li>
@@ -80,7 +125,7 @@ function Main() {
       </header>
 
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero" id="home" ref={sectionRefs.home}>
         <div className="container">
           <div className="hero-content">
             <div className="hero-text">
@@ -96,15 +141,8 @@ function Main() {
             </div>
 
             <div className="hero-visual">
-              <div className="taxi-illustration">
-                <div className="taxi-window"></div>
-                <div className="taxi-stripe"></div>
-                <div className="taxi-wheels"></div>
-              </div>
-              <div className="lighthouse-illustration">
-                <div className="lighthouse-light"></div>
-                <div className="lighthouse-stripe"></div>
-              </div>
+              <img src="/variables/images/taxi.png" alt="Taxi" className="taxi-image" />
+              <img src="/variables/images/lighthouse.png" alt="Lighthouse" className="lighthouse-image" />
             </div>
           </div>
         </div>
@@ -121,58 +159,54 @@ function Main() {
               <i className="fas fa-phone"></i> 508-500-6565
             </a>
           </div>
+          {/* Road Divider */}
+          <div className="road-divider"></div>
         </div>
       </section>
 
-      {/* Divider */}
-      <section className="divider">
-        <div className="container">
-          <div className="divider-bars">
-            <div className="divider-bar"></div>
-            <div className="divider-bar"></div>
-            <div className="divider-bar"></div>
-            <div className="divider-bar"></div>
-            <div className="divider-bar"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Partners Section with Carousel */}
-      <section className="partners">
+      {/* Partners Section with Bubble Carousel */}
+      <section className="partners" id="partners" ref={sectionRefs.partners}>
         <div className="container">
           <div className="section-header">
             <h3>Preferred partner of:</h3>
             <p>We're proud to partner with these premium establishments</p>
           </div>
 
-          <div className="carousel-container">
+          <div 
+            className="bubble-carousel-container"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <button className="carousel-button prev" onClick={prevPartner}>
               <i className="fas fa-chevron-left"></i>
             </button>
 
-            <div className="carousel">
-              <div
-                className="carousel-inner"
-                style={{ transform: `translateX(-${currentPartnerIndex * 100}%)` }}
-              >
-                {partners.map((partner) => (
-                  <div key={partner.id} className="carousel-item">
-                    <a href={partner.websiteUrl} target="_blank" rel="noopener noreferrer">
-                      <div className="partner-logo-container">
-                        <img
-                          src={partner.logoUrl}
-                          alt={partner.name}
-                          className="partner-logo"
-                          onError={(e) => {
-                            e.currentTarget.src = "/images/placeholder.png";
-                            e.currentTarget.alt = `${partner.name} logo`;
-                          }}
-                        />
-                      </div>
-                    </a>
-                  </div>
-                ))}
-              </div>
+            <div className="bubble-carousel">
+              {visiblePartners.map((partner) => (
+                <div 
+                  key={`${partner.id}-${partner.position}`} 
+                  className={`bubble-item ${partner.isCenter ? 'center' : ''}`}
+                  style={{
+                    '--position': partner.position,
+                    '--offset': Math.abs(partner.position) * 20
+                  }}
+                >
+                  <a href={partner.websiteUrl} target="_blank" rel="noopener noreferrer">
+                    <div className="bubble-logo-container">
+                      <img
+                        src={partner.logoUrl}
+                        alt={partner.name}
+                        className="bubble-logo"
+                        onError={(e) => {
+                          e.currentTarget.src = "/variables/images/Logo.png";
+                          e.currentTarget.alt = `${partner.name} logo`;
+                        }}
+                      />
+                    </div>
+                    {partner.isCenter && <span className="partner-name">{partner.name}</span>}
+                  </a>
+                </div>
+              ))}
             </div>
 
             <button className="carousel-button next" onClick={nextPartner}>
@@ -193,7 +227,7 @@ function Main() {
       </section>
 
       {/* About Section */}
-      <section className="about">
+      <section className="about" id="about" ref={sectionRefs.about}>
         <div className="container">
           <div className="section-header">
             <h3>About Our Service</h3>
@@ -230,32 +264,64 @@ function Main() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
+      {/* Contact Section */}
+      <section className="contact" id="contact" ref={sectionRefs.contact}>
         <div className="container">
-          <div className="footer-content">
-            <div className="footer-logo">
-              <img src="/images/logo.png" alt="Stan's Taxi" />
-              <p>Your reliable transportation solution in Nantucket</p>
-            </div>
-            
-            <div className="footer-contact">
-              <h4>Contact Us</h4>
-              <p><i className="fas fa-phone"></i> 508-500-6565</p>
-              <p><i className="fas fa-envelope"></i> info@stanstaxi.com</p>
-            </div>
-            
-            <div className="footer-hours">
-              <h4>Service Hours</h4>
-              <p>24/7, 365 days a year</p>
-            </div>
+          <div className="section-header">
+            <h3>Get in Touch</h3>
+            <p>Reach out to us for bookings or inquiries</p>
           </div>
           
-          <div className="footer-bottom">
-            <p>&copy; 2023 Stan's Taxi Nantucket. All rights reserved.</p>
+          <div className="contact-content">
+            <div className="contact-info">
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fas fa-phone"></i>
+                </div>
+                <div className="contact-details">
+                  <h4>Call Us</h4>
+                  <p>508-500-6565</p>
+                </div>
+              </div>
+              
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fas fa-envelope"></i>
+                </div>
+                <div className="contact-details">
+                  <h4>Email Us</h4>
+                  <p>info@stanstaxi.com</p>
+                </div>
+              </div>
+              
+              <div className="contact-item">
+                <div className="contact-icon">
+                  <i className="fas fa-map-marker-alt"></i>
+                </div>
+                <div className="contact-details">
+                  <h4>Visit Us</h4>
+                  <p>Nantucket Island, MA</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="contact-form">
+              <form>
+                <div className="form-group">
+                  <input type="text" placeholder="Your Name" />
+                </div>
+                <div className="form-group">
+                  <input type="email" placeholder="Your Email" />
+                </div>
+                <div className="form-group">
+                  <textarea placeholder="Your Message" rows="4"></textarea>
+                </div>
+                <button type="submit" className="btn-submit">Send Message</button>
+              </form>
+            </div>
           </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }

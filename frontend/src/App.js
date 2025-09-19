@@ -5,6 +5,7 @@ import BookingForm from './components/BookingForm/BookingForm';
 import Main from './components/MainComponent/Main';
 import LoginPage from './LoginPage';
 import BookingsPage from './BookingsPage';
+import Footer from './FooterComponent/Footer';
 
 function App() {
   const path = window.location.pathname;
@@ -20,6 +21,7 @@ function App() {
         <Main />
         <PhoneNumber />
         <BookingForm />
+        <Footer />
       </>
     );
   }
