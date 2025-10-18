@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BookingForm.css';
-import { LoadScript, GoogleMap, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
-
+import { LoadScript, GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
 
 function BookingForm() {
   const [pickupLocation, setPickupLocation] = useState('');
@@ -16,13 +15,12 @@ function BookingForm() {
 
   const containerStyle = {
     width: '100%',
-    height: '300px'
+    height: '200px'
   };
 
   const center = { lat: 41.2853, lng: -70.0988 };
 
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async function(e) {
     e.preventDefault();
 
     const booking = {
@@ -47,6 +45,15 @@ function BookingForm() {
       if (response.ok) {
         const savedBooking = await response.json();
         alert(`Booking confirmed! ID: ${savedBooking.bookingId}`);
+        // Reset form
+        setPickupLocation('');
+        setDropoffLocation('');
+        setPickupDate('');
+        setPickupTime('');
+        setPassengers('1');
+        setPhoneNumber('');
+        setPets('no');
+        setDirections(null);
       } else {
         alert("Failed to create booking.");
       }
@@ -56,8 +63,7 @@ function BookingForm() {
     }
   };
 
-
-  useEffect(() => {
+  useEffect(function() {
     if (pickupLocation && dropoffLocation && window.google) {
       const directionsService = new window.google.maps.DirectionsService();
       directionsService.route(
@@ -66,7 +72,7 @@ function BookingForm() {
           destination: dropoffLocation + ', Nantucket, MA',
           travelMode: window.google.maps.TravelMode.DRIVING,
         },
-        (result, status) => {
+        function(result, status) {
           if (status === 'OK' && result) {
             setDirections(result);
             setBoundsSet(false);
@@ -78,142 +84,215 @@ function BookingForm() {
     }
   }, [pickupLocation, dropoffLocation]);
 
-
-  return (
-    <form className="booking-form" onSubmit={handleSubmit}>
-      <h2 className="section-title">Book a ride</h2>
-      <div className="form-map-container">
-        <div className="form-inputs">
-          <div className="input-row">
-            <div className="location-input stacked-input">
-              <label>Pick-Up Location:</label>
-              <input
-                type="text"
-                value={pickupLocation}
-                onChange={(e) => setPickupLocation(e.target.value)}
-                placeholder="Enter pickup location"
-              />
-            </div>
-
-            <div className="location-input stacked-input">
-              <label>Drop-Off Location:</label>
-              <input
-                type="text"
-                value={dropoffLocation}
-                onChange={(e) => setDropoffLocation(e.target.value)}
-                placeholder="Enter dropoff location"
-              />
-            </div>
-          </div>
-
-          <div className="input-row">
-            <div className="datetime-input">
-              <label>Pick-Up Date:</label>
-              <input
-                type="date"
-                value={pickupDate}
-                onChange={(e) => setPickupDate(e.target.value)}
-              />
-            </div>
-
-            <div className="datetime-input">
-              <label>Pick-Up Time:</label>
-              <input
-                type="time"
-                value={pickupTime}
-                onChange={(e) => setPickupTime(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="passenger-input">
-            <label>Number of Passengers:</label>
-            <input
-              type="number"
-              min="1"
-              max="10"
-              value={passengers}
-              onChange={(e) => setPassengers(e.target.value)}
-            />
-          </div>
-
-          <div className="passenger-input">
-            <label>Your Phone Number:</label>
-            <input
-              type="tel"
-              inputMode="numeric"
-              value={phoneNumber}
-              maxLength={13}
-              onChange={(e) => {
-                setPhoneNumber(e.target.value)
-                const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
-                setPhoneNumber(onlyNums);
-              }}
-              pattern="^\+?[0-9]{7,15}$"
-              required
-            />
-          </div>
-
-          <div className="pets-input">
-            <label>Traveling with pets?</label>
-            <label className={pets === 'yes' ? 'pets-option selected' : 'pets-option'}>
-              <input
-                type="radio"
-                name="pets"
-                value="yes"
-                checked={pets === 'yes'}
-                onChange={(e) => setPets(e.target.value)}
-                style={{ display: 'none' }}
-              />
-              Yes
-            </label>
-            <label className={pets === 'no' ? 'pets-option selected' : 'pets-option'}>
-              <input
-                type="radio"
-                name="pets"
-                value="no"
-                checked={pets === 'no'}
-                onChange={(e) => setPets(e.target.value)}
-                style={{ display: 'none' }}
-              />
-              No
-            </label>
-          </div>
-        </div>
-        <div className="map-wrapper">
-          <LoadScript googleMapsApiKey="AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54">
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={center}
-              zoom={10}
-            >
-
-              {directions && (
-                <DirectionsRenderer
-                  options={{
-                    directions: directions,
-
-                  }}
-                  onLoad={(renderer) => {
-                    if (!boundsSet) {
-                      const bounds = renderer.getDirections().routes[0].bounds;
-                      renderer.getMap().fitBounds(bounds);
-                      setBoundsSet(true);
-                    }
-                  }}
-                />
-              )}
-
-
-            </GoogleMap>
-          </LoadScript>
-          <button type="submit" className="submit-button">Book Now</button>
-          <div className="map-wrapper">
-          </div>
-        </div>
-      </div>
-    </form>
-
+  return React.createElement(
+    'form',
+    {
+      className: 'booking-form',
+      onSubmit: handleSubmit
+    },
+    React.createElement(
+      'h2',
+      { className: 'section-title' },
+      'Book a Ride'
+    ),
+    React.createElement(
+      'div',
+      { className: 'form-inputs' },
+      React.createElement(
+        'div',
+        { className: 'input-row' },
+        React.createElement(
+          'div',
+          { className: 'location-input' },
+          React.createElement(
+            'label',
+            null,
+            'Pick-Up Location:'
+          ),
+          React.createElement('input', {
+            type: 'text',
+            value: pickupLocation,
+            onChange: function(e) { return setPickupLocation(e.target.value); },
+            placeholder: 'Enter pickup location',
+            required: true
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'location-input' },
+          React.createElement(
+            'label',
+            null,
+            'Drop-Off Location:'
+          ),
+          React.createElement('input', {
+            type: 'text',
+            value: dropoffLocation,
+            onChange: function(e) { return setDropoffLocation(e.target.value); },
+            placeholder: 'Enter dropoff location',
+            required: true
+          })
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'input-row' },
+        React.createElement(
+          'div',
+          { className: 'datetime-input' },
+          React.createElement(
+            'label',
+            null,
+            'Pick-Up Date:'
+          ),
+          React.createElement('input', {
+            type: 'date',
+            value: pickupDate,
+            onChange: function(e) { return setPickupDate(e.target.value); },
+            required: true
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'datetime-input' },
+          React.createElement(
+            'label',
+            null,
+            'Pick-Up Time:'
+          ),
+          React.createElement('input', {
+            type: 'time',
+            value: pickupTime,
+            onChange: function(e) { return setPickupTime(e.target.value); },
+            required: true
+          })
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'input-row' },
+        React.createElement(
+          'div',
+          { className: 'passenger-input' },
+          React.createElement(
+            'label',
+            null,
+            'Number of Passengers:'
+          ),
+          React.createElement('input', {
+            type: 'number',
+            min: '1',
+            max: '10',
+            value: passengers,
+            onChange: function(e) { return setPassengers(e.target.value); },
+            required: true
+          })
+        ),
+        React.createElement(
+          'div',
+          { className: 'passenger-input' },
+          React.createElement(
+            'label',
+            null,
+            'Your Phone Number:'
+          ),
+          React.createElement('input', {
+            type: 'tel',
+            value: phoneNumber,
+            onChange: function(e) {
+              const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
+              setPhoneNumber(onlyNums);
+            },
+            placeholder: '508-500-6565',
+            pattern: '^\\+?[0-9]{7,15}$',
+            required: true
+          })
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'pets-input' },
+        React.createElement(
+          'label',
+          null,
+          'Traveling with pets?'
+        ),
+        React.createElement(
+          'div',
+          { className: 'pets-options' },
+          React.createElement(
+            'label',
+            {
+              className: pets === 'yes' ? 'pets-option selected' : 'pets-option'
+            },
+            React.createElement('input', {
+              type: 'radio',
+              name: 'pets',
+              value: 'yes',
+              checked: pets === 'yes',
+              onChange: function(e) { return setPets(e.target.value); },
+              style: { display: 'none' }
+            }),
+            'Yes'
+          ),
+          React.createElement(
+            'label',
+            {
+              className: pets === 'no' ? 'pets-option selected' : 'pets-option'
+            },
+            React.createElement('input', {
+              type: 'radio',
+              name: 'pets',
+              value: 'no',
+              checked: pets === 'no',
+              onChange: function(e) { return setPets(e.target.value); },
+              style: { display: 'none' }
+            }),
+            'No'
+          )
+        )
+      )
+    ),
+    React.createElement(
+      'div',
+      { className: 'map-wrapper' },
+      React.createElement(
+        LoadScript,
+        {
+          googleMapsApiKey: "AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54"
+        },
+        React.createElement(
+          GoogleMap,
+          {
+            mapContainerStyle: containerStyle,
+            center: center,
+            zoom: 12
+          },
+          directions && React.createElement(
+            DirectionsRenderer,
+            {
+              options: { directions: directions },
+              onLoad: function(renderer) {
+                if (!boundsSet) {
+                  const bounds = renderer.getDirections().routes[0].bounds;
+                  renderer.getMap().fitBounds(bounds);
+                  setBoundsSet(true);
+                }
+              }
+            }
+          )
+        )
+      )
+    ),
+    React.createElement(
+      'button',
+      {
+        type: 'submit',
+        className: 'submit-button'
+      },
+      'Book Now'
+    )
   );
 }
+
 export default BookingForm;

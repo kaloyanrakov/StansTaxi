@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './maincomponent.css';
+import BookingForm from '../BookingForm/BookingForm';
 
 function Main() {
   const partners = [
@@ -11,7 +12,7 @@ function Main() {
   ];
   
   // State for carousel
-  const [currentPartnerIndex, setCurrentPartnerIndex] = useState(2); // Start with center position
+  const [currentPartnerIndex, setCurrentPartnerIndex] = useState(2);
   const [isHovered, setIsHovered] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const sectionRefs = {
@@ -22,20 +23,20 @@ function Main() {
   };
 
   // Auto-rotate carousel (pauses when hovered)
-  useEffect(() => {
+  useEffect(function() {
     if (isHovered) return;
     
-    const interval = setInterval(() => {
-      setCurrentPartnerIndex((prevIndex) =>
-        prevIndex === partners.length - 1 ? 0 : prevIndex + 1
-      );
+    const interval = setInterval(function() {
+      setCurrentPartnerIndex(function(prevIndex) {
+        return prevIndex === partners.length - 1 ? 0 : prevIndex + 1;
+      });
     }, 3000);
 
-    return () => clearInterval(interval);
+    return function() { return clearInterval(interval); };
   }, [partners.length, isHovered]);
 
   // Scroll to section function
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = function(sectionId) {
     setActiveSection(sectionId);
     sectionRefs[sectionId].current.scrollIntoView({ 
       behavior: 'smooth',
@@ -43,24 +44,23 @@ function Main() {
     });
   };
 
-  const nextPartner = () => {
-    setCurrentPartnerIndex((prevIndex) =>
-      prevIndex === partners.length - 1 ? 0 : prevIndex + 1
-    );
+  const nextPartner = function() {
+    setCurrentPartnerIndex(function(prevIndex) {
+      return prevIndex === partners.length - 1 ? 0 : prevIndex + 1;
+    });
   };
 
-  const prevPartner = () => {
-    setCurrentPartnerIndex((prevIndex) =>
-      prevIndex === 0 ? partners.length - 1 : prevIndex - 1
-    );
+  const prevPartner = function() {
+    setCurrentPartnerIndex(function(prevIndex) {
+      return prevIndex === 0 ? partners.length - 1 : prevIndex - 1;
+    });
   };
 
   // Calculate visible partners for bubble carousel
-  const getVisiblePartners = () => {
+  const getVisiblePartners = function() {
     const visible = [];
     const total = partners.length;
     
-    // Always show 5 bubbles with the current one in the center
     for (let i = -2; i <= 2; i++) {
       const index = (currentPartnerIndex + i + total) % total;
       visible.push({
@@ -75,254 +75,511 @@ function Main() {
 
   const visiblePartners = getVisiblePartners();
 
-  return (
-    <div className="stans-taxi">
-      {/* Header Section */}
-      <header className="header">
-        <div className="container">
-          <div className="header-content">
-            <div className="logo">
-              <a href="/" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
-                <img
-                  src="/variables/images/Logo.png"
-                  alt="Stan's Taxi Logo"
-                  className="logo-image"
-                />
-              </a>
-            </div>
+  return React.createElement(
+    'div',
+    { className: 'stans-taxi' },
+    
+    // Header Section
+    React.createElement(
+      'header',
+      { className: 'header' },
+      React.createElement(
+        'div',
+        { className: 'container' },
+        React.createElement(
+          'div',
+          { className: 'header-content' },
+          React.createElement(
+            'div',
+            { className: 'logo' },
+            React.createElement(
+              'a',
+              {
+                href: '/',
+                onClick: function(e) { 
+                  e.preventDefault(); 
+                  scrollToSection('home'); 
+                }
+              },
+              React.createElement('img', {
+                src: '/variables/images/Logo.png',
+                alt: "Stan's Taxi Logo",
+                className: 'logo-image'
+              })
+            )
+          ),
+          React.createElement(
+            'nav',
+            { className: 'nav-main' },
+            React.createElement(
+              'ul',
+              null,
+              React.createElement(
+                'li',
+                { className: activeSection === 'home' ? 'active' : '' },
+                React.createElement(
+                  'a',
+                  {
+                    href: '#home',
+                    onClick: function(e) { 
+                      e.preventDefault(); 
+                      scrollToSection('home'); 
+                    }
+                  },
+                  React.createElement('i', { className: 'fas fa-home' }),
+                  'Home'
+                )
+              ),
+              React.createElement(
+                'li',
+                { className: activeSection === 'about' ? 'active' : '' },
+                React.createElement(
+                  'a',
+                  {
+                    href: '#about',
+                    onClick: function(e) { 
+                      e.preventDefault(); 
+                      scrollToSection('about'); 
+                    }
+                  },
+                  React.createElement('i', { className: 'fas fa-info-circle' }),
+                  'About'
+                )
+              ),
+              React.createElement(
+                'li',
+                { className: activeSection === 'partners' ? 'active' : '' },
+                React.createElement(
+                  'a',
+                  {
+                    href: '#partners',
+                    onClick: function(e) { 
+                      e.preventDefault(); 
+                      scrollToSection('partners'); 
+                    }
+                  },
+                  React.createElement('i', { className: 'fas fa-handshake' }),
+                  'Partners'
+                )
+              ),
+              React.createElement(
+                'li',
+                { className: activeSection === 'contact' ? 'active' : '' },
+                React.createElement(
+                  'a',
+                  {
+                    href: '#contact',
+                    onClick: function(e) { 
+                      e.preventDefault(); 
+                      scrollToSection('contact'); 
+                    }
+                  },
+                  React.createElement('i', { className: 'fas fa-car' }),
+                  'Book Ride'
+                )
+              )
+            )
+          )
+        )
+      )
+    ),
 
-            <nav className="nav-main">
-              <ul>
-                <li className={activeSection === 'home' ? 'active' : ''}>
-                  <a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}>
-                    <i className="fas fa-home"></i> Home
-                  </a>
-                </li>
-                <li className={activeSection === 'about' ? 'active' : ''}>
-                  <a href="#about" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
-                    <i className="fas fa-info-circle"></i> About
-                  </a>
-                </li>
-                <li className={activeSection === 'partners' ? 'active' : ''}>
-                  <a href="#partners" onClick={(e) => { e.preventDefault(); scrollToSection('partners'); }}>
-                    <i className="fas fa-handshake"></i> Partners
-                  </a>
-                </li>
-                <li className={activeSection === 'contact' ? 'active' : ''}>
-                  <a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                    <i className="fas fa-phone"></i> Contact
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="nav-booking-btn">
-                    <i className="fas fa-car"></i> Book Ride
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+    // Hero Section
+    React.createElement(
+      'section',
+      {
+        className: 'hero',
+        id: 'home',
+        ref: sectionRefs.home
+      },
+      React.createElement(
+        'div',
+        { className: 'container' },
+        React.createElement(
+          'div',
+          { className: 'hero-content' },
+          React.createElement(
+            'div',
+            { className: 'hero-text' },
+            React.createElement(
+              'h2',
+              null,
+              'Reliable Transportation',
+              React.createElement('br'),
+              'in Nantucket'
+            ),
+            React.createElement(
+              'p',
+              { className: 'hero-subtitle' },
+              'Premium taxi service for island residents and visitors'
+            ),
+            React.createElement(
+              'button',
+              { 
+                className: 'btn-book-hero',
+                onClick: function(e) { 
+                  e.preventDefault(); 
+                  scrollToSection('contact'); 
+                }
+              },
+              React.createElement('i', { className: 'fas fa-car' }),
+              'Book Your Ride Now'
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'hero-visual' },
+            React.createElement('img', {
+              src: './variables/images/TaxiAndLighthouse.png',
+              alt: 'Taxi and Lighthouse',
+              className: 'combined-image'
+            })
+          )
+        )
+      )
+    ),
 
-      {/* Hero Section */}
-      <section className="hero" id="home" ref={sectionRefs.home}>
-        <div className="container">
-          <div className="hero-content">
-            <div className="hero-text">
-              <h2>
-                Reliable Transportation
-                <br />
-                in Nantucket
-              </h2>
-              <p className="hero-subtitle">Premium taxi service for island residents and visitors</p>
-              <a href="#" className="btn-book">
-                Book now
-              </a>
-            </div>
+    // Call to Action
+    React.createElement(
+      'section',
+      { className: 'cta-bar' },
+      React.createElement(
+        'div',
+        { className: 'container' },
+        React.createElement(
+          'div',
+          { className: 'cta-content' },
+          React.createElement(
+            'div',
+            { className: 'cta-text' },
+            React.createElement('p', null, 'Ready to ride? Call us directly:')
+          ),
+          React.createElement(
+            'a',
+            {
+              href: 'tel:508-500-6565',
+              className: 'phone-number'
+            },
+            React.createElement('i', { className: 'fas fa-phone' }),
+            ' 508-500-6565'
+          )
+        ),
+        React.createElement('div', { className: 'road-divider' })
+      )
+    ),
 
-            <div className="hero-visual">
-              <img src="/variables/images/taxi.png" alt="Taxi" className="taxi-image" />
-              <img src="/variables/images/lighthouse.png" alt="Lighthouse" className="lighthouse-image" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="cta-bar">
-        <div className="container">
-          <div className="cta-content">
-            <div className="cta-text">
-              <p>Ready to ride? Call us directly:</p>
-            </div>
-            <a href="tel:508-500-6565" className="phone-number">
-              <i className="fas fa-phone"></i> 508-500-6565
-            </a>
-          </div>
-          {/* Road Divider */}
-          <div className="road-divider"></div>
-        </div>
-      </section>
-
-      {/* Partners Section with Bubble Carousel */}
-      <section className="partners" id="partners" ref={sectionRefs.partners}>
-        <div className="container">
-          <div className="section-header">
-            <h3>Preferred partner of:</h3>
-            <p>We're proud to partner with these premium establishments</p>
-          </div>
-
-          <div 
-            className="bubble-carousel-container"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <button className="carousel-button prev" onClick={prevPartner}>
-              <i className="fas fa-chevron-left"></i>
-            </button>
-
-            <div className="bubble-carousel">
-              {visiblePartners.map((partner) => (
-                <div 
-                  key={`${partner.id}-${partner.position}`} 
-                  className={`bubble-item ${partner.isCenter ? 'center' : ''}`}
-                  style={{
+    // Partners Section
+    React.createElement(
+      'section',
+      {
+        className: 'partners',
+        id: 'partners',
+        ref: sectionRefs.partners
+      },
+      React.createElement(
+        'div',
+        { className: 'container' },
+        React.createElement(
+          'div',
+          { className: 'section-header' },
+          React.createElement(
+            'h3',
+            null,
+            React.createElement('i', { className: 'fas fa-handshake' }),
+            'Our Trusted Partners'
+          ),
+          React.createElement(
+            'p',
+            null,
+            "We're proud to partner with Nantucket's finest establishments"
+          )
+        ),
+        React.createElement(
+          'div',
+          {
+            className: 'bubble-carousel-container',
+            onMouseEnter: function() { return setIsHovered(true); },
+            onMouseLeave: function() { return setIsHovered(false); }
+          },
+          React.createElement(
+            'button',
+            {
+              className: 'carousel-button prev',
+              onClick: prevPartner
+            },
+            React.createElement('i', { className: 'fas fa-chevron-left' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'bubble-carousel' },
+            visiblePartners.map(function(partner) {
+              return React.createElement(
+                'div',
+                {
+                  key: partner.id + '-' + partner.position,
+                  className: 'bubble-item ' + (partner.isCenter ? 'center' : ''),
+                  style: {
                     '--position': partner.position,
-                    '--offset': Math.abs(partner.position) * 20
-                  }}
-                >
-                  <a href={partner.websiteUrl} target="_blank" rel="noopener noreferrer">
-                    <div className="bubble-logo-container">
-                      <img
-                        src={partner.logoUrl}
-                        alt={partner.name}
-                        className="bubble-logo"
-                        onError={(e) => {
-                          e.currentTarget.src = "/variables/images/Logo.png";
-                          e.currentTarget.alt = `${partner.name} logo`;
-                        }}
-                      />
-                    </div>
-                    {partner.isCenter && <span className="partner-name">{partner.name}</span>}
-                  </a>
-                </div>
-              ))}
-            </div>
+                  }
+                },
+                React.createElement(
+                  'a',
+                  {
+                    href: partner.websiteUrl,
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                    className: 'partner-link'
+                  },
+                  React.createElement(
+                    'div',
+                    { className: 'bubble-logo-container' },
+                    React.createElement('img', {
+                      src: partner.logoUrl,
+                      alt: partner.name,
+                      className: 'bubble-logo',
+                      onError: function(e) {
+                        e.currentTarget.src = '/variables/images/Logo.png';
+                        e.currentTarget.alt = partner.name + ' logo';
+                      }
+                    })
+                  ),
+                  partner.isCenter && React.createElement(
+                    'div',
+                    { className: 'partner-info' },
+                    React.createElement(
+                      'span',
+                      { className: 'partner-name' },
+                      partner.name
+                    ),
+                    React.createElement(
+                      'span',
+                      { className: 'partner-badge' },
+                      'Trusted Partner'
+                    )
+                  )
+                )
+              );
+            })
+          ),
+          React.createElement(
+            'button',
+            {
+              className: 'carousel-button next',
+              onClick: nextPartner
+            },
+            React.createElement('i', { className: 'fas fa-chevron-right' })
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'carousel-indicators' },
+          partners.map(function(_, index) {
+            return React.createElement(
+              'button',
+              {
+                key: index,
+                className: 'indicator ' + (index === currentPartnerIndex ? 'active' : ''),
+                onClick: function() { return setCurrentPartnerIndex(index); }
+              }
+            );
+          })
+        )
+      )
+    ),
 
-            <button className="carousel-button next" onClick={nextPartner}>
-              <i className="fas fa-chevron-right"></i>
-            </button>
-          </div>
+    // About Section
+    React.createElement(
+      'section',
+      {
+        className: 'about',
+        id: 'about',
+        ref: sectionRefs.about
+      },
+      React.createElement(
+        'div',
+        { className: 'container' },
+        React.createElement(
+          'div',
+          { className: 'section-header' },
+          React.createElement(
+            'h3',
+            null,
+            React.createElement('i', { className: 'fas fa-info-circle' }),
+            ' About Our Service'
+          ),
+          React.createElement(
+            'p',
+            null,
+            "Discover what makes Stan's Taxi the preferred choice in Nantucket"
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'about-content' },
+          React.createElement(
+            'div',
+            { className: 'about-features' },
+            React.createElement(
+              'div',
+              { 
+                className: 'feature',
+                style: { animationDelay: '1.7s' }
+              },
+              React.createElement(
+                'div',
+                { className: 'feature-icon' },
+                React.createElement('i', { className: 'fas fa-clock' })
+              ),
+              React.createElement('h4', null, '24/7 Availability'),
+              React.createElement(
+                'p',
+                null,
+                "We're available round the clock for all your transportation needs"
+              )
+            ),
+            React.createElement(
+              'div',
+              { 
+                className: 'feature',
+                style: { animationDelay: '1.9s' }
+              },
+              React.createElement(
+                'div',
+                { className: 'feature-icon' },
+                React.createElement('i', { className: 'fas fa-shield-alt' })
+              ),
+              React.createElement('h4', null, 'Safe & Reliable'),
+              React.createElement(
+                'p',
+                null,
+                'Our professional drivers prioritize your safety and comfort'
+              )
+            ),
+            React.createElement(
+              'div',
+              { 
+                className: 'feature',
+                style: { animationDelay: '2.1s' }
+              },
+              React.createElement(
+                'div',
+                { className: 'feature-icon' },
+                React.createElement('i', { className: 'fas fa-map-marker-alt' })
+              ),
+              React.createElement('h4', null, 'Island-Wide Service'),
+              React.createElement(
+                'p',
+                null,
+                'We cover all of Nantucket, from the airport to remote beaches'
+              )
+            )
+          )
+        )
+      )
+    ),
 
-          <div className="carousel-indicators">
-            {partners.map((_, index) => (
-              <button
-                key={index}
-                className={`indicator ${index === currentPartnerIndex ? 'active' : ''}`}
-                onClick={() => setCurrentPartnerIndex(index)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="about" id="about" ref={sectionRefs.about}>
-        <div className="container">
-          <div className="section-header">
-            <h3>About Our Service</h3>
-            <p>Discover what makes Stan's Taxi the preferred choice in Nantucket</p>
-          </div>
-          
-          <div className="about-content">
-            <div className="about-features">
-              <div className="feature">
-                <div className="feature-icon">
-                  <i className="fas fa-clock"></i>
-                </div>
-                <h4>24/7 Availability</h4>
-                <p>We're available round the clock for all your transportation needs</p>
-              </div>
-              
-              <div className="feature">
-                <div className="feature-icon">
-                  <i className="fas fa-shield-alt"></i>
-                </div>
-                <h4>Safe & Reliable</h4>
-                <p>Our professional drivers prioritize your safety and comfort</p>
-              </div>
-              
-              <div className="feature">
-                <div className="feature-icon">
-                  <i className="fas fa-map-marker-alt"></i>
-                </div>
-                <h4>Island-Wide Service</h4>
-                <p>We cover all of Nantucket, from the airport to remote beaches</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="contact" id="contact" ref={sectionRefs.contact}>
-        <div className="container">
-          <div className="section-header">
-            <h3>Get in Touch</h3>
-            <p>Reach out to us for bookings or inquiries</p>
-          </div>
-          
-          <div className="contact-content">
-            <div className="contact-info">
-              <div className="contact-item">
-                <div className="contact-icon">
-                  <i className="fas fa-phone"></i>
-                </div>
-                <div className="contact-details">
-                  <h4>Call Us</h4>
-                  <p>508-500-6565</p>
-                </div>
-              </div>
-              
-              <div className="contact-item">
-                <div className="contact-icon">
-                  <i className="fas fa-envelope"></i>
-                </div>
-                <div className="contact-details">
-                  <h4>Email Us</h4>
-                  <p>info@stanstaxi.com</p>
-                </div>
-              </div>
-              
-              <div className="contact-item">
-                <div className="contact-icon">
-                  <i className="fas fa-map-marker-alt"></i>
-                </div>
-                <div className="contact-details">
-                  <h4>Visit Us</h4>
-                  <p>Nantucket Island, MA</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="contact-form">
-              <form>
-                <div className="form-group">
-                  <input type="text" placeholder="Your Name" />
-                </div>
-                <div className="form-group">
-                  <input type="email" placeholder="Your Email" />
-                </div>
-                <div className="form-group">
-                  <textarea placeholder="Your Message" rows="4"></textarea>
-                </div>
-                <button type="submit" className="btn-submit">Send Message</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    // Contact Section with Booking Form
+    React.createElement(
+      'section',
+      {
+        className: 'contact',
+        id: 'contact',
+        ref: sectionRefs.contact
+      },
+      React.createElement(
+        'div',
+        { className: 'container' },
+        React.createElement(
+          'div',
+          { className: 'section-header' },
+          React.createElement(
+            'h3',
+            null,
+            React.createElement('i', { className: 'fas fa-car' }),
+            ' Book a Ride'
+          ),
+          React.createElement(
+            'p',
+            null,
+            'Schedule your ride with us in just a few clicks'
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'contact-content' },
+          React.createElement(
+            'div',
+            { className: 'contact-info' },
+            React.createElement(
+              'div',
+              { className: 'contact-item' },
+              React.createElement(
+                'div',
+                { className: 'contact-icon' },
+                React.createElement('i', { className: 'fas fa-phone' })
+              ),
+              React.createElement(
+                'div',
+                { className: 'contact-details' },
+                React.createElement('h4', null, 'Call Us'),
+                React.createElement('p', null, '508-500-6565')
+              )
+            ),
+            React.createElement(
+              'div',
+              { className: 'contact-item' },
+              React.createElement(
+                'div',
+                { className: 'contact-icon' },
+                React.createElement('i', { className: 'fas fa-envelope' })
+              ),
+              React.createElement(
+                'div',
+                { className: 'contact-details' },
+                React.createElement('h4', null, 'Email Us'),
+                React.createElement('p', null, 'info@stanstaxi.com')
+              )
+            ),
+            React.createElement(
+              'div',
+              { className: 'contact-item' },
+              React.createElement(
+                'div',
+                { className: 'contact-icon' },
+                React.createElement('i', { className: 'fas fa-map-marker-alt' })
+              ),
+              React.createElement(
+                'div',
+                { className: 'contact-details' },
+                React.createElement('h4', null, 'Visit Us'),
+                React.createElement('p', null, 'Nantucket Island, MA')
+              )
+            ),
+            React.createElement(
+              'div',
+              { className: 'contact-item' },
+              React.createElement(
+                'div',
+                { className: 'contact-icon' },
+                React.createElement('i', { className: 'fas fa-clock' })
+              ),
+              React.createElement(
+                'div',
+                { className: 'contact-details' },
+                React.createElement('h4', null, 'Operating Hours'),
+                React.createElement('p', null, '24/7 Service Available')
+              )
+            )
+          ),
+          // Booking Form on the right side
+          React.createElement(
+            'div',
+            { className: 'booking-form-container' },
+            React.createElement(BookingForm)
+          )
+        )
+      )
+    )
   );
 }
 

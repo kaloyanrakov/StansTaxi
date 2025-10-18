@@ -19,8 +19,6 @@ function App() {
     Page = (
       <>
         <Main />
-        <PhoneNumber />
-        <BookingForm />
         <Footer />
       </>
     );
