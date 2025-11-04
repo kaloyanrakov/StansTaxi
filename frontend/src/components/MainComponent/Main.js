@@ -260,8 +260,12 @@ function Main() {
               href: 'tel:508-500-6565',
               className: 'phone-number'
             },
-            React.createElement('i', { className: 'fas fa-phone' }),
-            ' 508-500-6565'
+            React.createElement('img', {
+              src: '/variables/images/phone-call.png',
+              alt: 'Phone',
+              className: 'phone-icon'
+            }),
+            '508-500-6565'
           )
         ),
         React.createElement('div', { className: 'road-divider' })
@@ -285,7 +289,6 @@ function Main() {
           React.createElement(
             'h3',
             null,
-            React.createElement('i', { className: 'fas fa-handshake' }),
             'Our Trusted Partners'
           ),
           React.createElement(
@@ -307,7 +310,11 @@ function Main() {
               className: 'carousel-button prev',
               onClick: prevPartner
             },
-            React.createElement('i', { className: 'fas fa-chevron-left' })
+            React.createElement('img', {
+              src: '/variables/images/angle-small-left.png',
+              alt: 'Previous',
+              className: 'carousel-arrow'
+            })
           ),
           React.createElement(
             'div',
@@ -367,7 +374,11 @@ function Main() {
               className: 'carousel-button next',
               onClick: nextPartner
             },
-            React.createElement('i', { className: 'fas fa-chevron-right' })
+            React.createElement('img', {
+              src: '/variables/images/angle-small-right.png',
+              alt: 'Next',
+              className: 'carousel-arrow'
+            })
           )
         ),
         React.createElement(
@@ -404,8 +415,7 @@ function Main() {
           React.createElement(
             'h3',
             null,
-            React.createElement('i', { className: 'fas fa-info-circle' }),
-            ' About Our Service'
+            'About Our Service'
           ),
           React.createElement(
             'p',
@@ -428,7 +438,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'feature-icon' },
-                React.createElement('i', { className: 'fas fa-clock' })
+                React.createElement('img', {
+                  src: '/variables/images/time-fast.png',
+                  alt: '24/7 Availability',
+                  className: 'feature-image'
+                })
               ),
               React.createElement('h4', null, '24/7 Availability'),
               React.createElement(
@@ -446,7 +460,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'feature-icon' },
-                React.createElement('i', { className: 'fas fa-shield-alt' })
+                React.createElement('img', {
+                  src: '/variables/images/handshake.png',
+                  alt: 'Safe & Reliable',
+                  className: 'feature-image'
+                })
               ),
               React.createElement('h4', null, 'Safe & Reliable'),
               React.createElement(
@@ -464,7 +482,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'feature-icon' },
-                React.createElement('i', { className: 'fas fa-map-marker-alt' })
+                React.createElement('img', {
+                  src: '/variables/images/marker.png',
+                  alt: 'Island-Wide Service',
+                  className: 'feature-image'
+                })
               ),
               React.createElement('h4', null, 'Island-Wide Service'),
               React.createElement(
@@ -495,8 +517,7 @@ function Main() {
           React.createElement(
             'h3',
             null,
-            React.createElement('i', { className: 'fas fa-car' }),
-            ' Book a Ride'
+            'Book a Ride'
           ),
           React.createElement(
             'p',
@@ -516,7 +537,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'contact-icon' },
-                React.createElement('i', { className: 'fas fa-phone' })
+                React.createElement('img', {
+                  src: '/variables/images/phone-call.png',
+                  alt: 'Call Us',
+                  className: 'contact-image'
+                })
               ),
               React.createElement(
                 'div',
@@ -531,7 +556,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'contact-icon' },
-                React.createElement('i', { className: 'fas fa-envelope' })
+                React.createElement('img', {
+                  src: '/variables/images/envelope.png',
+                  alt: 'Email Us',
+                  className: 'contact-image'
+                })
               ),
               React.createElement(
                 'div',
@@ -546,7 +575,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'contact-icon' },
-                React.createElement('i', { className: 'fas fa-map-marker-alt' })
+                React.createElement('img', {
+                  src: '/variables/images/marker.png',
+                  alt: 'Visit Us',
+                  className: 'contact-image'
+                })
               ),
               React.createElement(
                 'div',
@@ -561,7 +594,11 @@ function Main() {
               React.createElement(
                 'div',
                 { className: 'contact-icon' },
-                React.createElement('i', { className: 'fas fa-clock' })
+                React.createElement('img', {
+                  src: '/variables/images/time-fast.png',
+                  alt: 'Operating Hours',
+                  className: 'contact-image'
+                })
               ),
               React.createElement(
                 'div',

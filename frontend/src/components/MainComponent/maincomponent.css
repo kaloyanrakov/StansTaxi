@@ -157,6 +157,122 @@
   position: relative;
 }
 
+/* Add these styles to your existing maincomponent.css */
+
+/* Carousel arrow icons */
+.carousel-arrow {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Makes the arrows white */
+}
+
+/* Section header icons */
+.section-header-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  margin-right: 12px;
+}
+
+/* Feature icons in about section */
+.feature-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Makes icons white for the about section */
+}
+
+/* Contact icons */
+.contact-image {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Makes icons white for contact section */
+}
+
+/* Phone icon in CTA */
+.phone-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Makes phone icon white */
+  margin-right: 8px;
+}
+
+/* Ensure existing Font Awesome icons are hidden when we use images */
+.feature-icon i,
+.contact-icon i,
+.carousel-button i,
+.section-header i,
+.phone-number i {
+  display: none;
+}
+
+/* Make sure the image containers maintain their layout */
+.feature-icon,
+.contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive adjustments for icons */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .section-header-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .feature-image {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .contact-image {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .phone-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-arrow {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .section-header-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .feature-image {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .contact-image {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .phone-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 @keyframes fadeInUp {
   to {
     opacity: 1;
