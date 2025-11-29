@@ -440,7 +440,7 @@ function Main() {
                 { className: 'feature-icon' },
                 React.createElement('img', {
                   src: '/variables/images/time-fast.png',
-                  alt: '24/7 Availability',
+                  alt: '23/7 Availability',
                   className: 'feature-image'
                 })
               ),
@@ -484,7 +484,7 @@ function Main() {
                 { className: 'feature-icon' },
                 React.createElement('img', {
                   src: '/variables/images/marker.png',
-                  alt: 'Island-Wide Service',
+                  alt: 'Island Service area',
                   className: 'feature-image'
                 })
               ),
@@ -492,7 +492,7 @@ function Main() {
               React.createElement(
                 'p',
                 null,
-                'We cover all of Nantucket, from the airport to remote beaches'
+                'We operate across all main parts of the island excluding isolated and hard-to-reach beach areas'
               )
             )
           )
@@ -566,7 +566,7 @@ function Main() {
                 'div',
                 { className: 'contact-details' },
                 React.createElement('h4', null, 'Email Us'),
-                React.createElement('p', null, 'info@stanstaxi.com')
+                React.createElement('p', null, 'ack@stanstaxinantucket.com')
               )
             ),
             React.createElement(
