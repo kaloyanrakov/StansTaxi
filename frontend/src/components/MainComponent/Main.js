@@ -444,7 +444,7 @@ function Main() {
                   className: 'feature-image'
                 })
               ),
-              React.createElement('h4', null, '24/7 Availability'),
+              React.createElement('h4', null, '23/7 Availability'),
               React.createElement(
                 'p',
                 null,
@@ -604,7 +604,7 @@ function Main() {
                 'div',
                 { className: 'contact-details' },
                 React.createElement('h4', null, 'Operating Hours'),
-                React.createElement('p', null, '24/7 Service Available')
+                React.createElement('p', null, '23/7 Service Available')
               )
             )
           ),
