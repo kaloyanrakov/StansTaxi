@@ -28,4 +28,14 @@ public class BookingController {
         List<Booking> bookings = bookingService.getAllBookings();
         return ResponseEntity.ok(bookings);
     }
+    
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Booking> updateStatus(
+        @PathVariable Long id,
+        @RequestParam String status
+    ) {
+    Booking updatedBooking = bookingService.updateStatus(id, status);
+    return ResponseEntity.ok(updatedBooking);
+    }
+
 }

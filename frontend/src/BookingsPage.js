@@ -5,31 +5,21 @@ function BookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(function() {
+  useEffect(function () {
     fetch("http://localhost:8080/bookings")
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
         setBookings(data);
         setLoading(false);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.error("Error fetching bookings:", err);
         setLoading(false);
       });
   }, []);
 
-  const handleBack = function() {
+  const handleBack = function () {
     window.location.href = "/";
-  };
-
-  const handleAccept = function(bookingId) {
-    console.log("Accept booking:", bookingId);
-    // Add your accept logic here
-  };
-
-  const handleTurnDown = function(bookingId) {
-    console.log("Turn down booking:", bookingId);
-    // Add your turn down logic here
   };
 
   // Create background shapes
@@ -76,6 +66,34 @@ function BookingsPage() {
     headerSubtitle
   );
 
+  const handleAccept = function (bookingId) {
+    fetch(`http://localhost:8080/bookings/${bookingId}/status?status=ACCEPTED`, {
+      method: "PATCH"
+    })
+      .then(res => res.json())
+      .then(updated => {
+        // Update state without refreshing page
+        setBookings(prev =>
+          prev.map(b => b.bookingId === bookingId ? updated : b)
+        );
+      })
+      .catch(err => console.error("Error updating booking status:", err));
+  };
+
+  const handleTurnDown = function (bookingId) {
+    fetch(`http://localhost:8080/bookings/${bookingId}/status?status=REJECTED`, {
+      method: "PATCH"
+    })
+      .then(res => res.json())
+      .then(updated => {
+        setBookings(prev =>
+          prev.map(b => b.bookingId === bookingId ? updated : b)
+        );
+      })
+      .catch(err => console.error("Error updating booking status:", err));
+  };
+
+
   // Create loading state
   let mainContent;
   if (loading) {
@@ -99,12 +117,12 @@ function BookingsPage() {
   } else {
     // Create table headers
     const tableHeaders = [
-      'ID', 'Pickup', 'Dropoff', 'Date', 'Time', 
+      'ID', 'Pickup', 'Dropoff', 'Date', 'Time',
       'Passengers', 'Pets', 'Phone', 'Status', 'Actions'
-    ].map(function(header) {
+    ].map(function (header) {
       return React.createElement(
         'th',
-        { 
+        {
           className: 'table-header',
           key: header
         },
@@ -119,7 +137,7 @@ function BookingsPage() {
     );
 
     // Create table rows
-    const tableRows = bookings.map(function(booking) {
+    const tableRows = bookings.map(function (booking) {
       const cells = [
         React.createElement('td', { className: 'table-cell' }, booking.bookingId),
         React.createElement('td', { className: 'table-cell' }, booking.pickUpLocation),
@@ -129,7 +147,7 @@ function BookingsPage() {
         React.createElement('td', { className: 'table-cell' }, booking.passengers),
         React.createElement('td', { className: 'table-cell' }, booking.pets ? "Yes" : "No"),
         React.createElement('td', { className: 'table-cell' }, booking.phoneNumber),
-        React.createElement('td', { className: 'table-cell' }, 
+        React.createElement('td', { className: 'table-cell' },
           React.createElement('span', { className: 'status-badge ' + booking.status.toLowerCase() }, booking.status)
         )
       ];
@@ -139,7 +157,7 @@ function BookingsPage() {
         'button',
         {
           className: 'btn-accept',
-          onClick: function() { handleAccept(booking.bookingId); },
+          onClick: function () { handleAccept(booking.bookingId); },
           key: 'accept'
         },
         React.createElement('i', { className: 'fas fa-check' }),
@@ -150,7 +168,7 @@ function BookingsPage() {
         'button',
         {
           className: 'btn-turn-down',
-          onClick: function() { handleTurnDown(booking.bookingId); },
+          onClick: function () { handleTurnDown(booking.bookingId); },
           key: 'turn-down'
         },
         React.createElement('i', { className: 'fas fa-times' }),
@@ -168,7 +186,7 @@ function BookingsPage() {
 
       return React.createElement(
         'tr',
-        { 
+        {
           className: 'table-row',
           key: booking.bookingId
         },
@@ -177,7 +195,7 @@ function BookingsPage() {
     });
 
     const tableBody = React.createElement('tbody', null, tableRows);
-    
+
     const table = React.createElement(
       'div',
       { className: 'table-container' },
