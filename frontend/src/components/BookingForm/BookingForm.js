@@ -259,7 +259,7 @@ function BookingForm() {
       React.createElement(
         LoadScript,
         {
-          googleMapsApiKey: "AIzaSyBaBMAyAMo3jlHuTyMHzVfvLQ6MsBaJU54"
+          googleMapsApiKey: "xxxxxxxxxxxxxxxx"
         },
         React.createElement(
           GoogleMap,

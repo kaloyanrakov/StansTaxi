@@ -32,6 +32,8 @@ public class BookingServiceImpl implements BookingService{
         entity.setPets(request.isPets());
         entity.setPhoneNumber(request.getPhoneNumber());
         entity.setStatus("PENDING");
+        entity.setBookingDate(LocalDate.now());
+
 
         BookingEntity saved = bookingRepository.save(entity);
         return mapToDomain(saved);
@@ -56,6 +58,7 @@ public class BookingServiceImpl implements BookingService{
         booking.setPets(entity.isPets());
         booking.setPhoneNumber(entity.getPhoneNumber());
         booking.setStatus(entity.getStatus());
+        booking.setBookingDate(entity.getBookingDate());
         return booking;
     }
     @Override

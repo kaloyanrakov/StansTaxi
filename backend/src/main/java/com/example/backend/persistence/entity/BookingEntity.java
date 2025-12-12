@@ -27,4 +27,14 @@ public class BookingEntity {
     private boolean pets;
     private String phoneNumber;
     private String status = "PENDING";
+
+    @Column(nullable = false)
+    private LocalDate bookingDate;
+
+    @PrePersist
+    public void prePersist() {
+        if (bookingDate == null) {
+            bookingDate = LocalDate.now();
+        }
+    }
 }

@@ -4,6 +4,8 @@ import "./BookingsPage.css";
 function BookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Past bookings filter: '7' or '30' (default 30 days)
+  const [range, setRange] = useState('30');
 
   useEffect(function () {
     fetch("http://localhost:8080/bookings")
@@ -72,7 +74,6 @@ function BookingsPage() {
     })
       .then(res => res.json())
       .then(updated => {
-        // Update state without refreshing page
         setBookings(prev =>
           prev.map(b => b.bookingId === bookingId ? updated : b)
         );
@@ -93,53 +94,59 @@ function BookingsPage() {
       .catch(err => console.error("Error updating booking status:", err));
   };
 
+  // Helper: date range filter using bookingDate (preferred) or pickupDate fallback
+  const isWithinRange = function(bookingDateStr, days) {
+    if (!bookingDateStr) return false;
+    const bookingDate = new Date(bookingDateStr); // expects YYYY-MM-DD
+    const today = new Date();
+    const cutoff = new Date();
+    cutoff.setDate(today.getDate() - days);
+    const bookingYMD = new Date(bookingDate.getFullYear(), bookingDate.getMonth(), bookingDate.getDate());
+    const cutoffYMD = new Date(cutoff.getFullYear(), cutoff.getMonth(), cutoff.getDate());
+    return bookingYMD >= cutoffYMD;
+  };
 
   // Create loading state
   let mainContent;
   if (loading) {
-    const loadingSpinner = React.createElement('div', { className: 'loading-spinner' });
-    const loadingText = React.createElement('p', { className: 'loading-text' }, 'Loading bookings...');
-    mainContent = React.createElement(
-      'div',
-      { className: 'loading-container' },
-      loadingSpinner,
-      loadingText
+    const loadingSpinner = React.createElement('div', { className: 'loading-container' },
+      React.createElement('div', { className: 'loading-spinner' }),
+      React.createElement('p', { className: 'loading-text' }, 'Loading bookings...')
     );
+    mainContent = loadingSpinner;
   } else if (bookings.length === 0) {
-    const emptyIcon = React.createElement('i', { className: 'fas fa-clipboard-list empty-icon' });
-    const emptyText = React.createElement('p', { className: 'empty-text' }, 'No bookings found');
-    mainContent = React.createElement(
+    const emptyState = React.createElement(
       'div',
       { className: 'empty-container' },
-      emptyIcon,
-      emptyText
+      React.createElement('i', { className: 'fas fa-clipboard-list empty-icon' }),
+      React.createElement('p', { className: 'empty-text' }, 'No bookings found')
     );
+    mainContent = emptyState;
   } else {
-    // Create table headers
-    const tableHeaders = [
-      'ID', 'Pickup', 'Dropoff', 'Date', 'Time',
-      'Passengers', 'Pets', 'Phone', 'Status', 'Actions'
-    ].map(function (header) {
-      return React.createElement(
-        'th',
-        {
-          className: 'table-header',
-          key: header
-        },
-        header
-      );
+    // Split bookings into active (pending decisions) and past (decided)
+    const activeBookings = bookings.filter(function (b) { return b.status === 'PENDING'; });
+    let pastBookings = bookings.filter(function (b) { return b.status !== 'PENDING'; });
+
+    // Apply range filter ONLY to past bookings
+    const days = range === '7' ? 7 : 30;
+    pastBookings = pastBookings.filter(function (b) {
+      const dateStr = b.bookingDate || b.pickupDate;
+      return isWithinRange(dateStr, days);
     });
 
-    const tableHead = React.createElement(
-      'thead',
-      null,
-      React.createElement('tr', null, tableHeaders)
-    );
+    // Active table headers (no ID shown)
+    const activeHeaders = [
+      'Pickup', 'Dropoff', 'Date', 'Time',
+      'Passengers', 'Pets', 'Phone', 'Status', 'Actions'
+    ].map(function (header) {
+      return React.createElement('th', { className: 'table-header', key: header }, header);
+    });
 
-    // Create table rows
-    const tableRows = bookings.map(function (booking) {
+    const activeHead = React.createElement('thead', null, React.createElement('tr', null, activeHeaders));
+
+    // Active table rows (with Accept/Turn Down actions)
+    const activeRows = activeBookings.map(function (booking) {
       const cells = [
-        React.createElement('td', { className: 'table-cell' }, booking.bookingId),
         React.createElement('td', { className: 'table-cell' }, booking.pickUpLocation),
         React.createElement('td', { className: 'table-cell' }, booking.dropOffLocation),
         React.createElement('td', { className: 'table-cell' }, booking.pickupDate),
@@ -152,7 +159,6 @@ function BookingsPage() {
         )
       ];
 
-      // Create action buttons
       const acceptButton = React.createElement(
         'button',
         {
@@ -184,30 +190,74 @@ function BookingsPage() {
 
       cells.push(actionCell);
 
-      return React.createElement(
-        'tr',
-        {
-          className: 'table-row',
-          key: booking.bookingId
-        },
-        cells
-      );
+      return React.createElement('tr', { className: 'table-row', key: booking.bookingId }, cells);
     });
 
-    const tableBody = React.createElement('tbody', null, tableRows);
+    const activeBody = React.createElement('tbody', null, activeRows);
 
-    const table = React.createElement(
+    const activeTable = React.createElement(
       'div',
       { className: 'table-container' },
+      React.createElement('h2', { className: 'table-title' }, 'Active Bookings'),
+      React.createElement('table', { className: 'bookings-table' }, activeHead, activeBody)
+    );
+
+    // Past bookings table (no actions; shows the final decision in Status)
+    const pastHeaders = [
+      'Pickup', 'Dropoff', 'Date', 'Time',
+      'Passengers', 'Pets', 'Phone', 'Decision'
+    ].map(function (header) {
+      return React.createElement('th', { className: 'table-header', key: header }, header);
+    });
+
+    const pastHead = React.createElement('thead', null, React.createElement('tr', null, pastHeaders));
+
+    const pastRows = pastBookings.map(function (booking) {
+      const cells = [
+        React.createElement('td', { className: 'table-cell' }, booking.pickUpLocation),
+        React.createElement('td', { className: 'table-cell' }, booking.dropOffLocation),
+        React.createElement('td', { className: 'table-cell' }, booking.pickupDate),
+        React.createElement('td', { className: 'table-cell' }, booking.pickupTime),
+        React.createElement('td', { className: 'table-cell' }, booking.passengers),
+        React.createElement('td', { className: 'table-cell' }, booking.pets ? "Yes" : "No"),
+        React.createElement('td', { className: 'table-cell' }, booking.phoneNumber),
+        React.createElement('td', { className: 'table-cell' },
+          React.createElement('span', { className: 'status-badge ' + booking.status.toLowerCase() }, booking.status)
+        )
+      ];
+
+      return React.createElement('tr', { className: 'table-row', key: booking.bookingId }, cells);
+    });
+
+    const pastBody = React.createElement('tbody', null, pastRows);
+
+    // Past table with title and filter placed BELOW the title, matching styling
+    const pastFilterControls = React.createElement(
+      'div',
+      { className: 'filter-controls' },
+      React.createElement('label', { className: 'filter-label' }, 'Show:'),
       React.createElement(
-        'table',
-        { className: 'bookings-table' },
-        tableHead,
-        tableBody
+        'select',
+        {
+          className: 'filter-select',
+          value: range,
+          onChange: function(e) { setRange(e.target.value); }
+        },
+        React.createElement('option', { value: '7' }, 'Last 7 days'),
+        React.createElement('option', { value: '30' }, 'Last 30 days')
       )
     );
 
-    mainContent = table;
+    const pastTable = React.createElement(
+      'div',
+      { className: 'table-container' },
+      React.createElement('h2', { className: 'table-title' }, 'Past Bookings'),
+      pastFilterControls, // filter below the title
+      React.createElement('table', { className: 'bookings-table' }, pastHead, pastBody)
+    );
+
+    // Show both tables
+    mainContent = React.createElement('div', null, activeTable, pastTable);
   }
 
   // Create back button

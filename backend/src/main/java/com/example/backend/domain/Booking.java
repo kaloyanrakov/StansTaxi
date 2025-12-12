@@ -26,5 +26,5 @@ public class Booking {
     private boolean pets;
     private String phoneNumber;
     private String status = "PENDING";
-
+    private LocalDate bookingDate;
 }

@@ -1,4 +1,3 @@
-/* BookingsPage.css */
 .bookings-container {
   min-height: 100vh;
   display: flex;
@@ -98,7 +97,6 @@
     0 0 0 1px rgba(255, 255, 255, 0.1);
   width: 100%;
   max-width: 95vw;
-  max-height: 90vh;
   position: relative;
   z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -507,4 +505,15 @@
 .btn-back:focus-visible {
   outline: 2px solid var(--primary-teal);
   outline-offset: 2px;
+}
+
+.table-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  /* Match the Booking Management gradient text */
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
