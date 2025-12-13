@@ -4,11 +4,11 @@ import BookingForm from '../BookingForm/BookingForm';
 
 function Main() {
   const partners = [
-    { id: 1, name: "21 Broad", logoUrl: "/variables/images/21-Broad-Nantucket-Logo.png", websiteUrl: "#" },
-    { id: 2, name: "76 Main", logoUrl: "/variables/images/76-main-ink-press-hotel-logo-resized.png", websiteUrl: "#" },
-    { id: 3, name: "Galley Beach", logoUrl: "/variables/images/Galley-Beach.png", websiteUrl: "#" },
-    { id: 4, name: "Nantucket Resort", logoUrl: "/variables/images/nantucketresortcollection.png", websiteUrl: "#" },
-    { id: 5, name: "Veranda House", logoUrl: "/variables/images/veranda_house_logo_color.png", websiteUrl: "#" }
+    { id: 1, name: "21 Broad", logoUrl: "/variables/images/21-Broad-Nantucket-Logo.png", websiteUrl: "https://21broadhotel.com/" },
+    { id: 2, name: "76 Main", logoUrl: "/variables/images/76-main-ink-press-hotel-logo-resized.png", websiteUrl: "https://76main.com/" },
+    { id: 3, name: "Galley Beach", logoUrl: "/variables/images/Galley-Beach.png", websiteUrl: "https://galleybeach.net/" },
+    { id: 4, name: "Nantucket Resort", logoUrl: "/variables/images/nantucketresortcollection.png", websiteUrl: "https://www.nantucketresortcollection.com/" },
+    { id: 5, name: "Veranda House", logoUrl: "/variables/images/veranda_house_logo_color.png", websiteUrl: "https://www.nantucketresortcollection.com/veranda/" }
   ];
   
   // State for carousel
@@ -21,6 +21,25 @@ function Main() {
     contact: useRef(null),
     partners: useRef(null)
   };
+
+    // Online bookings flag from backend
+  const [bookingsEnabled, setBookingsEnabled] = useState(true);
+
+  useEffect(function () {
+    fetch("http://localhost:8080/settings/bookings-enabled")
+      .then(function (res) {
+        if (!res.ok) throw new Error('Failed to load settings');
+        return res.json();
+      })
+      .then(function (data) {
+        setBookingsEnabled(!!data.bookingsEnabled);
+      })
+      .catch(function (err) {
+        console.error("Error fetching settings:", err);
+        // default to true if settings fail to load
+        setBookingsEnabled(true);
+      });
+  }, []);
 
   // Auto-rotate carousel (pauses when hovered)
   useEffect(function() {
@@ -162,22 +181,22 @@ function Main() {
                   'Partners'
                 )
               ),
+              bookingsEnabled && React.createElement(
+              'li',
+              { className: activeSection === 'contact' ? 'active' : '' },
               React.createElement(
-                'li',
-                { className: activeSection === 'contact' ? 'active' : '' },
-                React.createElement(
-                  'a',
-                  {
-                    href: '#contact',
-                    onClick: function(e) { 
-                      e.preventDefault(); 
-                      scrollToSection('contact'); 
-                    }
-                  },
-                  React.createElement('i', { className: 'fas fa-car' }),
-                  'Book Ride'
-                )
+                'a',
+                {
+                  href: '#contact',
+                  onClick: function(e) { 
+                    e.preventDefault(); 
+                    scrollToSection('contact'); 
+                  }
+                },
+                React.createElement('i', { className: 'fas fa-car' }),
+                'Book Ride'
               )
+            )
             )
           )
         )
@@ -213,18 +232,18 @@ function Main() {
               { className: 'hero-subtitle' },
               'Premium taxi service for island residents and visitors'
             ),
-            React.createElement(
-              'button',
-              { 
-                className: 'btn-book-hero',
-                onClick: function(e) { 
-                  e.preventDefault(); 
-                  scrollToSection('contact'); 
-                }
-              },
-              React.createElement('i', { className: 'fas fa-car' }),
-              'Book Your Ride Now'
-            )
+           bookingsEnabled ? React.createElement (
+            'button',
+            { 
+              className: 'btn-book-hero',
+              onClick: function(e) { 
+                e.preventDefault(); 
+                scrollToSection('contact'); 
+              }
+            },
+            React.createElement('i', { className: 'fas fa-car' }),
+            'Book Your Ride Now'
+          ) : null
           ),
           React.createElement(
             'div',
@@ -608,12 +627,12 @@ function Main() {
               )
             )
           ),
-          // Booking Form on the right side
-          React.createElement(
-            'div',
-            { className: 'booking-form-container' },
-            React.createElement(BookingForm)
-          )
+          bookingsEnabled && React.createElement(
+          'div',
+          { className: 'booking-form-container' },
+          React.createElement(BookingForm)
+        )
+
         )
       )
     )

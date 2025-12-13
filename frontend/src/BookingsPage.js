@@ -7,7 +7,12 @@ function BookingsPage() {
   // Past bookings filter: '7' or '30' (default 30 days)
   const [range, setRange] = useState('30');
 
+  // New: booking toggle state
+  const [bookingsEnabled, setBookingsEnabled] = useState(true);
+  const [savingToggle, setSavingToggle] = useState(false);
+
   useEffect(function () {
+    // fetch bookings
     fetch("http://localhost:8080/bookings")
       .then(function (res) { return res.json(); })
       .then(function (data) {
@@ -18,10 +23,34 @@ function BookingsPage() {
         console.error("Error fetching bookings:", err);
         setLoading(false);
       });
+
+    // fetch bookings-enabled flag
+    fetch("http://localhost:8080/settings/bookings-enabled")
+      .then(res => res.json())
+      .then(data => setBookingsEnabled(!!data.bookingsEnabled))
+      .catch(err => console.error("Error fetching settings:", err));
   }, []);
 
   const handleBack = function () {
     window.location.href = "/";
+  };
+
+  const toggleBookings = async () => {
+    try {
+      setSavingToggle(true);
+      const next = !bookingsEnabled;
+      const res = await fetch(`http://localhost:8080/settings/bookings-enabled?enabled=${next}`, {
+        method: "PATCH"
+      });
+      if (!res.ok) throw new Error("Failed to update setting");
+      const data = await res.json();
+      setBookingsEnabled(!!data.bookingsEnabled);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to update the bookings toggle.");
+    } finally {
+      setSavingToggle(false);
+    }
   };
 
   // Create background shapes
@@ -40,6 +69,29 @@ function BookingsPage() {
     { className: 'bookings-background' },
     backgroundShapes
   );
+
+  // Top controls including toggle (will be rendered below the header)
+  const topControls = React.createElement(
+  'div',
+  { className: 'bookings-controls' },
+  React.createElement(
+    'div',
+    { className: 'toggle-card' },
+    // Current state label
+    React.createElement(
+      'span',
+      { className: 'toggle-label' },
+      `Online Bookings: ${bookingsEnabled ? 'ON' : 'OFF'}`
+    ),
+    // Action button text reflects the next action
+    React.createElement('button', {
+      className: `toggle-button ${bookingsEnabled ? 'on' : 'off'}`,
+      onClick: toggleBookings,
+      disabled: savingToggle,
+      title: bookingsEnabled ? 'Turn OFF online bookings' : 'Turn ON online bookings'
+    }, bookingsEnabled ? 'Turn OFF' : 'Turn ON')
+  )
+);
 
   // Create header with logo and title
   const headerLogo = React.createElement(
@@ -276,6 +328,7 @@ function BookingsPage() {
     'div',
     { className: 'bookings-card' },
     headerContent,
+    topControls,
     mainContent,
     backButton
   );
