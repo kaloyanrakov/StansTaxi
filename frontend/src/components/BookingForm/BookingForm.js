@@ -20,7 +20,7 @@ function BookingForm() {
 
   const center = { lat: 41.2853, lng: -70.0988 };
 
-  const handleSubmit = async function(e) {
+  const handleSubmit = async function (e) {
     e.preventDefault();
 
     const booking = {
@@ -63,7 +63,7 @@ function BookingForm() {
     }
   };
 
-  useEffect(function() {
+  useEffect(function () {
     if (pickupLocation && dropoffLocation && window.google) {
       const directionsService = new window.google.maps.DirectionsService();
       directionsService.route(
@@ -72,7 +72,7 @@ function BookingForm() {
           destination: dropoffLocation + ', Nantucket, MA',
           travelMode: window.google.maps.TravelMode.DRIVING,
         },
-        function(result, status) {
+        function (result, status) {
           if (status === 'OK' && result) {
             setDirections(result);
             setBoundsSet(false);
@@ -112,7 +112,7 @@ function BookingForm() {
           React.createElement('input', {
             type: 'text',
             value: pickupLocation,
-            onChange: function(e) { return setPickupLocation(e.target.value); },
+            onChange: function (e) { return setPickupLocation(e.target.value); },
             placeholder: 'Enter pickup location',
             required: true
           })
@@ -128,7 +128,7 @@ function BookingForm() {
           React.createElement('input', {
             type: 'text',
             value: dropoffLocation,
-            onChange: function(e) { return setDropoffLocation(e.target.value); },
+            onChange: function (e) { return setDropoffLocation(e.target.value); },
             placeholder: 'Enter dropoff location',
             required: true
           })
@@ -148,7 +148,7 @@ function BookingForm() {
           React.createElement('input', {
             type: 'date',
             value: pickupDate,
-            onChange: function(e) { return setPickupDate(e.target.value); },
+            onChange: function (e) { return setPickupDate(e.target.value); },
             required: true
           })
         ),
@@ -163,7 +163,7 @@ function BookingForm() {
           React.createElement('input', {
             type: 'time',
             value: pickupTime,
-            onChange: function(e) { return setPickupTime(e.target.value); },
+            onChange: function (e) { return setPickupTime(e.target.value); },
             required: true
           })
         )
@@ -184,7 +184,7 @@ function BookingForm() {
             min: '1',
             max: '10',
             value: passengers,
-            onChange: function(e) { return setPassengers(e.target.value); },
+            onChange: function (e) { return setPassengers(e.target.value); },
             required: true
           })
         ),
@@ -199,14 +199,19 @@ function BookingForm() {
           React.createElement('input', {
             type: 'tel',
             value: phoneNumber,
-            onChange: function(e) {
+            onChange: function (e) {
               const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
               setPhoneNumber(onlyNums);
             },
             placeholder: '508-500-6565',
             pattern: '^\\+?[0-9]{7,15}$',
             required: true
-          })
+          }),
+          React.createElement(
+            'small',
+            { className: 'phone-note' },
+            '* We use your phone number only to send SMS messages related to this booking.'
+          )
         )
       ),
       React.createElement(
@@ -230,7 +235,7 @@ function BookingForm() {
               name: 'pets',
               value: 'yes',
               checked: pets === 'yes',
-              onChange: function(e) { return setPets(e.target.value); },
+              onChange: function (e) { return setPets(e.target.value); },
               style: { display: 'none' }
             }),
             'Yes'
@@ -245,7 +250,7 @@ function BookingForm() {
               name: 'pets',
               value: 'no',
               checked: pets === 'no',
-              onChange: function(e) { return setPets(e.target.value); },
+              onChange: function (e) { return setPets(e.target.value); },
               style: { display: 'none' }
             }),
             'No'
@@ -272,7 +277,7 @@ function BookingForm() {
             DirectionsRenderer,
             {
               options: { directions: directions },
-              onLoad: function(renderer) {
+              onLoad: function (renderer) {
                 if (!boundsSet) {
                   const bounds = renderer.getDirections().routes[0].bounds;
                   renderer.getMap().fitBounds(bounds);
