@@ -11,26 +11,51 @@ function BookingsPage() {
   const [bookingsEnabled, setBookingsEnabled] = useState(true);
   const [savingToggle, setSavingToggle] = useState(false);
 
-  useEffect(function () {
-    // fetch bookings
-    fetch("http://localhost:8080/bookings")
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
+ useEffect(function () {
+  // fetch bookings
+  fetch("http://localhost:8080/bookings", {
+    credentials: 'include',
+  })
+    .then(function (res) {
+      if (!res.ok) {
+        // If unauthorized or error, throw to catch block
+        throw new Error("Failed to fetch bookings: " + res.status);
+      }
+      return res.json();
+    })
+    .then(function (data) {
+      // Ensure we only treat arrays as bookings
+      if (Array.isArray(data)) {
         setBookings(data);
-        setLoading(false);
-      })
-      .catch(function (err) {
-        console.error("Error fetching bookings:", err);
-        setLoading(false);
-      });
+      } else {
+        console.error("Unexpected bookings response:", data);
+        setBookings([]); // fallback to empty
+      }
+      setLoading(false);
+    })
+    .catch(function (err) {
+      console.error("Error fetching bookings:", err);
+      setBookings([]);   // avoid bookings being undefined or an error object
+      setLoading(false);
+    });
 
-    // fetch bookings-enabled flag
-    fetch("http://localhost:8080/settings/bookings-enabled")
-      .then(res => res.json())
-      .then(data => setBookingsEnabled(!!data.bookingsEnabled))
-      .catch(err => console.error("Error fetching settings:", err));
-  }, []);
-
+  // fetch bookings-enabled flag
+  fetch("http://localhost:8080/settings/bookings-enabled", {
+    credentials: 'include',
+  })
+    .then(function (res) {
+      if (!res.ok) {
+        throw new Error("Failed to fetch settings: " + res.status);
+      }
+      return res.json();
+    })
+    .then(function (data) {
+      setBookingsEnabled(!!data.bookingsEnabled);
+    })
+    .catch(function (err) {
+      console.error("Error fetching settings:", err);
+    });
+}, []);
   const handleBack = function () {
     window.location.href = "/";
   };

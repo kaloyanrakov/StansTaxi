@@ -5,20 +5,32 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = function(e) {
+  const handleLogin = async function(e) {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call delay
-    setTimeout(function() {
-      if (password === "admin123") {
-        // Redirect to bookings page
+    try {
+      const res = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // IMPORTANT: so cookies/session stick
+        body: JSON.stringify({ password }),
+      });
+
+      if (res.ok) {
         window.location.href = "/bookings";
       } else {
-        alert("Wrong password!");
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Wrong password!");
       }
+    } catch (err) {
+      console.error(err);
+      alert("Login failed, please try again.");
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   };
 
   const handlePasswordChange = function(e) {
@@ -40,14 +52,12 @@ function LoginPage() {
     backgroundShapes
   );
 
-  // Create login logo
   const loginLogo = React.createElement(
     'div',
     { className: 'login-logo' },
     React.createElement('i', { className: 'fas fa-taxi' })
   );
 
-  // Create login header
   const loginHeader = React.createElement(
     'div',
     { className: 'login-header' },
@@ -56,13 +66,11 @@ function LoginPage() {
     React.createElement('p', { className: 'login-subtitle' }, 'Enter your password to continue')
   );
 
-  // Create input icon
   const inputIcon = React.createElement(
     'i',
     { className: 'input-icon fas fa-lock' }
   );
 
-  // Create password input
   const passwordInput = React.createElement(
     'input',
     {
@@ -89,7 +97,6 @@ function LoginPage() {
     inputContainer
   );
 
-  // Create button content based on loading state
   let buttonContent;
   if (isLoading) {
     buttonContent = [
@@ -103,7 +110,6 @@ function LoginPage() {
     ];
   }
 
-  // Create login button
   const loginButton = React.createElement(
     'button',
     {
@@ -115,7 +121,6 @@ function LoginPage() {
     buttonContent
   );
 
-  // Create login form
   const loginForm = React.createElement(
     'form',
     {
@@ -126,7 +131,6 @@ function LoginPage() {
     loginButton
   );
 
-  // Create security note
   const securityNote = React.createElement(
     'p',
     { className: 'security-note' },
@@ -140,7 +144,6 @@ function LoginPage() {
     securityNote
   );
 
-  // Create main login card
   const loginCard = React.createElement(
     'div',
     { className: 'login-card' },
@@ -149,7 +152,6 @@ function LoginPage() {
     loginFooter
   );
 
-  // Create main container
   return React.createElement(
     'div',
     { className: 'login-container' },
