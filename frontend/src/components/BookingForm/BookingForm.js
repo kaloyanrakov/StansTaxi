@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './BookingForm.css';
-import { LoadScript, GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, DirectionsRenderer, Autocomplete } from '@react-google-maps/api';
+
+const libraries = ['places'];
 
 function BookingForm() {
   const [pickupLocation, setPickupLocation] = useState('');
@@ -12,6 +14,8 @@ function BookingForm() {
   const [boundsSet, setBoundsSet] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [pets, setPets] = useState('no');
+  const pickupAutocompleteRef = useRef(null);
+  const dropoffAutocompleteRef = useRef(null);
 
   const containerStyle = {
     width: '100%',
@@ -19,6 +23,40 @@ function BookingForm() {
   };
 
   const center = { lat: 41.2853, lng: -70.0988 };
+
+  // Nantucket bounds for autocomplete
+  const nantucketBounds = {
+    north: 41.35,
+    south: 41.22,
+    east: -69.93,
+    west: -70.20
+  };
+
+  const onPickupLoad = function(autocomplete) {
+    pickupAutocompleteRef.current = autocomplete;
+  };
+
+  const onDropoffLoad = function(autocomplete) {
+    dropoffAutocompleteRef.current = autocomplete;
+  };
+
+  const onPickupPlaceChanged = function() {
+    if (pickupAutocompleteRef.current) {
+      const place = pickupAutocompleteRef.current.getPlace();
+      if (place && place.formatted_address) {
+        setPickupLocation(place.formatted_address);
+      }
+    }
+  };
+
+  const onDropoffPlaceChanged = function() {
+    if (dropoffAutocompleteRef.current) {
+      const place = dropoffAutocompleteRef.current.getPlace();
+      if (place && place.formatted_address) {
+        setDropoffLocation(place.formatted_address);
+      }
+    }
+  };
 
   const handleSubmit = async function (e) {
     e.preventDefault();
@@ -84,23 +122,24 @@ function BookingForm() {
     }
   }, [pickupLocation, dropoffLocation]);
 
-  return React.createElement(
-    'form',
-    {
-      className: 'booking-form',
-      onSubmit: handleSubmit
-    },
-    React.createElement(
-      'h2',
-      { className: 'section-title' },
-      'Book a Ride'
-    ),
-    React.createElement(
-      'div',
-      { className: 'form-inputs' },
+  const renderForm = function() {
+    return React.createElement(
+      'form',
+      {
+        className: 'booking-form',
+        onSubmit: handleSubmit
+      },
+      React.createElement(
+        'h2',
+        { className: 'section-title' },
+        'Book a Ride'
+      ),
       React.createElement(
         'div',
-        { className: 'input-row' },
+        { className: 'form-inputs' },
+        React.createElement(
+          'div',
+          { className: 'input-row' },
         React.createElement(
           'div',
           { className: 'location-input' },
@@ -109,13 +148,26 @@ function BookingForm() {
             null,
             'Pick-Up Location:'
           ),
-          React.createElement('input', {
-            type: 'text',
-            value: pickupLocation,
-            onChange: function (e) { return setPickupLocation(e.target.value); },
-            placeholder: 'Enter pickup location',
-            required: true
-          })
+          React.createElement(
+            Autocomplete,
+            {
+              onLoad: onPickupLoad,
+              onPlaceChanged: onPickupPlaceChanged,
+              options: {
+                bounds: nantucketBounds,
+                strictBounds: true,
+                componentRestrictions: { country: 'us' },
+                fields: ['formatted_address', 'geometry', 'name']
+              }
+            },
+            React.createElement('input', {
+              type: 'text',
+              value: pickupLocation,
+              onChange: function (e) { return setPickupLocation(e.target.value); },
+              placeholder: 'Enter pickup location',
+              required: true
+            })
+          )
         ),
         React.createElement(
           'div',
@@ -125,13 +177,26 @@ function BookingForm() {
             null,
             'Drop-Off Location:'
           ),
-          React.createElement('input', {
-            type: 'text',
-            value: dropoffLocation,
-            onChange: function (e) { return setDropoffLocation(e.target.value); },
-            placeholder: 'Enter dropoff location',
-            required: true
-          })
+          React.createElement(
+            Autocomplete,
+            {
+              onLoad: onDropoffLoad,
+              onPlaceChanged: onDropoffPlaceChanged,
+              options: {
+                bounds: nantucketBounds,
+                strictBounds: true,
+                componentRestrictions: { country: 'us' },
+                fields: ['formatted_address', 'geometry', 'name']
+              }
+            },
+            React.createElement('input', {
+              type: 'text',
+              value: dropoffLocation,
+              onChange: function (e) { return setDropoffLocation(e.target.value); },
+              placeholder: 'Enter dropoff location',
+              required: true
+            })
+          )
         )
       ),
       React.createElement(
@@ -262,30 +327,24 @@ function BookingForm() {
       'div',
       { className: 'map-wrapper' },
       React.createElement(
-        LoadScript,
+        GoogleMap,
         {
-          googleMapsApiKey: "xxxxxxxxxxxxxxx"
+          mapContainerStyle: containerStyle,
+          center: center,
+          zoom: 12
         },
-        React.createElement(
-          GoogleMap,
+        directions && React.createElement(
+          DirectionsRenderer,
           {
-            mapContainerStyle: containerStyle,
-            center: center,
-            zoom: 12
-          },
-          directions && React.createElement(
-            DirectionsRenderer,
-            {
-              options: { directions: directions },
-              onLoad: function (renderer) {
-                if (!boundsSet) {
-                  const bounds = renderer.getDirections().routes[0].bounds;
-                  renderer.getMap().fitBounds(bounds);
-                  setBoundsSet(true);
-                }
+            options: { directions: directions },
+            onLoad: function (renderer) {
+              if (!boundsSet) {
+                const bounds = renderer.getDirections().routes[0].bounds;
+                renderer.getMap().fitBounds(bounds);
+                setBoundsSet(true);
               }
             }
-          )
+          }
         )
       )
     ),
@@ -297,6 +356,16 @@ function BookingForm() {
       },
       'Book Now'
     )
+  );
+};
+
+  return React.createElement(
+    LoadScript,
+    {
+      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || "",
+      libraries: libraries
+    },
+    renderForm()
   );
 }
 

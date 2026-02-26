@@ -1,4 +1,4 @@
-version: '3.8'
+name: stanstaxi
 
 services:
   mysql:
@@ -13,6 +13,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - stanstaxi-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -23,6 +25,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    image: stanstaxi/backend:latest
     container_name: stanstaxi-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/stanstaxi
@@ -31,6 +34,8 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
+    networks:
+      - stanstaxi-network
     depends_on:
       mysql:
         condition: service_healthy
@@ -40,12 +45,21 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: stanstaxi/frontend:latest
     container_name: stanstaxi-frontend
     ports:
       - "3000:80"
+    networks:
+      - stanstaxi-network
     depends_on:
       - backend
     restart: unless-stopped
 
 volumes:
   mysql_data:
+    name: stanstaxi-mysql-data
+
+networks:
+  stanstaxi-network:
+    name: stanstaxi-network
+    driver: bridge

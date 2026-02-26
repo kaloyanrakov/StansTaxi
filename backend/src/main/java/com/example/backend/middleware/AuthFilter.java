@@ -34,7 +34,9 @@ public class AuthFilter implements Filter {
         boolean isPublic =
                 path.startsWith("/auth/") ||
                 path.equals("/") ||
-                path.startsWith("/error");
+                path.startsWith("/error") ||
+                (path.equals("/settings/bookings-enabled") && "GET".equalsIgnoreCase(method)) ||
+                (path.equals("/bookings") && "POST".equalsIgnoreCase(method));
 
         // 3) Endpoints you want to protect
         boolean isAdminEndpoint =
@@ -53,7 +55,10 @@ public class AuthFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             // 6) Add CORS headers even when unauthorized
-            httpResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            String origin = httpRequest.getHeader("Origin");
+            if (origin != null && origin.startsWith("http://localhost:")) {
+                httpResponse.setHeader("Access-Control-Allow-Origin", origin);
+            }
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
             httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type");
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

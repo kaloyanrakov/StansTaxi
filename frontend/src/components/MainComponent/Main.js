@@ -15,6 +15,7 @@ function Main() {
   const [currentPartnerIndex, setCurrentPartnerIndex] = useState(2);
   const [isHovered, setIsHovered] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [rotation, setRotation] = useState(0);
   const sectionRefs = {
     home: useRef(null),
     about: useRef(null),
@@ -46,10 +47,11 @@ function Main() {
     if (isHovered) return;
     
     const interval = setInterval(function() {
+      setRotation(function(prev) { return prev - 72; }); // 360/5 partners = 72 degrees
       setCurrentPartnerIndex(function(prevIndex) {
         return prevIndex === partners.length - 1 ? 0 : prevIndex + 1;
       });
-    }, 3000);
+    }, 5000);
 
     return function() { return clearInterval(interval); };
   }, [partners.length, isHovered]);
@@ -64,12 +66,14 @@ function Main() {
   };
 
   const nextPartner = function() {
+    setRotation(function(prev) { return prev - 72; });
     setCurrentPartnerIndex(function(prevIndex) {
       return prevIndex === partners.length - 1 ? 0 : prevIndex + 1;
     });
   };
 
   const prevPartner = function() {
+    setRotation(function(prev) { return prev + 72; });
     setCurrentPartnerIndex(function(prevIndex) {
       return prevIndex === 0 ? partners.length - 1 : prevIndex - 1;
     });
@@ -145,24 +149,7 @@ function Main() {
                       scrollToSection('home'); 
                     }
                   },
-                  React.createElement('i', { className: 'fas fa-home' }),
                   'Home'
-                )
-              ),
-              React.createElement(
-                'li',
-                { className: activeSection === 'about' ? 'active' : '' },
-                React.createElement(
-                  'a',
-                  {
-                    href: '#about',
-                    onClick: function(e) { 
-                      e.preventDefault(); 
-                      scrollToSection('about'); 
-                    }
-                  },
-                  React.createElement('i', { className: 'fas fa-info-circle' }),
-                  'About'
                 )
               ),
               React.createElement(
@@ -177,8 +164,22 @@ function Main() {
                       scrollToSection('partners'); 
                     }
                   },
-                  React.createElement('i', { className: 'fas fa-handshake' }),
                   'Partners'
+                )
+              ),
+              React.createElement(
+                'li',
+                { className: activeSection === 'about' ? 'active' : '' },
+                React.createElement(
+                  'a',
+                  {
+                    href: '#about',
+                    onClick: function(e) { 
+                      e.preventDefault(); 
+                      scrollToSection('about'); 
+                    }
+                  },
+                  'About'
                 )
               ),
               bookingsEnabled && React.createElement(
@@ -193,7 +194,6 @@ function Main() {
                     scrollToSection('contact'); 
                   }
                 },
-                React.createElement('i', { className: 'fas fa-car' }),
                 'Book Ride'
               )
             )
@@ -369,7 +369,7 @@ function Main() {
                       }
                     })
                   ),
-                  partner.isCenter && React.createElement(
+                  React.createElement(
                     'div',
                     { className: 'partner-info' },
                     React.createElement(

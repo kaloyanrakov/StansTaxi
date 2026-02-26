@@ -90,6 +90,8 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-main a {
@@ -102,8 +104,8 @@
   border-radius: 15px;
   transition: var(--transition);
   position: relative;
-  text-align: center;
   justify-content: center;
+  text-align: center;
 }
 
 .nav-main a:hover {
@@ -498,7 +500,7 @@
 
 .section-header h3 {
   font-size: 2.5rem;
-  color: var(--primary-dark);
+  color: var(--text-light);
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -513,8 +515,8 @@
 
 .section-header p {
   font-size: 1.2rem;
-  color: var(--text-dark);
-  opacity: 0.8;
+  color: var(--text-light);
+  opacity: 0.9;
 }
 
 .bubble-carousel-container {
@@ -524,7 +526,7 @@
   justify-content: center;
   max-width: 1400px;
   margin: 0 auto 40px;
-  height: 280px;
+  height: 320px;
 }
 
 .bubble-carousel {
@@ -538,23 +540,27 @@
 
 .bubble-item {
   position: absolute;
-  transition: var(--carousel-transition);
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: calc(5 - abs(var(--position)));
   filter: grayscale(100%) brightness(0.8);
   opacity: 0.6;
   transform: 
     translateX(calc(var(--position) * 200px)) 
-    scale(calc(1 - 0.25 * abs(var(--position))));
+    scale(calc(1 - 0.2 * abs(var(--position))));
 }
 
 .bubble-item.center {
   filter: grayscale(0%) brightness(1);
   opacity: 1;
   z-index: 10;
-  transform: scale(1.3);
+  transform: scale(1.15);
+}
+
+.bubble-item.center .bubble-logo-container {
+  box-shadow: 0 0 30px rgba(75, 188, 204, 0.6), 0 12px 35px rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--primary-teal);
 }
 
 .bubble-logo-container {
@@ -613,21 +619,23 @@
   font-weight: 700;
   color: var(--primary-dark);
   text-align: center;
-  font-size: 1rem;
-  opacity: 0;
-  transition: var(--carousel-transition);
-  background: linear-gradient(135deg, var(--primary-teal), #3aa9b8);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(75, 188, 204, 0.3);
-  transform: translateY(10px);
-  min-width: 140px;
+  font-size: 0.9rem;
+  opacity: 1;
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
 }
 
 .bubble-item.center .partner-name {
-  opacity: 1;
-  transform: translateY(0);
+  font-size: 1rem;
+  background: linear-gradient(135deg, var(--primary-teal), #3aa9b8);
+  color: white;
+  padding: 8px 16px;
+  box-shadow: 0 4px 12px rgba(75, 188, 204, 0.4);
+  min-width: 140px;
 }
 
 .partner-badge {
@@ -638,7 +646,7 @@
   border-radius: 12px;
   opacity: 0;
   transform: translateY(5px);
-  transition: var(--carousel-transition);
+  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transition-delay: 0.2s;
 }
 
@@ -646,6 +654,8 @@
   opacity: 0.9;
   transform: translateY(0);
 }
+
+
 
 .carousel-button {
   background: linear-gradient(135deg, var(--primary-teal), #3aa9b8);
@@ -965,7 +975,7 @@
 }
 
 .footer-logo img {
-  width: 80px;
+  width: 85px;
   height: 80px;
   margin-bottom: 20px;
   transition: var(--transition);
