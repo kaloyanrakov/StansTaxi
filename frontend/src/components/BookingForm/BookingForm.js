@@ -271,12 +271,7 @@ function BookingForm() {
             placeholder: '508-500-6565',
             pattern: '^\\+?[0-9]{7,15}$',
             required: true
-          }),
-          React.createElement(
-            'small',
-            { className: 'phone-note' },
-            '* We use your phone number only to send SMS messages related to this booking.'
-          )
+          })
         )
       ),
       React.createElement(
@@ -321,6 +316,11 @@ function BookingForm() {
             'No'
           )
         )
+      ),
+      React.createElement(
+        'small',
+        { className: 'phone-note' },
+        '* We use your phone number only to send SMS messages related to this booking.'
       )
     ),
     React.createElement(

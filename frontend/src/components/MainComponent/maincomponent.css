@@ -519,6 +519,11 @@
   opacity: 0.9;
 }
 
+.partners .section-header h3,
+.contact .section-header h3 {
+  color: #000;
+}
+
 .bubble-carousel-container {
   position: relative;
   display: flex;
@@ -835,7 +840,7 @@
 
 /* Contact Section */
 .contact {
-  padding: 80px 0;
+  padding: 52px 0 64px;
   background-color: var(--light-gray);
   opacity: 0;
   transform: translateY(20px);
@@ -843,17 +848,23 @@
   width: 100%;
 }
 
+.contact .section-header {
+  margin-bottom: 32px;
+}
+
 .contact-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 5%;
+  gap: 40px;
   align-items: flex-start;
 }
 
 .contact-info {
-  flex: 0 0 45%;
-  min-width: 300px;
+  flex: 1 1 420px;
+  min-width: 280px;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
 .contact-item {
@@ -917,8 +928,10 @@
 
 /* Booking Form Container in Contact Section */
 .booking-form-container {
-  flex: 0 0 50%;
-  min-width: 300px;
+  flex: 1 1 420px;
+  min-width: 280px;
+  max-width: 620px;
+  margin: 0 auto;
 }
 
 /* Ensure the booking form fits well */
@@ -1102,6 +1115,33 @@
     flex: 0 0 100%;
     max-width: 100%;
   }
+
+  .contact-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .contact-item {
+    margin-bottom: 0;
+    padding: 18px;
+    height: 100%;
+  }
+
+  .contact-icon {
+    width: 56px;
+    height: 56px;
+    margin-right: 16px;
+  }
+
+  .contact-details h4 {
+    font-size: 1.1rem;
+  }
+
+  .contact-details p {
+    font-size: 0.95rem;
+  }
   
   .bubble-item {
     transform: 
@@ -1158,6 +1198,30 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+  }
+
+  .contact-info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .contact-item {
+    padding: 14px;
+  }
+
+  .contact-icon {
+    width: 46px;
+    height: 46px;
+    margin-right: 12px;
+  }
+
+  .contact-details h4 {
+    font-size: 0.98rem;
+  }
+
+  .contact-details p {
+    font-size: 0.84rem;
+    line-height: 1.35;
   }
   
   .nav-main a {

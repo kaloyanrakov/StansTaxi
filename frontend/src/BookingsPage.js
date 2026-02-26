@@ -65,14 +65,20 @@ function BookingsPage() {
       setSavingToggle(true);
       const next = !bookingsEnabled;
       const res = await fetch(`http://localhost:8080/settings/bookings-enabled?enabled=${next}`, {
-        method: "PATCH"
+        method: "PATCH",
+        credentials: 'include'
       });
-      if (!res.ok) throw new Error("Failed to update setting");
+      if (!res.ok) {
+        if (res.status === 401) {
+          throw new Error("Unauthorized. Please log in again.");
+        }
+        throw new Error("Failed to update setting");
+      }
       const data = await res.json();
       setBookingsEnabled(!!data.bookingsEnabled);
     } catch (e) {
       console.error(e);
-      alert("Failed to update the bookings toggle.");
+      alert(e.message || "Failed to update the bookings toggle.");
     } finally {
       setSavingToggle(false);
     }
@@ -224,14 +230,14 @@ function BookingsPage() {
     // Active table rows (with Accept/Turn Down actions)
     const activeRows = activeBookings.map(function (booking) {
       const cells = [
-        React.createElement('td', { className: 'table-cell' }, booking.pickUpLocation),
-        React.createElement('td', { className: 'table-cell' }, booking.dropOffLocation),
-        React.createElement('td', { className: 'table-cell' }, booking.pickupDate),
-        React.createElement('td', { className: 'table-cell' }, booking.pickupTime),
-        React.createElement('td', { className: 'table-cell' }, booking.passengers),
-        React.createElement('td', { className: 'table-cell' }, booking.pets ? "Yes" : "No"),
-        React.createElement('td', { className: 'table-cell' }, booking.phoneNumber),
-        React.createElement('td', { className: 'table-cell' },
+        React.createElement('td', { className: 'table-cell', key: 'pickup' }, booking.pickUpLocation),
+        React.createElement('td', { className: 'table-cell', key: 'dropoff' }, booking.dropOffLocation),
+        React.createElement('td', { className: 'table-cell', key: 'date' }, booking.pickupDate),
+        React.createElement('td', { className: 'table-cell', key: 'time' }, booking.pickupTime),
+        React.createElement('td', { className: 'table-cell', key: 'passengers' }, booking.passengers),
+        React.createElement('td', { className: 'table-cell', key: 'pets' }, booking.pets ? "Yes" : "No"),
+        React.createElement('td', { className: 'table-cell', key: 'phone' }, booking.phoneNumber),
+        React.createElement('td', { className: 'table-cell', key: 'status' },
           React.createElement('span', { className: 'status-badge ' + booking.status.toLowerCase() }, booking.status)
         )
       ];
@@ -254,13 +260,12 @@ function BookingsPage() {
           onClick: function () { handleTurnDown(booking.bookingId); },
           key: 'turn-down'
         },
-        React.createElement('i', { className: 'fas fa-times' }),
         'Turn Down'
       );
 
       const actionCell = React.createElement(
         'td',
-        { className: 'table-cell actions-cell' },
+        { className: 'table-cell actions-cell', key: 'actions' },
         acceptButton,
         turnDownButton
       );
@@ -291,14 +296,14 @@ function BookingsPage() {
 
     const pastRows = pastBookings.map(function (booking) {
       const cells = [
-        React.createElement('td', { className: 'table-cell' }, booking.pickUpLocation),
-        React.createElement('td', { className: 'table-cell' }, booking.dropOffLocation),
-        React.createElement('td', { className: 'table-cell' }, booking.pickupDate),
-        React.createElement('td', { className: 'table-cell' }, booking.pickupTime),
-        React.createElement('td', { className: 'table-cell' }, booking.passengers),
-        React.createElement('td', { className: 'table-cell' }, booking.pets ? "Yes" : "No"),
-        React.createElement('td', { className: 'table-cell' }, booking.phoneNumber),
-        React.createElement('td', { className: 'table-cell' },
+        React.createElement('td', { className: 'table-cell', key: 'pickup' }, booking.pickUpLocation),
+        React.createElement('td', { className: 'table-cell', key: 'dropoff' }, booking.dropOffLocation),
+        React.createElement('td', { className: 'table-cell', key: 'date' }, booking.pickupDate),
+        React.createElement('td', { className: 'table-cell', key: 'time' }, booking.pickupTime),
+        React.createElement('td', { className: 'table-cell', key: 'passengers' }, booking.passengers),
+        React.createElement('td', { className: 'table-cell', key: 'pets' }, booking.pets ? "Yes" : "No"),
+        React.createElement('td', { className: 'table-cell', key: 'phone' }, booking.phoneNumber),
+        React.createElement('td', { className: 'table-cell', key: 'decision' },
           React.createElement('span', { className: 'status-badge ' + booking.status.toLowerCase() }, booking.status)
         )
       ];
