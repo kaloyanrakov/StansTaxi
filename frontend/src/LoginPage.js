@@ -55,7 +55,7 @@ function LoginPage() {
   const loginLogo = React.createElement(
     'div',
     { className: 'login-logo' },
-    React.createElement('i', { className: 'fas fa-taxi' })
+    React.createElement('img', { src: '/variables/images/Logo.png', alt: "Stan's Taxi" })
   );
 
   const loginHeader = React.createElement(
