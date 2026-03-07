@@ -2,52 +2,37 @@ import React, { useState, useEffect, useRef } from 'react';
 import './BookingForm.css';
 import { APIProvider, Map, useMapsLibrary, useMap } from '@vis.gl/react-google-maps';
 
-const nantucketBounds = {
-  north: 41.35,
-  south: 41.22,
-  east: -69.93,
-  west: -70.20
-};
-
 function PlaceAutocompleteInput({ onPlaceSelect, placeholder }) {
-  const containerRef = useRef(null);
-  const autocompleteRef = useRef(null);
+  const inputRef = useRef(null);
   const placesLib = useMapsLibrary('places');
 
   useEffect(() => {
-    if (!placesLib || !containerRef.current) return;
+    if (!placesLib || !inputRef.current) return;
 
-    if (autocompleteRef.current) {
-      autocompleteRef.current.remove();
-    }
-
-    const el = new placesLib.PlaceAutocompleteElement({
-      locationRestriction: nantucketBounds,
-      componentRestrictions: { country: 'us' }
+    const autocomplete = new placesLib.Autocomplete(inputRef.current, {
+      componentRestrictions: { country: 'us' },
+      fields: ['formatted_address']
     });
 
-    el.style.width = '100%';
-    containerRef.current.appendChild(el);
-    autocompleteRef.current = el;
-
-    el.addEventListener('gmp-select', function (event) {
-      console.log('gmp-select fired', event);
-      const place = event.placePrediction.toPlace();
-      place.fetchFields({ fields: ['formattedAddress'] }).then(function () {
-        console.log('Place selected:', place.formattedAddress);
-        onPlaceSelect(place.formattedAddress);
-      });
+    const listener = autocomplete.addListener('place_changed', function () {
+      const place = autocomplete.getPlace();
+      if (place && place.formatted_address) {
+        onPlaceSelect(place.formatted_address);
+      }
     });
 
     return function () {
-      if (autocompleteRef.current) {
-        autocompleteRef.current.remove();
-        autocompleteRef.current = null;
+      if (window.google && window.google.maps && window.google.maps.event) {
+        window.google.maps.event.removeListener(listener);
       }
     };
   }, [placesLib, onPlaceSelect]);
 
-  return React.createElement('div', { ref: containerRef, style: { width: '100%' } });
+  return React.createElement('input', {
+    ref: inputRef,
+    type: 'text',
+    placeholder: placeholder || 'Enter location',
+  });
 }
 
 function DirectionsRendererInner({ directions }) {
@@ -207,14 +192,38 @@ function BookingFormInner() {
           'div',
           { className: 'passenger-input' },
           React.createElement('label', null, 'Number of Passengers:'),
-          React.createElement('input', {
-            type: 'number',
-            min: '1',
-            max: '10',
-            value: passengers,
-            onChange: function (e) { return setPassengers(e.target.value); },
-            required: true
-          })
+          React.createElement(
+            'div',
+            { className: 'number-input-wrapper' },
+            React.createElement('button', {
+              type: 'button',
+              className: 'number-btn decrement',
+              onClick: function () {
+                setPassengers(function (prev) {
+                  return String(Math.max(1, parseInt(prev, 10) - 1));
+                });
+              },
+              disabled: parseInt(passengers, 10) <= 1
+            }, '−'),
+            React.createElement('input', {
+              type: 'number',
+              min: '1',
+              max: '10',
+              value: passengers,
+              onChange: function (e) { return setPassengers(e.target.value); },
+              required: true
+            }),
+            React.createElement('button', {
+              type: 'button',
+              className: 'number-btn increment',
+              onClick: function () {
+                setPassengers(function (prev) {
+                  return String(Math.min(10, parseInt(prev, 10) + 1));
+                });
+              },
+              disabled: parseInt(passengers, 10) >= 10
+            }, '+')
+          )
         ),
         React.createElement(
           'div',
