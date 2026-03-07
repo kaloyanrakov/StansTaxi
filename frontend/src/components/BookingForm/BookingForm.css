@@ -20,7 +20,7 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   color: var(--text-light);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: left;
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -32,20 +32,21 @@
 .booking-form::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 50% 50%, rgba(75,188,204,0.15) 0%, transparent 70%);
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(75,188,204,0.15) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
-  border-radius: 23px;
   animation: shimmer 8s ease-in-out infinite;
 }
 
 @keyframes shimmer {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(5%, 5%) rotate(5deg); }
+  50% { transform: translate(0, 10%) rotate(0deg); }
+  75% { transform: translate(-5%, 5%) rotate(-5deg); }
 }
 
 .section-title {
@@ -105,7 +106,6 @@
   flex-direction: column;
   align-items: flex-start;
   flex: 1;
-  min-width: 0;
   gap: 8px;
   position: relative;
 }
@@ -148,113 +148,102 @@
   backdrop-filter: blur(5px);
 }
 
-/* Date/time inputs – dark color scheme for native picker chrome */
-.datetime-input input[type="date"],
-.datetime-input input[type="time"] {
-  color-scheme: dark;
-  padding-right: 14px;
+/* Style number input spinners */
+.passenger-input input[type="number"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
 }
 
-/* Custom number input – stepper wrapper */
+.passenger-input input[type="number"]::-webkit-inner-spin-button,
+.passenger-input input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Custom number input styling */
 .passenger-input {
   position: relative;
 }
 
-.number-input-wrapper {
+.passenger-input input[type="number"] {
+  padding-right: 50px;
+}
+
+/* Add styled increment/decrement buttons */
+.passenger-input::before {
+  content: '';
+  position: absolute;
+  right: 15px;
+  top: 38px;
+  width: 30px;
+  height: calc(100% - 38px);
   display: flex;
-  align-items: stretch;
-  width: 100%;
-  border: 2px solid var(--border-light);
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-  box-sizing: border-box;
+  flex-direction: column;
+  pointer-events: none;
+  z-index: 3;
 }
 
-.number-input-wrapper:focus-within {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px var(--focus-glow);
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.number-btn {
-  background: rgba(255, 255, 255, 0.12);
-  border: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-light);
-  font-size: 1.3rem;
-  font-weight: 700;
-  width: 44px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
-  line-height: 1;
-}
-
-.number-btn.increment {
-  border-right: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.number-btn:hover {
-  background: rgba(75, 188, 204, 0.3);
-  color: var(--primary-color);
-}
-
-.number-btn:active {
-  background: rgba(75, 188, 204, 0.5);
-}
-
-.number-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.number-input-wrapper input[type="number"] {
-  flex: 1;
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  text-align: center;
-  padding: 14px 8px !important;
-  min-width: 0;
-  color: var(--text-light);
-  font-size: 0.95rem;
-  font-weight: 500;
-  outline: none;
-}
-
-/* Hide native number spinners */
-.number-input-wrapper input[type="number"]::-webkit-inner-spin-button,
-.number-input-wrapper input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-.number-input-wrapper input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-/* Focus / placeholder for direct inputs (date, time, phone, location) */
 .location-input input:focus,
 .datetime-input input:focus,
 .passenger-input input:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 4px var(--focus-glow);
   background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .location-input input::placeholder,
 .datetime-input input::placeholder,
 .passenger-input input::placeholder {
   color: rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+}
+
+.location-input input:focus::placeholder,
+.datetime-input input:focus::placeholder,
+.passenger-input input:focus::placeholder {
+  opacity: 0.5;
+  transform: translateX(5px);
+}
+
+/* Form field icons */
+.location-input::after,
+.datetime-input::after,
+.passenger-input::after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 15px;
+  top: 38px;
+  color: var(--primary-color);
+  font-size: 1rem;
+  z-index: 2;
+  opacity: 0.7;
+}
+
+.location-input:first-child::after {
+  content: '\f3c5'; /* map-marker-alt */
+}
+
+.location-input:last-child::after {
+  content: '\f3c5'; /* map-marker-alt */
+}
+
+.datetime-input:first-child::after {
+  content: '\f073'; /* calendar */
+}
+
+.datetime-input:last-child::after {
+  content: '\f017'; /* clock */
+}
+
+.passenger-input:first-child::after {
+  content: '\f183'; /* male */
+}
+
+.passenger-input:last-child::after {
+  content: '\f095'; /* phone */
 }
 
 .pets-input {
@@ -507,12 +496,7 @@
     border-radius: 10px;
     padding: 12px 40px 12px 14px;
   }
-
-  .datetime-input input[type="date"],
-  .datetime-input input[type="time"] {
-    padding-right: 12px;
-  }
-
+  
   .submit-button {
     font-size: 0.9rem;
     padding: 13px 0;
