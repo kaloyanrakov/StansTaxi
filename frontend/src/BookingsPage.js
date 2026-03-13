@@ -153,7 +153,8 @@ function BookingsPage() {
 
   const handleAccept = function (bookingId) {
     fetch(`http://localhost:8080/bookings/${bookingId}/status?status=ACCEPTED`, {
-      method: "PATCH"
+      method: "PATCH",
+      credentials: 'include'
     })
       .then(res => res.json())
       .then(updated => {
@@ -166,7 +167,8 @@ function BookingsPage() {
 
   const handleTurnDown = function (bookingId) {
     fetch(`http://localhost:8080/bookings/${bookingId}/status?status=REJECTED`, {
-      method: "PATCH"
+      method: "PATCH",
+      credentials: 'include'
     })
       .then(res => res.json())
       .then(updated => {
