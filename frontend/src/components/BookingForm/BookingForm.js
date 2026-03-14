@@ -47,7 +47,11 @@ function PlaceAutocompleteInput({ onPlaceSelect, placeholder }) {
     };
   }, [placesLib, onPlaceSelect]);
 
-  return React.createElement('div', { ref: containerRef, style: { width: '100%' } });
+  return React.createElement('div', { 
+    ref: containerRef, 
+    className: 'place-autocomplete-wrapper',
+    style: { width: '100%' } 
+  });
 }
 
 function DirectionsRendererInner({ directions }) {
@@ -205,16 +209,39 @@ function BookingFormInner() {
         { className: 'input-row' },
         React.createElement(
           'div',
-          { className: 'passenger-input' },
+          { className: 'passenger-input passenger-selector' },
           React.createElement('label', null, 'Number of Passengers:'),
-          React.createElement('input', {
-            type: 'number',
-            min: '1',
-            max: '10',
-            value: passengers,
-            onChange: function (e) { return setPassengers(e.target.value); },
-            required: true
-          })
+          React.createElement(
+            'div',
+            { className: 'passenger-controls' },
+            React.createElement(
+              'button',
+              {
+                type: 'button',
+                className: 'passenger-btn minus-btn',
+                onClick: function () {
+                  const newVal = Math.max(1, parseInt(passengers, 10) - 1);
+                  setPassengers(String(newVal));
+                },
+                disabled: parseInt(passengers, 10) <= 1
+              },
+              '-'
+            ),
+            React.createElement('span', { className: 'passenger-count' }, passengers),
+            React.createElement(
+              'button',
+              {
+                type: 'button',
+                className: 'passenger-btn plus-btn',
+                onClick: function () {
+                  const newVal = Math.min(7, parseInt(passengers, 10) + 1);
+                  setPassengers(String(newVal));
+                },
+                disabled: parseInt(passengers, 10) >= 7
+              },
+              '+'
+            )
+          )
         ),
         React.createElement(
           'div',

@@ -2,51 +2,54 @@
   --background-dark: #12141f;
   --background-card: #1c1f2e;
   --text-light: #f0f2f8;
-  --text-muted: rgba(240, 242, 248, 0.55);
+  --text-muted: rgba(240, 242, 248, 0.5);
   --primary-color: #4bbccc;
   --primary-hover: #3aa9b8;
   --primary-glow: rgba(75, 188, 204, 0.35);
-  --primary-soft: rgba(75, 188, 204, 0.12);
+  --primary-soft: rgba(75, 188, 204, 0.1);
   --text-dark: #0f1119;
-  --border-light: rgba(255, 255, 255, 0.12);
-  --border-focus: rgba(75, 188, 204, 0.7);
-  --focus-glow: rgba(75, 188, 204, 0.25);
-  --input-bg: rgba(255, 255, 255, 0.06);
-  --input-bg-hover: rgba(255, 255, 255, 0.09);
-  --input-bg-focus: rgba(75, 188, 204, 0.08);
-  --form-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-focus: rgba(75, 188, 204, 0.65);
+  --focus-glow: rgba(75, 188, 204, 0.2);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-bg-hover: rgba(255, 255, 255, 0.08);
+  --input-bg-focus: rgba(75, 188, 204, 0.07);
+  --form-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  --field-height: 48px;
+  --field-radius: 14px;
 }
 
 /* ─── Form card ─────────────────────────────────────── */
 .booking-form {
-  background: linear-gradient(160deg, var(--background-card) 0%, #13161f 100%);
-  padding: 40px 38px;
-  border-radius: 28px;
-  border: 1px solid rgba(75, 188, 204, 0.18);
+  background: linear-gradient(165deg, var(--background-card) 0%, #141722 100%);
+  padding: 32px 30px;
+  border-radius: 24px;
+  border: 1px solid rgba(75, 188, 204, 0.14);
   max-width: 100%;
   width: 100%;
   margin: 0;
-  box-shadow: var(--form-shadow), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  box-shadow: var(--form-shadow), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
   color: var(--text-light);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 /* Subtle top-left accent glow */
 .booking-form::before {
   content: '';
   position: absolute;
-  top: -80px;
-  left: -80px;
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(75, 188, 204, 0.12) 0%, transparent 65%);
+  top: -100px;
+  left: -100px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(75, 188, 204, 0.1) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
   border-radius: 50%;
@@ -56,11 +59,11 @@
 .booking-form::after {
   content: '';
   position: absolute;
-  bottom: -60px;
-  right: -60px;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(75, 188, 204, 0.08) 0%, transparent 65%);
+  bottom: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(75, 188, 204, 0.06) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
   border-radius: 50%;
@@ -68,12 +71,12 @@
 
 /* ─── Section title ──────────────────────────────────── */
 .section-title {
-  font-size: 1.65rem;
-  font-weight: 800;
-  margin-bottom: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
   color: var(--text-light);
-  padding-bottom: 18px;
-  letter-spacing: 0.5px;
+  padding-bottom: 16px;
+  letter-spacing: 1px;
   width: 100%;
   text-align: center;
   position: relative;
@@ -91,23 +94,23 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 48px;
   height: 3px;
   background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
   border-radius: 99px;
-  box-shadow: 0 0 12px var(--primary-color);
+  box-shadow: 0 0 10px rgba(75, 188, 204, 0.6);
 }
 
 .section-title i {
   color: var(--primary-color);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 /* ─── Form inputs layout ─────────────────────────────── */
 .form-inputs {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   z-index: 1;
 }
@@ -123,10 +126,42 @@
 .passenger-input {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   flex: 1;
-  gap: 7px;
+  min-width: 0;
+  gap: 6px;
   position: relative;
+}
+
+/* ─── Google Places autocomplete wrapper ─────────────── */
+.place-autocomplete-wrapper {
+  width: 100% !important;
+  height: var(--field-height) !important;
+  display: block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.place-autocomplete-wrapper > * {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.place-autocomplete-wrapper gmp-place-autocomplete {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Location inputs sit above other rows for dropdown z-index */
+.location-input {
+  z-index: 2;
 }
 
 /* ─── Labels ─────────────────────────────────────────── */
@@ -135,15 +170,17 @@
 .passenger-input label {
   font-weight: 600;
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-align: left;
-  padding-left: 4px;
-  letter-spacing: 0.6px;
+  padding-left: 2px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: color 0.2s ease;
+  gap: 5px;
+  transition: color 0.25s ease;
+  white-space: nowrap;
+  line-height: 1.4;
 }
 
 .location-input:focus-within label,
@@ -156,120 +193,173 @@
 .datetime-input label i,
 .passenger-input label i {
   color: var(--primary-color);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  opacity: 0.85;
 }
 
-/* ─── Input fields ───────────────────────────────────── */
+/* ─── Input fields (shared) ──────────────────────────── */
+.location-input input,
+.datetime-input input,
+.passenger-input input,
+.place-autocomplete-wrapper gmp-place-autocomplete::part(input),
+.passenger-controls {
+  width: 100% !important;
+  height: var(--field-height) !important;
+  padding: 0 16px !important;
+  font-size: 0.9rem !important;
+  border: 1.5px solid var(--border-light) !important;
+  border-radius: var(--field-radius) !important;
+  background-color: var(--input-bg) !important;
+  color: var(--text-light) !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+  outline: none !important;
+  text-align: left !important;
+  font-weight: 500 !important;
+  box-sizing: border-box !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+  line-height: normal !important;
+  margin: 0 !important;
+}
+
 .location-input input,
 .datetime-input input,
 .passenger-input input {
-  width: 100%;
-  padding: 13px 44px 13px 16px;
-  font-size: 0.93rem;
-  border: 1.5px solid var(--border-light);
-  border-radius: 12px;
-  background-color: var(--input-bg);
-  color: var(--text-light);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, transform 0.2s ease;
-  outline: none;
-  text-align: left;
-  font-weight: 500;
-  box-sizing: border-box;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  display: block !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.place-autocomplete-wrapper gmp-place-autocomplete::part(input) {
+  display: flex !important;
+  align-items: center !important;
+  height: var(--field-height) !important;
+  padding: 0 16px !important;
+  line-height: 1.2 !important;
+}
+
+.passenger-controls {
+  display: flex !important;
+  align-items: center !important;
 }
 
 .location-input input:hover,
 .datetime-input input:hover,
-.passenger-input input:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  background-color: var(--input-bg-hover);
-}
-
-/* Style number input spinners */
-.passenger-input input[type="number"] {
-  -webkit-appearance: none;
-  -moz-appearance: textfield;
-  appearance: none;
-}
-
-.passenger-input input[type="number"]::-webkit-inner-spin-button,
-.passenger-input input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.passenger-input {
-  position: relative;
-}
-
-.passenger-input input[type="number"] {
-  padding-right: 50px;
-}
-
-.passenger-input::before {
-  content: '';
-  position: absolute;
-  right: 15px;
-  top: 38px;
-  width: 30px;
-  height: calc(100% - 38px);
-  display: flex;
-  flex-direction: column;
-  pointer-events: none;
-  z-index: 3;
+.passenger-input input:hover,
+.place-autocomplete-wrapper gmp-place-autocomplete::part(input):hover,
+.passenger-controls:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: var(--input-bg-hover) !important;
 }
 
 .location-input input:focus,
 .datetime-input input:focus,
 .passenger-input input:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--focus-glow);
-  background-color: var(--input-bg-focus);
-  transform: translateY(-1px);
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 3px var(--focus-glow), 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  background-color: var(--input-bg-focus) !important;
 }
 
 .location-input input::placeholder,
 .datetime-input input::placeholder,
 .passenger-input input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
   transition: opacity 0.2s ease;
 }
 
 .location-input input:focus::placeholder,
 .datetime-input input:focus::placeholder,
 .passenger-input input:focus::placeholder {
-  opacity: 0.4;
-}
-
-/* ─── Field icons ────────────────────────────────────── */
-.location-input::after,
-.datetime-input::after,
-.passenger-input::after {
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  position: absolute;
-  right: 15px;
-  top: 38px;
-  color: var(--primary-color);
-  font-size: 0.9rem;
-  z-index: 2;
   opacity: 0.5;
+}
+
+/* ─── Date / Time dark-mode ──────────────────────────── */
+.datetime-input input {
+  color-scheme: dark;
+}
+
+.datetime-input input::-webkit-calendar-picker-indicator {
+  filter: invert(0.75) brightness(0.9);
+  cursor: pointer;
+  opacity: 0.55;
   transition: opacity 0.2s ease;
+  padding: 2px;
+  border-radius: 4px;
 }
 
-.location-input:focus-within::after,
-.datetime-input:focus-within::after,
-.passenger-input:focus-within::after {
-  opacity: 0.9;
+.datetime-input input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
-.location-input:first-child::after { content: '\f3c5'; }
-.location-input:last-child::after  { content: '\f3c5'; }
-.datetime-input:first-child::after { content: '\f073'; }
-.datetime-input:last-child::after  { content: '\f017'; }
-.passenger-input:first-child::after { content: '\f183'; }
-.passenger-input:last-child::after  { content: '\f095'; }
+/* ─── Passenger selector controls ────────────────────── */
+.passenger-selector {
+  position: relative;
+  width: 100%;
+  flex: 1;
+}
+
+.passenger-controls {
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 14px !important;
+  cursor: default;
+}
+
+.passenger-selector:focus-within .passenger-controls {
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 3px var(--focus-glow) !important;
+  background-color: var(--input-bg-focus) !important;
+}
+
+.passenger-btn {
+  background: rgba(75, 188, 204, 0.08);
+  border: 1.5px solid rgba(75, 188, 204, 0.18);
+  border-radius: 10px;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  height: 34px;
+  width: 34px;
+  font-family: monospace;
+  line-height: 1;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.passenger-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  background-color: rgba(75, 188, 204, 0.2);
+  box-shadow: 0 2px 10px rgba(75, 188, 204, 0.2);
+  border-color: var(--primary-color);
+}
+
+.passenger-btn:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.passenger-btn:disabled {
+  opacity: 0.18;
+  cursor: not-allowed;
+  border-color: transparent;
+  background: transparent;
+}
+
+.passenger-count {
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 1rem;
+  min-width: 24px;
+  text-align: center;
+  user-select: none;
+  letter-spacing: 0.5px;
+}
 
 /* ─── Pets toggle ────────────────────────────────────── */
 .pets-input {
@@ -277,131 +367,132 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 4px 0;
+  margin: 2px 0;
   z-index: 1;
   background: var(--primary-soft);
-  padding: 18px 20px;
-  border-radius: 14px;
-  border: 1px solid rgba(75, 188, 204, 0.18);
-  transition: border-color 0.2s ease;
+  padding: 16px 20px;
+  border-radius: var(--field-radius);
+  border: 1.5px solid rgba(75, 188, 204, 0.12);
+  transition: border-color 0.25s ease, background 0.25s ease;
   box-sizing: border-box;
 }
 
 .pets-input:hover {
-  border-color: rgba(75, 188, 204, 0.32);
+  border-color: rgba(75, 188, 204, 0.28);
+  background: rgba(75, 188, 204, 0.12);
 }
 
 .pets-input > label:first-child {
   font-weight: 600;
   color: var(--text-light);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   white-space: nowrap;
-  margin-right: 15px;
+  margin-right: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
 }
 
 .pets-input > label:first-child i {
   color: var(--primary-color);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .pets-options {
   display: flex;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.25);
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.22);
   padding: 4px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .pets-option {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 9px 22px;
+  padding: 8px 24px;
   border: none;
   border-radius: 7px;
   cursor: pointer;
   color: var(--text-muted);
   background-color: transparent;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  min-width: 64px;
+  min-width: 60px;
   transition: all 0.22s ease;
   position: relative;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
 }
 
 .pets-option:hover {
   color: var(--text-light);
-  background-color: rgba(255, 255, 255, 0.07);
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .pets-option.selected {
   background: linear-gradient(135deg, var(--primary-color) 0%, #37b0c0 100%);
   color: var(--text-dark);
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(75, 188, 204, 0.45);
+  box-shadow: 0 3px 12px rgba(75, 188, 204, 0.4);
 }
 
 .pets-option.selected:hover {
   background: linear-gradient(135deg, #3aa9b8 0%, var(--primary-color) 100%);
-  box-shadow: 0 6px 18px rgba(75, 188, 204, 0.55);
+  box-shadow: 0 5px 16px rgba(75, 188, 204, 0.5);
 }
 
 /* ─── Phone note ─────────────────────────────────────── */
 .phone-note {
   display: block;
-  margin-top: -2px;
+  margin-top: 0;
   text-align: left;
   width: 100%;
-  padding-left: 4px;
-  font-size: 0.73rem;
-  line-height: 1.4;
+  padding-left: 2px;
+  font-size: 0.7rem;
+  line-height: 1.5;
   color: var(--text-muted);
   z-index: 1;
   font-style: italic;
+  opacity: 0.85;
 }
 
 /* ─── Map wrapper ────────────────────────────────────── */
 .map-wrapper {
-  margin-top: 6px;
-  border-radius: 16px;
+  margin-top: 4px;
+  border-radius: var(--field-radius);
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-  border: 1.5px solid rgba(75, 188, 204, 0.2);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid rgba(75, 188, 204, 0.15);
   position: relative;
   z-index: 1;
-  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .map-wrapper:hover {
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(75, 188, 204, 0.3);
-  transform: translateY(-2px);
-  border-color: rgba(75, 188, 204, 0.4);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(75, 188, 204, 0.25);
+  border-color: rgba(75, 188, 204, 0.35);
 }
 
 /* ─── Submit button ──────────────────────────────────── */
 .submit-button {
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 0.95rem;
+  font-weight: 700;
   width: 100%;
-  padding: 17px 0;
+  padding: 16px 0;
   background: linear-gradient(135deg, var(--primary-color) 0%, #35b0c1 100%);
   color: var(--text-dark);
   border: none;
-  border-radius: 14px;
+  border-radius: var(--field-radius);
   cursor: pointer;
   transition: box-shadow 0.3s ease, transform 0.25s ease, background 0.3s ease;
-  margin-top: 8px;
+  margin-top: 4px;
   text-transform: uppercase;
   letter-spacing: 2.5px;
   text-align: center;
   font-family: inherit;
-  box-shadow: 0 6px 24px rgba(75, 188, 204, 0.45), 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 20px rgba(75, 188, 204, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -422,7 +513,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.25),
     transparent
   );
   transform: skewX(-20deg);
@@ -431,8 +522,8 @@
 }
 
 .submit-button:hover {
-  box-shadow: 0 10px 32px rgba(75, 188, 204, 0.6), 0 4px 12px rgba(0,0,0,0.3);
-  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(75, 188, 204, 0.55), 0 3px 10px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
   background: linear-gradient(135deg, #3eb5c6 0%, var(--primary-color) 100%);
 }
 
@@ -441,20 +532,20 @@
 }
 
 .submit-button:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(0) scale(0.985);
   box-shadow: 0 3px 12px rgba(75, 188, 204, 0.35);
   transition-duration: 0.1s;
 }
 
 .submit-button i {
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: transform 0.25s ease;
   position: relative;
   z-index: 1;
 }
 
 .submit-button:hover i {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
 .submit-button span,
@@ -466,14 +557,14 @@
 /* ─── Responsive ─────────────────────────────────────── */
 @media (max-width: 768px) {
   .booking-form {
-    padding: 24px 20px;
+    padding: 22px 18px;
     border-radius: 20px;
     gap: 16px;
   }
 
   .section-title {
-    font-size: 1.3rem;
-    margin-bottom: 6px;
+    font-size: 1.25rem;
+    padding-bottom: 14px;
   }
 
   .input-row {
@@ -481,79 +572,121 @@
     gap: 12px;
   }
 
+  .location-input,
+  .datetime-input,
+  .passenger-input {
+    width: 100%;
+    flex: unset;
+  }
+
   .pets-input {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
-    padding: 16px;
+    gap: 12px;
+    padding: 14px 16px;
   }
 
   .pets-options {
     width: 100%;
-    justify-content: space-between;
+    justify-content: stretch;
   }
 
   .pets-option {
     flex: 1;
     text-align: center;
-    min-width: 60px;
+    min-width: 0;
     padding: 9px 12px;
   }
 
   .phone-note {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
   }
 
   .submit-button {
-    padding: 15px 0;
-    font-size: 0.92rem;
+    padding: 14px 0;
+    font-size: 0.9rem;
   }
 
   .map-wrapper {
     height: 220px !important;
   }
+
+  .passenger-btn {
+    font-size: 1.15rem;
+    height: 32px;
+    width: 32px;
+  }
+
+  .passenger-count {
+    font-size: 1rem;
+    min-width: 22px;
+  }
+
+  .passenger-controls {
+    gap: 10px;
+    padding: 0 12px !important;
+  }
 }
 
 @media (max-width: 480px) {
   .booking-form {
-    padding: 18px 16px;
+    padding: 18px 14px;
     gap: 12px;
     border-radius: 16px;
   }
 
   .section-title {
-    font-size: 1.15rem;
-    margin-bottom: 4px;
+    font-size: 1.1rem;
+    padding-bottom: 12px;
   }
 
   .location-input input,
   .datetime-input input,
-  .passenger-input input {
-    font-size: 0.88rem;
-    border-radius: 10px;
-    padding: 11px 38px 11px 13px;
+  .passenger-input input,
+  .place-autocomplete-wrapper gmp-place-autocomplete::part(input),
+  .passenger-controls {
+    font-size: 0.85rem !important;
+    border-radius: 11px !important;
+    padding: 0 12px !important;
   }
 
   .submit-button {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     padding: 13px 0;
     border-radius: 11px;
-    letter-spacing: 2px;
+    letter-spacing: 1.8px;
   }
 
   .pets-option {
-    min-width: 56px;
-    font-size: 0.8rem;
+    min-width: 0;
+    font-size: 0.78rem;
     padding: 8px 10px;
   }
 
   .phone-note {
-    font-size: 0.67rem;
+    font-size: 0.65rem;
     padding-left: 2px;
   }
 
   .map-wrapper {
     height: 200px !important;
+  }
+
+  .passenger-btn {
+    font-size: 1.05rem;
+    height: 30px;
+    width: 30px;
+    border-radius: 8px;
+  }
+
+  .passenger-count {
+    font-size: 0.92rem;
+    min-width: 18px;
+  }
+
+  .passenger-controls {
+    gap: 8px;
+    padding: 0 10px !important;
   }
 }
 
@@ -578,13 +711,13 @@
 /* ─── Success state ──────────────────────────────────── */
 @keyframes formSuccess {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.015); }
+  40%  { transform: scale(1.012); }
   100% { transform: scale(1); }
 }
 
 .booking-form.success {
-  animation: formSuccess 0.5s ease;
-  border-color: rgba(75, 188, 204, 0.5);
-  box-shadow: var(--form-shadow), 0 0 0 2px rgba(75, 188, 204, 0.25);
+  animation: formSuccess 0.45s ease;
+  border-color: rgba(75, 188, 204, 0.45);
+  box-shadow: var(--form-shadow), 0 0 0 2px rgba(75, 188, 204, 0.2);
 }
 
