@@ -1,66 +1,95 @@
+/* ─── Google Font ────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+/* font-display:swap is set via the URL above; further fallback via system-ui in --bf-font */
+
+/* ─── Design tokens ──────────────────────────────────── */
 :root {
-  --background-dark: #12141f;
-  --background-card: #1c1f2e;
-  --text-light: #f0f2f8;
-  --text-muted: rgba(240, 242, 248, 0.55);
-  --primary-color: #4bbccc;
-  --primary-hover: #3aa9b8;
-  --primary-glow: rgba(75, 188, 204, 0.35);
-  --primary-soft: rgba(75, 188, 204, 0.12);
-  --text-dark: #0f1119;
-  --border-light: rgba(255, 255, 255, 0.12);
-  --border-focus: rgba(75, 188, 204, 0.7);
-  --focus-glow: rgba(75, 188, 204, 0.25);
-  --input-bg: rgba(255, 255, 255, 0.06);
-  --input-bg-hover: rgba(255, 255, 255, 0.09);
-  --input-bg-focus: rgba(75, 188, 204, 0.08);
-  --form-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  --bf-bg-card:        #141720;
+  --bf-bg-card-end:    #0d0f18;
+  --bf-bg-input:       rgba(255, 255, 255, 0.055);
+  --bf-bg-input-hover: rgba(255, 255, 255, 0.085);
+  --bf-bg-input-focus: rgba(62, 198, 217, 0.07);
+
+  --bf-accent:         #3ec6d9;
+  --bf-accent-dark:    #2eafc2;
+  --bf-accent-glow:    rgba(62, 198, 217, 0.32);
+  --bf-accent-soft:    rgba(62, 198, 217, 0.10);
+  --bf-accent-border:  rgba(62, 198, 217, 0.22);
+
+  --bf-text:           #edf0fa;
+  --bf-text-muted:     rgba(200, 210, 235, 0.52);
+  --bf-text-label:     rgba(180, 195, 225, 0.70);
+  --bf-text-dark:      #0b0d14;
+
+  --bf-border:         rgba(255, 255, 255, 0.10);
+  --bf-border-hover:   rgba(255, 255, 255, 0.20);
+  --bf-border-focus:   rgba(62, 198, 217, 0.65);
+  --bf-focus-ring:     rgba(62, 198, 217, 0.22);
+
+  --bf-shadow-card:
+    0 4px 6px rgba(0,0,0,0.4),
+    0 20px 60px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(255,255,255,0.04) inset;
+
+  --bf-radius-card:    26px;
+  --bf-radius-input:   12px;
+  --bf-radius-sm:      8px;
+  --bf-font:           'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bf-transition:     0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Entrance animation ─────────────────────────────── */
+@keyframes bf-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Form card ─────────────────────────────────────── */
 .booking-form {
-  background: linear-gradient(160deg, var(--background-card) 0%, #13161f 100%);
-  padding: 40px 38px;
-  border-radius: 28px;
-  border: 1px solid rgba(75, 188, 204, 0.18);
+  background: linear-gradient(170deg, var(--bf-bg-card) 0%, var(--bf-bg-card-end) 100%);
+  padding: 44px 42px;
+  border-radius: var(--bf-radius-card);
+  border: 1px solid var(--bf-accent-border);
   max-width: 100%;
   width: 100%;
   margin: 0;
-  box-shadow: var(--form-shadow), 0 0 0 1px rgba(255,255,255,0.04) inset;
-  color: var(--text-light);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  box-shadow: var(--bf-shadow-card);
+  color: var(--bf-text);
+  font-family: var(--bf-font);
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 24px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  animation: bf-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Subtle top-left accent glow */
+/* Top-left atmospheric glow */
 .booking-form::before {
   content: '';
   position: absolute;
-  top: -80px;
-  left: -80px;
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(75, 188, 204, 0.12) 0%, transparent 65%);
+  top: -100px;
+  left: -100px;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(62, 198, 217, 0.10) 0%, transparent 65%);
   pointer-events: none;
   z-index: 0;
   border-radius: 50%;
 }
 
-/* Subtle bottom-right accent glow */
+/* Bottom-right atmospheric glow */
 .booking-form::after {
   content: '';
   position: absolute;
-  bottom: -60px;
-  right: -60px;
-  width: 260px;
-  height: 260px;
-  background: radial-gradient(circle, rgba(75, 188, 204, 0.08) 0%, transparent 65%);
+  bottom: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(62, 120, 217, 0.07) 0%, transparent 65%);
   pointer-events: none;
   z-index: 0;
   border-radius: 50%;
@@ -68,12 +97,12 @@
 
 /* ─── Section title ──────────────────────────────────── */
 .section-title {
-  font-size: 1.65rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  margin-bottom: 10px;
-  color: var(--text-light);
-  padding-bottom: 18px;
-  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  color: var(--bf-text);
+  padding-bottom: 20px;
+  letter-spacing: 0.2px;
   width: 100%;
   text-align: center;
   position: relative;
@@ -83,31 +112,44 @@
   justify-content: center;
   gap: 10px;
   text-transform: uppercase;
+  line-height: 1.2;
 }
 
+/* Gradient underline */
 .section-title::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 72px;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  background: linear-gradient(90deg, transparent, var(--bf-accent), transparent);
   border-radius: 99px;
-  box-shadow: 0 0 12px var(--primary-color);
+  box-shadow: 0 0 16px var(--bf-accent);
 }
 
 .section-title i {
-  color: var(--primary-color);
-  font-size: 1.3rem;
+  color: var(--bf-accent);
+  font-size: 1.25rem;
+}
+
+/* ─── Section divider ────────────────────────────────── */
+.bf-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--bf-border) 20%, var(--bf-border) 80%, transparent 100%);
+  position: relative;
+  z-index: 1;
+  margin: 2px 0;
+  flex-shrink: 0;
 }
 
 /* ─── Form inputs layout ─────────────────────────────── */
 .form-inputs {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   z-index: 1;
 }
@@ -134,29 +176,38 @@
 .datetime-input label,
 .passenger-input label {
   font-weight: 600;
-  color: var(--text-muted);
-  font-size: 0.78rem;
+  color: var(--bf-text-label);
+  font-size: 0.72rem;
   text-align: left;
-  padding-left: 4px;
-  letter-spacing: 0.6px;
+  padding-left: 2px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: color 0.2s ease;
+  transition: color var(--bf-transition);
+  user-select: none;
 }
 
 .location-input:focus-within label,
 .datetime-input:focus-within label,
 .passenger-input:focus-within label {
-  color: var(--primary-color);
+  color: var(--bf-accent);
 }
 
 .location-input label i,
 .datetime-input label i,
 .passenger-input label i {
-  color: var(--primary-color);
-  font-size: 0.75rem;
+  color: var(--bf-accent);
+  font-size: 0.72rem;
+  opacity: 0.85;
+}
+
+/* ─── Input field wrapper (for icon overlay) ─────────── */
+.location-input,
+.datetime-input,
+.passenger-input {
+  position: relative;
 }
 
 /* ─── Input fields ───────────────────────────────────── */
@@ -164,29 +215,41 @@
 .datetime-input input,
 .passenger-input input {
   width: 100%;
-  padding: 13px 44px 13px 16px;
-  font-size: 0.93rem;
-  border: 1.5px solid var(--border-light);
-  border-radius: 12px;
-  background-color: var(--input-bg);
-  color: var(--text-light);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, transform 0.2s ease;
+  padding: 13px 42px 13px 16px;
+  font-size: 0.92rem;
+  font-family: var(--bf-font);
+  border: 1.5px solid var(--bf-border);
+  border-radius: var(--bf-radius-input);
+  background-color: var(--bf-bg-input);
+  color: var(--bf-text);
+  transition:
+    border-color var(--bf-transition),
+    box-shadow var(--bf-transition),
+    background-color var(--bf-transition),
+    transform var(--bf-transition);
   outline: none;
   text-align: left;
   font-weight: 500;
   box-sizing: border-box;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  line-height: 1.5;
 }
 
 .location-input input:hover,
 .datetime-input input:hover,
 .passenger-input input:hover {
-  border-color: rgba(255, 255, 255, 0.22);
-  background-color: var(--input-bg-hover);
+  border-color: var(--bf-border-hover);
+  background-color: var(--bf-bg-input-hover);
 }
 
-/* Style number input spinners */
+/* Date & time pickers: match color scheme */
+.datetime-input input[type="date"],
+.datetime-input input[type="time"] {
+  color-scheme: dark;
+}
+
+/* Number input – hide native spinners */
 .passenger-input input[type="number"] {
   -webkit-appearance: none;
   -moz-appearance: textfield;
@@ -223,39 +286,40 @@
 .location-input input:focus,
 .datetime-input input:focus,
 .passenger-input input:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--focus-glow);
-  background-color: var(--input-bg-focus);
+  border-color: var(--bf-border-focus);
+  box-shadow: 0 0 0 3.5px var(--bf-focus-ring);
+  background-color: var(--bf-bg-input-focus);
   transform: translateY(-1px);
 }
 
 .location-input input::placeholder,
 .datetime-input input::placeholder,
 .passenger-input input::placeholder {
-  color: rgba(255, 255, 255, 0.35);
-  transition: opacity 0.2s ease;
+  color: rgba(180, 200, 230, 0.28);
+  transition: opacity var(--bf-transition);
 }
 
 .location-input input:focus::placeholder,
 .datetime-input input:focus::placeholder,
 .passenger-input input:focus::placeholder {
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
-/* ─── Field icons ────────────────────────────────────── */
+/* ─── Field trailing icons ───────────────────────────── */
 .location-input::after,
 .datetime-input::after,
 .passenger-input::after {
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
   position: absolute;
-  right: 15px;
+  right: 14px;
   top: 38px;
-  color: var(--primary-color);
-  font-size: 0.9rem;
+  color: var(--bf-accent);
+  font-size: 0.82rem;
   z-index: 2;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
+  opacity: 0.45;
+  transition: opacity var(--bf-transition);
+  pointer-events: none;
 }
 
 .location-input:focus-within::after,
@@ -264,12 +328,23 @@
   opacity: 0.9;
 }
 
-.location-input:first-child::after { content: '\f3c5'; }
-.location-input:last-child::after  { content: '\f3c5'; }
-.datetime-input:first-child::after { content: '\f073'; }
-.datetime-input:last-child::after  { content: '\f017'; }
+.location-input:first-child::after  { content: '\f3c5'; }
+.location-input:last-child::after   { content: '\f3c5'; }
+.datetime-input:first-child::after  { content: '\f073'; }
+.datetime-input:last-child::after   { content: '\f017'; }
 .passenger-input:first-child::after { content: '\f183'; }
 .passenger-input:last-child::after  { content: '\f095'; }
+
+/* ─── Google Places autocomplete element styling ─────── */
+.location-input > div {
+  width: 100%;
+}
+
+.location-input > div > * {
+  width: 100% !important;
+  box-sizing: border-box;
+  border-radius: var(--bf-radius-input) !important;
+}
 
 /* ─── Pets toggle ────────────────────────────────────── */
 .pets-input {
@@ -277,131 +352,151 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 4px 0;
+  margin: 2px 0;
   z-index: 1;
-  background: var(--primary-soft);
-  padding: 18px 20px;
+  background: linear-gradient(135deg, var(--bf-accent-soft) 0%, rgba(62, 198, 217, 0.05) 100%);
+  padding: 16px 20px;
   border-radius: 14px;
-  border: 1px solid rgba(75, 188, 204, 0.18);
-  transition: border-color 0.2s ease;
+  border: 1px solid var(--bf-accent-border);
+  transition: border-color var(--bf-transition), background var(--bf-transition);
   box-sizing: border-box;
 }
 
 .pets-input:hover {
-  border-color: rgba(75, 188, 204, 0.32);
+  border-color: rgba(62, 198, 217, 0.38);
+  background: linear-gradient(135deg, rgba(62, 198, 217, 0.13) 0%, rgba(62, 198, 217, 0.06) 100%);
 }
 
 .pets-input > label:first-child {
   font-weight: 600;
-  color: var(--text-light);
-  font-size: 0.85rem;
+  color: var(--bf-text);
+  font-size: 0.84rem;
   white-space: nowrap;
-  margin-right: 15px;
+  margin-right: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.1px;
 }
 
 .pets-input > label:first-child i {
-  color: var(--primary-color);
-  font-size: 0.9rem;
+  color: var(--bf-accent);
+  font-size: 0.92rem;
 }
 
 .pets-options {
   display: flex;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.25);
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.30);
   padding: 4px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .pets-option {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 9px 22px;
+  padding: 8px 24px;
   border: none;
   border-radius: 7px;
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--bf-text-muted);
   background-color: transparent;
-  font-size: 0.85rem;
+  font-size: 0.83rem;
+  font-family: var(--bf-font);
   font-weight: 600;
-  min-width: 64px;
-  transition: all 0.22s ease;
+  min-width: 68px;
+  transition: all var(--bf-transition);
   position: relative;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
-.pets-option:hover {
-  color: var(--text-light);
-  background-color: rgba(255, 255, 255, 0.07);
+.pets-option:hover:not(.selected) {
+  color: var(--bf-text);
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .pets-option.selected {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #37b0c0 100%);
-  color: var(--text-dark);
+  background: linear-gradient(135deg, var(--bf-accent) 0%, var(--bf-accent-dark) 100%);
+  color: var(--bf-text-dark);
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(75, 188, 204, 0.45);
+  box-shadow: 0 3px 14px var(--bf-accent-glow);
 }
 
 .pets-option.selected:hover {
-  background: linear-gradient(135deg, #3aa9b8 0%, var(--primary-color) 100%);
-  box-shadow: 0 6px 18px rgba(75, 188, 204, 0.55);
+  background: linear-gradient(135deg, var(--bf-accent-dark) 0%, var(--bf-accent) 100%);
+  box-shadow: 0 5px 18px var(--bf-accent-glow);
 }
 
 /* ─── Phone note ─────────────────────────────────────── */
 .phone-note {
-  display: block;
-  margin-top: -2px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: -4px;
   text-align: left;
   width: 100%;
-  padding-left: 4px;
-  font-size: 0.73rem;
-  line-height: 1.4;
-  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--bf-text-muted);
   z-index: 1;
   font-style: italic;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: var(--bf-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
 }
 
 /* ─── Map wrapper ────────────────────────────────────── */
 .map-wrapper {
-  margin-top: 6px;
+  margin-top: 4px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-  border: 1.5px solid rgba(75, 188, 204, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.40),
+    0 0 0 1px rgba(62, 198, 217, 0.15);
+  border: 1.5px solid rgba(62, 198, 217, 0.18);
   position: relative;
   z-index: 1;
-  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  transition:
+    box-shadow var(--bf-transition),
+    transform var(--bf-transition),
+    border-color var(--bf-transition);
 }
 
 .map-wrapper:hover {
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(75, 188, 204, 0.3);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.50),
+    0 0 0 1px rgba(62, 198, 217, 0.30);
   transform: translateY(-2px);
-  border-color: rgba(75, 188, 204, 0.4);
+  border-color: rgba(62, 198, 217, 0.38);
 }
 
 /* ─── Submit button ──────────────────────────────────── */
 .submit-button {
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-family: var(--bf-font);
   font-weight: 800;
   width: 100%;
-  padding: 17px 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, #35b0c1 100%);
-  color: var(--text-dark);
+  padding: 18px 0;
+  background: linear-gradient(135deg, var(--bf-accent) 0%, var(--bf-accent-dark) 100%);
+  color: var(--bf-text-dark);
   border: none;
   border-radius: 14px;
   cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.25s ease, background 0.3s ease;
-  margin-top: 8px;
+  transition:
+    box-shadow var(--bf-transition),
+    transform var(--bf-transition),
+    background var(--bf-transition);
+  margin-top: 6px;
   text-transform: uppercase;
-  letter-spacing: 2.5px;
+  letter-spacing: 2.8px;
   text-align: center;
-  font-family: inherit;
-  box-shadow: 0 6px 24px rgba(75, 188, 204, 0.45), 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow:
+    0 4px 20px var(--bf-accent-glow),
+    0 2px 8px rgba(0, 0, 0, 0.35);
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -411,29 +506,46 @@
   gap: 10px;
 }
 
-/* Shine sweep on hover */
+/* Shimmer sweep on hover */
 .submit-button::before {
   content: '';
   position: absolute;
   top: 0;
-  left: -120%;
-  width: 80%;
+  left: -130%;
+  width: 75%;
   height: 100%;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.30),
     transparent
   );
-  transform: skewX(-20deg);
-  transition: left 0.55s ease;
+  transform: skewX(-22deg);
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Bottom rim highlight */
+.submit-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 99px;
+  pointer-events: none;
   z-index: 0;
 }
 
 .submit-button:hover {
-  box-shadow: 0 10px 32px rgba(75, 188, 204, 0.6), 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow:
+    0 8px 30px var(--bf-accent-glow),
+    0 4px 14px rgba(0, 0, 0, 0.35);
   transform: translateY(-3px);
-  background: linear-gradient(135deg, #3eb5c6 0%, var(--primary-color) 100%);
+  background: linear-gradient(135deg, #50d0e4 0%, var(--bf-accent) 100%);
 }
 
 .submit-button:hover::before {
@@ -442,19 +554,19 @@
 
 .submit-button:active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 3px 12px rgba(75, 188, 204, 0.35);
-  transition-duration: 0.1s;
+  box-shadow: 0 3px 12px var(--bf-accent-glow);
+  transition-duration: 0.08s;
 }
 
 .submit-button i {
-  font-size: 1rem;
-  transition: transform 0.25s ease;
+  font-size: 0.95rem;
+  transition: transform var(--bf-transition);
   position: relative;
   z-index: 1;
 }
 
 .submit-button:hover i {
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 .submit-button span,
@@ -463,34 +575,34 @@
   z-index: 1;
 }
 
-/* ─── Responsive ─────────────────────────────────────── */
+/* ─── Responsive: tablet ─────────────────────────────── */
 @media (max-width: 768px) {
   .booking-form {
-    padding: 24px 20px;
-    border-radius: 20px;
-    gap: 16px;
+    padding: 28px 22px;
+    border-radius: 22px;
+    gap: 18px;
   }
 
   .section-title {
-    font-size: 1.3rem;
-    margin-bottom: 6px;
+    font-size: 1.35rem;
+    margin-bottom: 4px;
   }
 
   .input-row {
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .pets-input {
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
-    padding: 16px;
+    padding: 14px 16px;
   }
 
   .pets-options {
     width: 100%;
-    justify-content: space-between;
+    justify-content: stretch;
   }
 
   .pets-option {
@@ -501,12 +613,12 @@
   }
 
   .phone-note {
-    font-size: 0.7rem;
+    font-size: 0.70rem;
   }
 
   .submit-button {
-    padding: 15px 0;
-    font-size: 0.92rem;
+    padding: 16px 0;
+    font-size: 0.90rem;
   }
 
   .map-wrapper {
@@ -514,16 +626,17 @@
   }
 }
 
+/* ─── Responsive: mobile ─────────────────────────────── */
 @media (max-width: 480px) {
   .booking-form {
-    padding: 18px 16px;
-    gap: 12px;
-    border-radius: 16px;
+    padding: 20px 16px;
+    gap: 14px;
+    border-radius: 18px;
   }
 
   .section-title {
     font-size: 1.15rem;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
 
   .location-input input,
@@ -531,25 +644,25 @@
   .passenger-input input {
     font-size: 0.88rem;
     border-radius: 10px;
-    padding: 11px 38px 11px 13px;
+    padding: 12px 38px 12px 13px;
   }
 
   .submit-button {
-    font-size: 0.88rem;
-    padding: 13px 0;
+    font-size: 0.86rem;
+    padding: 14px 0;
     border-radius: 11px;
     letter-spacing: 2px;
   }
 
   .pets-option {
     min-width: 56px;
-    font-size: 0.8rem;
+    font-size: 0.80rem;
     padding: 8px 10px;
   }
 
   .phone-note {
     font-size: 0.67rem;
-    padding-left: 2px;
+    padding: 8px 10px;
   }
 
   .map-wrapper {
@@ -560,7 +673,7 @@
 /* ─── Loading state ──────────────────────────────────── */
 .booking-form.loading {
   pointer-events: none;
-  opacity: 0.75;
+  opacity: 0.72;
 }
 
 .booking-form.loading::after {
@@ -570,21 +683,23 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(18, 20, 31, 0.75);
+  background: rgba(13, 15, 24, 0.72);
   z-index: 10;
   border-radius: inherit;
 }
 
 /* ─── Success state ──────────────────────────────────── */
-@keyframes formSuccess {
+@keyframes bf-success-pulse {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.015); }
+  35%  { transform: scale(1.012); }
   100% { transform: scale(1); }
 }
 
 .booking-form.success {
-  animation: formSuccess 0.5s ease;
-  border-color: rgba(75, 188, 204, 0.5);
-  box-shadow: var(--form-shadow), 0 0 0 2px rgba(75, 188, 204, 0.25);
+  animation: bf-success-pulse 0.5s ease;
+  border-color: rgba(62, 198, 217, 0.50);
+  box-shadow:
+    var(--bf-shadow-card),
+    0 0 0 2px rgba(62, 198, 217, 0.22);
 }
 
