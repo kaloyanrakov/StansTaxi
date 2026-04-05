@@ -25,7 +25,7 @@ public class BookingEntity {
     private LocalTime pickupTime;
     private int passengers;
     private boolean pets;
-    private String phoneNumber;
+    private String email;
     private String status = "PENDING";
 
     @Column(nullable = false)

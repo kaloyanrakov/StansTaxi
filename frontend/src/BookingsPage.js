@@ -222,7 +222,7 @@ function BookingsPage() {
     // Active table headers (no ID shown)
     const activeHeaders = [
       'Pickup', 'Dropoff', 'Date', 'Time',
-      'Passengers', 'Pets', 'Phone', 'Status', 'Actions'
+      'Passengers', 'Pets', 'Email', 'Status', 'Actions'
     ].map(function (header) {
       return React.createElement('th', { className: 'table-header', key: header }, header);
     });
@@ -238,7 +238,7 @@ function BookingsPage() {
         React.createElement('td', { className: 'table-cell', key: 'time' }, booking.pickupTime),
         React.createElement('td', { className: 'table-cell', key: 'passengers' }, booking.passengers),
         React.createElement('td', { className: 'table-cell', key: 'pets' }, booking.pets ? "Yes" : "No"),
-        React.createElement('td', { className: 'table-cell', key: 'phone' }, booking.phoneNumber),
+        React.createElement('td', { className: 'table-cell', key: 'email' }, booking.email),
         React.createElement('td', { className: 'table-cell', key: 'status' },
           React.createElement('span', { className: 'status-badge ' + booking.status.toLowerCase() }, booking.status)
         )
@@ -289,7 +289,7 @@ function BookingsPage() {
     // Past bookings table (no actions; shows the final decision in Status)
     const pastHeaders = [
       'Pickup', 'Dropoff', 'Date', 'Time',
-      'Passengers', 'Pets', 'Phone', 'Decision'
+      'Passengers', 'Pets', 'Email', 'Decision'
     ].map(function (header) {
       return React.createElement('th', { className: 'table-header', key: header }, header);
     });
@@ -304,7 +304,7 @@ function BookingsPage() {
         React.createElement('td', { className: 'table-cell', key: 'time' }, booking.pickupTime),
         React.createElement('td', { className: 'table-cell', key: 'passengers' }, booking.passengers),
         React.createElement('td', { className: 'table-cell', key: 'pets' }, booking.pets ? "Yes" : "No"),
-        React.createElement('td', { className: 'table-cell', key: 'phone' }, booking.phoneNumber),
+        React.createElement('td', { className: 'table-cell', key: 'email' }, booking.email),
         React.createElement('td', { className: 'table-cell', key: 'decision' },
           React.createElement('span', { className: 'status-badge ' + booking.status.toLowerCase() }, booking.status)
         )

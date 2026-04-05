@@ -27,6 +27,6 @@ public class CreateBookingRequest {
     private boolean pets;
 
     @NotBlank
-    @Pattern(regexp="^\\+?[0-9]{7,15}$")
-    private String phoneNumber;
+    @Email
+    private String email;
 }

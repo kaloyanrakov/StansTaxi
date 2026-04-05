@@ -24,7 +24,7 @@ public class Booking {
     private LocalTime pickupTime;
     private int passengers;
     private boolean pets;
-    private String phoneNumber;
+    private String email;
     private String status = "PENDING";
     private LocalDate bookingDate;
 }

@@ -76,7 +76,7 @@ function BookingFormInner() {
   const [pickupTime, setPickupTime] = useState('');
   const [passengers, setPassengers] = useState('1');
   const [directions, setDirections] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
   const [pets, setPets] = useState('no');
 
   const routesLib = useMapsLibrary('routes');
@@ -94,7 +94,7 @@ function BookingFormInner() {
       pickupTime: pickupTime,
       passengers: parseInt(passengers, 10),
       pets: pets === "yes",
-      phoneNumber: phoneNumber
+      email: email
     };
 
     try {
@@ -112,7 +112,7 @@ function BookingFormInner() {
         setPickupDate('');
         setPickupTime('');
         setPassengers('1');
-        setPhoneNumber('');
+        setEmail('');
         setPets('no');
         setDirections(null);
       } else {
@@ -246,16 +246,15 @@ function BookingFormInner() {
         React.createElement(
           'div',
           { className: 'passenger-input' },
-          React.createElement('label', null, 'Your Phone Number:'),
+          React.createElement('label', null, 'Your Email Address:'),
           React.createElement('input', {
-            type: 'tel',
-            value: phoneNumber,
+            type: 'email',
+            value: email,
             onChange: function (e) {
-              const onlyNums = e.target.value.replace(/[^0-9+]/g, "");
-              setPhoneNumber(onlyNums);
+              setEmail(e.target.value);
             },
-            placeholder: '508-500-6565',
-            pattern: '^\\+?[0-9]{7,15}$',
+            placeholder: 'example@example.com',
+            pattern: '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$',
             required: true
           })
         )
@@ -295,8 +294,8 @@ function BookingFormInner() {
 
       React.createElement(
         'small',
-        { className: 'phone-note' },
-        '* We use your phone number only to send SMS messages related to this booking.'
+        { className: 'email-note' },
+        '* We use your email address ONLY to confirm your booking.'
       )
     ),
 

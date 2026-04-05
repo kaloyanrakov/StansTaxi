@@ -9,16 +9,17 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.example.backend.service.SmsService;
+import com.example.backend.service.EmailService;
 
 
 @Service
 public class BookingServiceImpl implements BookingService{
     private final BookingRepository bookingRepository;
-    private final SmsService smsService;
-    public BookingServiceImpl(BookingRepository bookingRepository, SmsService smsService) {
+    private final EmailService emailService;
+
+    public BookingServiceImpl(BookingRepository bookingRepository, EmailService emailService) {
         this.bookingRepository = bookingRepository;
-        this.smsService = smsService;   
+        this.emailService = emailService;
     }
 
     @Override
@@ -30,10 +31,9 @@ public class BookingServiceImpl implements BookingService{
         entity.setPickupTime(LocalTime.parse(request.getPickupTime()));
         entity.setPassengers(request.getPassengers());
         entity.setPets(request.isPets());
-        entity.setPhoneNumber(request.getPhoneNumber());
+        entity.setEmail(request.getEmail());
         entity.setStatus("PENDING");
         entity.setBookingDate(LocalDate.now());
-
 
         BookingEntity saved = bookingRepository.save(entity);
         return mapToDomain(saved);
@@ -56,11 +56,12 @@ public class BookingServiceImpl implements BookingService{
         booking.setPickupTime(entity.getPickupTime());
         booking.setPassengers(entity.getPassengers());
         booking.setPets(entity.isPets());
-        booking.setPhoneNumber(entity.getPhoneNumber());
+        booking.setEmail(entity.getEmail());
         booking.setStatus(entity.getStatus());
         booking.setBookingDate(entity.getBookingDate());
         return booking;
     }
+
     @Override
     public Booking updateStatus(Long bookingId, String status) {
         BookingEntity entity = bookingRepository.findById(bookingId)
@@ -69,19 +70,18 @@ public class BookingServiceImpl implements BookingService{
         entity.setStatus(status);
         BookingEntity saved = bookingRepository.save(entity);
 
-        // Send SMS based on status
+        // Send email based on status
         try {
             String body = switch (status.toUpperCase()) {
                 case "ACCEPTED" -> "Your booking has been accepted! See you soon.";
                 case "REJECTED", "DECLINED" -> "Sorry, your booking was declined.";
                 default -> "Your booking status has been updated: " + status;
             };
-            smsService.send(saved.getPhoneNumber(), body);
+            emailService.send(saved.getEmail(), "Stan's Taxi – Booking Update", body);
         } catch (Exception ex) {
-            System.err.println("Failed to send SMS for booking " + bookingId + ": " + ex.getMessage());
+            System.err.println("Failed to send email for booking " + bookingId + ": " + ex.getMessage());
         }
 
         return mapToDomain(saved);
     }
-
 }
