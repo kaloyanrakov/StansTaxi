@@ -78,6 +78,8 @@ function BookingFormInner() {
   const [directions, setDirections] = useState(null);
   const [email, setEmail] = useState('');
   const [pets, setPets] = useState('no');
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
 
   const routesLib = useMapsLibrary('routes');
 
@@ -144,9 +146,117 @@ function BookingFormInner() {
     );
   }, [pickupLocation, dropoffLocation, routesLib]);
 
+  const termsContent = [
+    React.createElement('h3', { key: 't1', className: 'modal-section-title' }, '1. Acceptance of Terms'),
+    React.createElement('p', { key: 't1p', className: 'modal-section-text' }, 'By using this application to request transportation, you agree to be bound by these Terms and Conditions. Our service acts as a communication platform connecting passengers with independent, Town-licensed taxi operators in Nantucket, Massachusetts.'),
+    React.createElement('h3', { key: 't2', className: 'modal-section-title' }, '2. The \u201cRide Accepted\u201d Notification'),
+    React.createElement('ul', { key: 't2ul', className: 'modal-section-list' },
+      React.createElement('li', { key: 't2a' }, React.createElement('strong', null, 'Booking Confirmation:'), ' When a driver accepts your request, the app will send a \u201cRide Accepted\u201d email to your registered address. This email constitutes a confirmation of your scheduled pickup time and route.'),
+      React.createElement('li', { key: 't2b' }, React.createElement('strong', null, 'No Live Tracking:'), ' This app does not provide live GPS arrival updates or push notifications. The email is the final confirmation.'),
+      React.createElement('li', { key: 't2c' }, React.createElement('strong', null, 'Passenger Responsibility:'), ' You must be present at the designated pickup location at the specified time.')
+    ),
+    React.createElement('h3', { key: 't3', className: 'modal-section-title' }, '3. Nantucket Local Regulations'),
+    React.createElement('ul', { key: 't3ul', className: 'modal-section-list' },
+      React.createElement('li', { key: 't3a' }, React.createElement('strong', null, 'Wait Time Limits:'), ' Per Nantucket Town Code \u00a7 375-6, taxis are permitted to stop for a maximum of 10 minutes.'),
+      React.createElement('li', { key: 't3b' }, React.createElement('strong', null, 'Airport Pickups:'), ' Pickups at Nantucket Memorial Airport (ACK) must occur in designated taxi lanes.'),
+      React.createElement('li', { key: 't3c' }, React.createElement('strong', null, 'Fares:'), ' All fares are governed by the Nantucket Select Board rates.')
+    ),
+    React.createElement('h3', { key: 't4', className: 'modal-section-title' }, '4. Payments and Receipts'),
+    React.createElement('ul', { key: 't4ul', className: 'modal-section-list' },
+      React.createElement('li', { key: 't4a' }, React.createElement('strong', null, 'No In-App Payment:'), ' All fares must be paid directly to the driver via cash or their preferred method.'),
+      React.createElement('li', { key: 't4b' }, React.createElement('strong', null, 'Physical Receipts:'), ' Per Town Code Chapter 367, you may request a written, physical receipt directly from your driver.')
+    ),
+    React.createElement('h3', { key: 't5', className: 'modal-section-title' }, '5. Transactional Communications & Privacy'),
+    React.createElement('ul', { key: 't5ul', className: 'modal-section-list' },
+      React.createElement('li', { key: 't5a' }, React.createElement('strong', null, 'Email Usage:'), ' Emails are collected solely for \u201cRide Accepted\u201d notifications.'),
+      React.createElement('li', { key: 't5b' }, React.createElement('strong', null, 'No Marketing:'), ' Your email will not be used for marketing or third-party promotions.')
+    ),
+    React.createElement('h3', { key: 't6', className: 'modal-section-title' }, '6. Limitation of Liability'),
+    React.createElement('p', { key: 't6p', className: 'modal-section-text' }, 'The company is not liable for missed flights or delays resulting from email delivery failures or driver cancellations.')
+  ];
+
+  const privacyContent = [
+    React.createElement('h3', { key: 'p1', className: 'modal-section-title' }, '1. Data Collection and Purpose'),
+    React.createElement('p', { key: 'p1p', className: 'modal-section-text' }, 'We collect your email address solely to send a one-time \u201cRide Accepted\u201d notification. We do not collect names, phone numbers, or geolocation.'),
+    React.createElement('h3', { key: 'p2', className: 'modal-section-title' }, '2. Technical Security (Hashing)'),
+    React.createElement('p', { key: 'p2p', className: 'modal-section-text' }, 'We do not store your email in plain text. All emails are immediately hashed using the bcrypt algorithm upon submission to ensure they are unreadable to unauthorized parties.'),
+    React.createElement('h3', { key: 'p3', className: 'modal-section-title' }, '3. Data Retention and Deletion'),
+    React.createElement('ul', { key: 'p3ul', className: 'modal-section-list' },
+      React.createElement('li', { key: 'p3a' }, React.createElement('strong', null, 'Automatic Deletion:'), ' All hashed email records are permanently deleted from our active database exactly 30 days after your request.'),
+      React.createElement('li', { key: 'p3b' }, React.createElement('strong', null, 'No Backups:'), ' We do not maintain long-term archives.')
+    ),
+    React.createElement('h3', { key: 'p4', className: 'modal-section-title' }, '4. No Third-Party Sharing'),
+    React.createElement('ul', { key: 'p4ul', className: 'modal-section-list' },
+      React.createElement('li', { key: 'p4a' }, React.createElement('strong', null, 'No Data Sales:'), ' We do not sell or trade user data.'),
+      React.createElement('li', { key: 'p4b' }, React.createElement('strong', null, 'Driver Privacy:'), ' Your email is never shared with your driver.')
+    ),
+    React.createElement('h3', { key: 'p5', className: 'modal-section-title' }, '5. Compliance'),
+    React.createElement('p', { key: 'p5p', className: 'modal-section-text' }, 'This policy complies with Massachusetts Data Security Law (201 CMR 17.00).')
+  ];
+
+  const consentRow = React.createElement(
+    'div',
+    { className: 'consent-row' },
+    React.createElement('input', {
+      type: 'checkbox',
+      id: 'consent-checkbox',
+      className: 'consent-checkbox',
+      checked: consentChecked,
+      onChange: function (e) { setConsentChecked(e.target.checked); }
+    }),
+    React.createElement(
+      'label',
+      { htmlFor: 'consent-checkbox', className: 'consent-label' },
+      'I agree to the ',
+      React.createElement('button', {
+        type: 'button',
+        className: 'consent-link',
+        onClick: function () { setActiveModal('terms'); }
+      }, 'Terms and Conditions'),
+      ' and the ',
+      React.createElement('button', {
+        type: 'button',
+        className: 'consent-link',
+        onClick: function () { setActiveModal('privacy'); }
+      }, 'Privacy Policy'),
+      '.'
+    )
+  );
+
+  const modal = activeModal ? React.createElement(
+    'div',
+    {
+      className: 'modal-overlay',
+      onClick: function (e) { if (e.target === e.currentTarget) setActiveModal(null); }
+    },
+    React.createElement(
+      'div',
+      { className: 'modal-container' },
+      React.createElement(
+        'div',
+        { className: 'modal-header' },
+        React.createElement('h2', { className: 'modal-title' }, activeModal === 'terms' ? 'Terms and Conditions' : 'Privacy Policy'),
+        React.createElement('button', {
+          type: 'button',
+          className: 'modal-close',
+          onClick: function () { setActiveModal(null); },
+          'aria-label': 'Close'
+        }, '\u00d7')
+      ),
+      React.createElement(
+        'div',
+        { className: 'modal-body' },
+        ...(activeModal === 'terms' ? termsContent : privacyContent)
+      )
+    )
+  ) : null;
+
   return React.createElement(
-    'form',
-    { className: 'booking-form', onSubmit: handleSubmit },
+    React.Fragment,
+    null,
+    React.createElement(
+      'form',
+      { className: 'booking-form', onSubmit: handleSubmit },
 
     React.createElement('h2', { className: 'section-title' }, 'Book a Ride'),
 
@@ -299,6 +409,8 @@ function BookingFormInner() {
       )
     ),
 
+    consentRow,
+
     React.createElement(
       'div',
       { className: 'map-wrapper' },
@@ -311,9 +423,11 @@ function BookingFormInner() {
 
     React.createElement(
       'button',
-      { type: 'submit', className: 'submit-button' },
+      { type: 'submit', className: 'submit-button', disabled: !consentChecked },
       'Book Now'
     )
+    ),
+    modal
   );
 }
 
