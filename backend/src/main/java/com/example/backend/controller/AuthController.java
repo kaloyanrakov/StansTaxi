@@ -1,8 +1,10 @@
 package com.example.backend.controller;
 
+import com.example.backend.persistence.repository.AppSettingRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -12,17 +14,28 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private static final String ADMIN_PASSWORD = "admin123";
+    private final AppSettingRepository appSettingRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public AuthController(AppSettingRepository appSettingRepository) {
+        this.appSettingRepository = appSettingRepository;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body,
                                    HttpServletRequest request) {
         String password = body.get("password");
-        if (ADMIN_PASSWORD.equals(password)) {
+
+        String hash = appSettingRepository.findById("admin_password_hash")
+                .map(s -> s.getSettingValue())
+                .orElse(null);
+
+        if (hash != null && passwordEncoder.matches(password, hash)) {
             HttpSession session = request.getSession(true);
             session.setAttribute("isLoggedIn", true);
             return ResponseEntity.ok(Map.of("success", true));
         }
+
         return ResponseEntity.status(401).body(Map.of("success", false, "error", "Wrong password"));
     }
 
