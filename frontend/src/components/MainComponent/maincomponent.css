@@ -913,6 +913,10 @@
   background: linear-gradient(135deg, var(--primary-dark), #2a8d9b);
 }
 
+.contact-details {
+  text-align: left;
+}
+
 .contact-details h4 {
   margin-bottom: 8px;
   color: var(--primary-dark);

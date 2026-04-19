@@ -459,11 +459,11 @@ function Main() {
                 { className: 'feature-icon' },
                 React.createElement('img', {
                   src: '/variables/images/time-fast.png',
-                  alt: '23/7 Availability',
+                  alt: 'Availability',
                   className: 'feature-image'
                 })
               ),
-              React.createElement('h4', null, '23/7 Availability'),
+              React.createElement('h4', null, 'Availability'),
               React.createElement(
                 'p',
                 null,
@@ -615,15 +615,15 @@ function Main() {
                 { className: 'contact-icon' },
                 React.createElement('img', {
                   src: '/variables/images/time-fast.png',
-                  alt: 'Operating Hours',
+                  alt: 'Airport Fixed Rate',
                   className: 'contact-image'
                 })
               ),
               React.createElement(
                 'div',
                 { className: 'contact-details' },
-                React.createElement('h4', null, 'Operating Hours'),
-                React.createElement('p', null, '23/7 Service Available')
+                React.createElement('h4', null, 'Airport Fixed Rate'),
+                React.createElement('p', null, 'Trips from the airport to the centre are at a fixed $15')
               )
             )
           ),

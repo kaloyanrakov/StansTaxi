@@ -34,7 +34,6 @@ function Footer() {
           <h4 className="footer-heading">Service Hours</h4>
           <ul className="footer-list">
             <li><i className="fas fa-fw fa-circle footer-live" /><span>Always Open</span></li>
-            <li><i className="fas fa-fw fa-clock" /><span>23 / 7 · 365 days a year</span></li>
             <li><i className="fas fa-fw fa-plane-arrival" /><span>Airport &amp; island-wide pickups</span></li>
           </ul>
         </div>
