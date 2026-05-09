@@ -2,10 +2,8 @@
 .footer {
   background: linear-gradient(180deg, #1e2235 0%, var(--primary-dark) 100%);
   color: var(--text-light);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
-  opacity: 0;
-  animation: f-fade 1s ease 3.5s forwards;
 }
 
 /* Road markings — site signature element */

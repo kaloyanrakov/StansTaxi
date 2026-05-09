@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './maincomponent.css';
 import BookingForm from '../BookingForm/BookingForm';
 
@@ -21,6 +23,35 @@ function Main() {
     about: useRef(null),
     contact: useRef(null),
     partners: useRef(null)
+  };
+
+  // Refs for GSAP
+  const navRef = useRef(null);
+  const heroImgRef = useRef(null);
+  const ctaRef = useRef(null);
+
+  // 3-D tilt handlers for feature cards
+  const handleFeatureMouseMove = function(e) {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(card, {
+      rotateX: -(y / rect.height) * 12,
+      rotateY:  (x / rect.width)  * 12,
+      transformPerspective: 800,
+      duration: 0.3,
+      ease: 'power2.out'
+    });
+  };
+
+  const handleFeatureMouseLeave = function(e) {
+    gsap.to(e.currentTarget, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.6,
+      ease: 'elastic.out(1, 0.4)'
+    });
   };
 
     // Online bookings flag from backend
@@ -65,38 +96,160 @@ function Main() {
     });
   };
 
+  // ─── GSAP animations ────────────────────────────────────────────
+  useLayoutEffect(function() {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ── Only hide hero elements (guaranteed to animate via heroTl) ──
+    if (navRef.current) {
+      gsap.set(navRef.current, { y: -100, autoAlpha: 0 });
+    }
+    const homeEl = sectionRefs.home.current;
+    if (homeEl) {
+      gsap.set(homeEl.querySelectorAll('.hero-text h2'), { y: 50, autoAlpha: 0 });
+      gsap.set(homeEl.querySelectorAll('.hero-subtitle'),  { y: 30, autoAlpha: 0 });
+      gsap.set(homeEl.querySelectorAll('.btn-book-hero'),  { y: 30, autoAlpha: 0 });
+    }
+    if (heroImgRef.current) {
+      gsap.set(heroImgRef.current, { x: 80, autoAlpha: 0 });
+    }
+
+    // ── Hero entrance timeline ────────────────────────────────────
+    var heroTl = gsap.timeline({ delay: 0.15, defaults: { ease: 'power3.out' } });
+
+    if (navRef.current) {
+      heroTl.to(navRef.current, { y: 0, autoAlpha: 1, duration: 0.7 });
+    }
+    if (homeEl) {
+      heroTl
+        .to(homeEl.querySelectorAll('.hero-text h2'),   { y: 0, autoAlpha: 1, duration: 0.9 }, '-=0.3')
+        .to(homeEl.querySelectorAll('.hero-subtitle'),   { y: 0, autoAlpha: 1, duration: 0.7 }, '-=0.5')
+        .to(homeEl.querySelectorAll('.btn-book-hero'),   { y: 0, autoAlpha: 1, duration: 0.6 }, '-=0.4');
+    }
+    if (heroImgRef.current) {
+      heroTl.to(heroImgRef.current, { x: 0, autoAlpha: 1, duration: 1, ease: 'power2.out' }, '-=0.8');
+      heroTl.call(function() {
+        gsap.to(heroImgRef.current, { y: -18, duration: 3.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      });
+    }
+
+    // ── Navbar scroll shrink ──────────────────────────────────────
+    if (navRef.current) {
+      ScrollTrigger.create({
+        start: 'top -80',
+        onUpdate: function(self) {
+          gsap.to(navRef.current, {
+            padding: self.progress > 0 ? '8px 0' : '15px 0',
+            duration: 0.3,
+            overwrite: 'auto'
+          });
+        }
+      });
+    }
+
+    // ── Scroll reveals — use onEnter so elements stay visible if trigger is killed ──
+    if (ctaRef.current) {
+      ScrollTrigger.create({
+        trigger: ctaRef.current, start: 'top 88%', once: true,
+        onEnter: function() {
+          gsap.fromTo(ctaRef.current.querySelectorAll('.cta-text, .phone-number'),
+            { y: 40, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, stagger: 0.2, duration: 0.8, ease: 'power3.out' }
+          );
+        }
+      });
+    }
+
+    if (sectionRefs.partners.current) {
+      ScrollTrigger.create({
+        trigger: sectionRefs.partners.current, start: 'top 78%', once: true,
+        onEnter: function() {
+          gsap.fromTo(sectionRefs.partners.current.querySelectorAll('.section-header'),
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.7, ease: 'power3.out' }
+          );
+        }
+      });
+    }
+
+    if (sectionRefs.about.current) {
+      ScrollTrigger.create({
+        trigger: sectionRefs.about.current, start: 'top 75%', once: true,
+        onEnter: function() {
+          gsap.fromTo(sectionRefs.about.current.querySelectorAll('.section-header'),
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.7, ease: 'power3.out' }
+          );
+          gsap.fromTo(sectionRefs.about.current.querySelectorAll('.feature'),
+            { y: 60, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, stagger: 0.18, duration: 0.9, ease: 'power3.out', delay: 0.2 }
+          );
+        }
+      });
+    }
+
+    if (sectionRefs.contact.current) {
+      ScrollTrigger.create({
+        trigger: sectionRefs.contact.current, start: 'top 78%', once: true,
+        onEnter: function() {
+          gsap.fromTo(sectionRefs.contact.current.querySelectorAll('.section-header'),
+            { y: 30, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.7, ease: 'power3.out' }
+          );
+          gsap.fromTo(sectionRefs.contact.current.querySelectorAll('.contact-item'),
+            { x: -50, autoAlpha: 0 },
+            { x: 0, autoAlpha: 1, stagger: 0.15, duration: 0.7, ease: 'power2.out', delay: 0.15 }
+          );
+          var bEl = sectionRefs.contact.current.querySelector('.booking-form-container');
+          if (bEl) {
+            gsap.fromTo(bEl,
+              { x: 50, autoAlpha: 0 },
+              { x: 0, autoAlpha: 1, duration: 0.9, ease: 'power2.out', delay: 0.15 }
+            );
+          }
+        }
+      });
+    }
+
+    return function() {
+      ScrollTrigger.getAll().forEach(function(t) { t.kill(); });
+      heroTl.kill();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const nextPartner = function() {
-    setRotation(function(prev) { return prev - 72; });
-    setCurrentPartnerIndex(function(prevIndex) {
-      return prevIndex === partners.length - 1 ? 0 : prevIndex + 1;
+    setCurrentPartnerIndex(function(prev) {
+      return prev === partners.length - 1 ? 0 : prev + 1;
     });
   };
 
   const prevPartner = function() {
-    setRotation(function(prev) { return prev + 72; });
-    setCurrentPartnerIndex(function(prevIndex) {
-      return prevIndex === 0 ? partners.length - 1 : prevIndex - 1;
+    setCurrentPartnerIndex(function(prev) {
+      return prev === 0 ? partners.length - 1 : prev - 1;
     });
   };
 
-  // Calculate visible partners for bubble carousel
-  const getVisiblePartners = function() {
-    const visible = [];
-    const total = partners.length;
-    
-    for (let i = -2; i <= 2; i++) {
-      const index = (currentPartnerIndex + i + total) % total;
-      visible.push({
-        ...partners[index],
-        position: i,
-        isCenter: i === 0
-      });
-    }
-    
-    return visible;
-  };
+  // Compute inline carousel styles for each partner (stable positions with smooth CSS transitions)
+  const getPartnerStyle = function(arrIndex) {
+    var total = partners.length;
+    var rawPos = (arrIndex - currentPartnerIndex + total) % total;
+    var pos = rawPos > 2 ? rawPos - total : rawPos; // normalise to -2..2
 
-  const visiblePartners = getVisiblePartners();
+    var isCenter = pos === 0;
+    var abPos = Math.abs(pos);
+
+    return {
+      style: {
+        transform: 'translateX(' + (pos * 220) + 'px) scale(' + (isCenter ? 1.15 : 1 - 0.14 * abPos) + ')',
+        opacity:   abPos >= 2 ? 0 : (isCenter ? 1 : 0.6),
+        filter:    isCenter ? 'grayscale(0%) brightness(1)' : 'grayscale(70%) brightness(0.85)',
+        zIndex:    isCenter ? 10 : (3 - abPos),
+        pointerEvents: abPos >= 2 ? 'none' : 'auto'
+      },
+      isCenter: isCenter
+    };
+  };
 
   return React.createElement(
     'div',
@@ -105,7 +258,7 @@ function Main() {
     // Header Section
     React.createElement(
       'header',
-      { className: 'header' },
+      { className: 'header', ref: navRef },
       React.createElement(
         'div',
         { className: 'container' },
@@ -251,7 +404,8 @@ function Main() {
             React.createElement('img', {
               src: './variables/images/TaxiAndLighthouse.png',
               alt: 'Taxi and Lighthouse',
-              className: 'combined-image'
+              className: 'combined-image',
+              ref: heroImgRef
             })
           )
         )
@@ -261,7 +415,7 @@ function Main() {
     // Call to Action
     React.createElement(
       'section',
-      { className: 'cta-bar' },
+      { className: 'cta-bar', ref: ctaRef },
       React.createElement(
         'div',
         { className: 'container' },
@@ -338,15 +492,14 @@ function Main() {
           React.createElement(
             'div',
             { className: 'bubble-carousel' },
-            visiblePartners.map(function(partner) {
+            partners.map(function(partner, arrIndex) {
+              var partnerStyle = getPartnerStyle(arrIndex);
               return React.createElement(
                 'div',
                 {
-                  key: partner.id + '-' + partner.position,
-                  className: 'bubble-item ' + (partner.isCenter ? 'center' : ''),
-                  style: {
-                    '--position': partner.position,
-                  }
+                  key: partner.id,
+                  className: 'bubble-item ' + (partnerStyle.isCenter ? 'center' : ''),
+                  style: partnerStyle.style
                 },
                 React.createElement(
                   'a',
@@ -363,6 +516,7 @@ function Main() {
                       src: partner.logoUrl,
                       alt: partner.name,
                       className: 'bubble-logo',
+                      loading: 'lazy',
                       onError: function(e) {
                         e.currentTarget.src = '/variables/images/Logo.png';
                         e.currentTarget.alt = partner.name + ' logo';
@@ -452,7 +606,8 @@ function Main() {
               'div',
               { 
                 className: 'feature',
-                style: { animationDelay: '1.7s' }
+                onMouseMove: handleFeatureMouseMove,
+                onMouseLeave: handleFeatureMouseLeave
               },
               React.createElement(
                 'div',
@@ -474,7 +629,8 @@ function Main() {
               'div',
               { 
                 className: 'feature',
-                style: { animationDelay: '1.9s' }
+                onMouseMove: handleFeatureMouseMove,
+                onMouseLeave: handleFeatureMouseLeave
               },
               React.createElement(
                 'div',
@@ -496,7 +652,8 @@ function Main() {
               'div',
               { 
                 className: 'feature',
-                style: { animationDelay: '2.1s' }
+                onMouseMove: handleFeatureMouseMove,
+                onMouseLeave: handleFeatureMouseLeave
               },
               React.createElement(
                 'div',

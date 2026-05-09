@@ -17,7 +17,7 @@
 }
 
 .stans-taxi {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-dark);
   background-color: var(--light-gray);
   line-height: 1.6;
@@ -152,11 +152,35 @@
   padding: 100px 0 0 0;
   background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,247,0.9) 100%);
   flex: 1;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease forwards;
   width: 100%;
   position: relative;
+}
+
+/* Slow-shifting ambient light overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 50%, rgba(75,188,204,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 70% at 85% 40%, rgba(26,29,40,0.05) 0%, transparent 55%);
+  animation: heroAmbient 9s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes heroAmbient {
+  0%   { opacity: 0.5; transform: scale(1);    }
+  100% { opacity: 1;   transform: scale(1.08); }
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero::before {
+  z-index: 0;
 }
 
 /* Add these styles to your existing maincomponent.css */
@@ -302,22 +326,20 @@
 .hero-text h2 {
   font-size: 3.2rem;
   font-weight: 700;
-  color: var(--primary-teal);
+  /* gradient text */
+  background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-dark) 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 15px;
   line-height: 1.2;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease 0.3s forwards;
 }
 
 .hero-subtitle {
   font-size: 1.2rem;
   color: var(--text-dark);
   margin-bottom: 30px;
-  opacity: 0.8;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease 0.5s forwards;
+  opacity: 0.75;
 }
 
 /* Book Button for Hero */
@@ -335,9 +357,6 @@
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 0 8px 25px rgba(42, 27, 77, 0.3);
   border: 3px solid transparent;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease 0.7s forwards;
   position: relative;
   overflow: hidden;
   cursor: pointer;
@@ -395,14 +414,13 @@
   display: block;
 }
 
+/* ── end hero ── */
+
 /* Call to Action - REVERTED to original styling */
 .cta-bar {
   background-color: var(--primary-dark);
   padding: 40px 0 30px 0;
   text-align: center;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease 1.1s forwards;
   width: 100%;
   position: relative;
 }
@@ -440,6 +458,13 @@
   transition: var(--transition);
   text-decoration: none;
   gap: 10px;
+  animation: phonePulse 2.8s ease-in-out 2s infinite;
+}
+
+@keyframes phonePulse {
+  0%   { box-shadow: 0 0 0 0   rgba(75, 188, 204, 0.45); }
+  60%  { box-shadow: 0 0 0 22px rgba(75, 188, 204, 0);   }
+  100% { box-shadow: 0 0 0 0   rgba(75, 188, 204, 0);    }
 }
 
 .phone-number:hover {
@@ -452,7 +477,12 @@
   font-size: 1.2rem;
 }
 
-/* Updated Road Divider */
+/* Animated Road Divider */
+@keyframes roadMove {
+  from { background-position-x: 0;    }
+  to   { background-position-x: 75px; }
+}
+
 .road-divider {
   width: 100%;
   height: 25px;
@@ -465,6 +495,7 @@
   );
   position: relative;
   margin: 0;
+  animation: roadMove 2s linear infinite;
 }
 
 .road-divider::before,
@@ -477,9 +508,6 @@
   padding: 80px 0;
   background-color: var(--light-gray);
   position: relative;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease 1.3s forwards;
   width: 100%;
 }
 
@@ -545,22 +573,17 @@
 
 .bubble-item {
   position: absolute;
-  transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity  0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter   0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: flex;
   flex-direction: column;
   align-items: center;
-  filter: grayscale(100%) brightness(0.8);
-  opacity: 0.6;
-  transform: 
-    translateX(calc(var(--position) * 200px)) 
-    scale(calc(1 - 0.2 * abs(var(--position))));
+  /* transform / opacity / filter driven by inline styles from JS */
 }
 
 .bubble-item.center {
-  filter: grayscale(0%) brightness(1);
-  opacity: 1;
   z-index: 10;
-  transform: scale(1.15);
 }
 
 .bubble-item.center .bubble-logo-container {
@@ -758,9 +781,6 @@
   background: linear-gradient(135deg, var(--primary-teal), #3aa9b8);
   color: var(--text-light);
   position: relative;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease 1.5s forwards;
   width: 100%;
 }
 
@@ -789,16 +809,15 @@
   background-color: rgba(255, 255, 255, 0.15);
   border-radius: 20px;
   transition: var(--transition);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-.feature:nth-child(1) { animation-delay: 1.7s; }
-.feature:nth-child(2) { animation-delay: 1.9s; }
-.feature:nth-child(3) { animation-delay: 2.1s; }
+.feature:nth-child(1) { }
+.feature:nth-child(2) { }
+.feature:nth-child(3) { }
 
 .feature:hover {
   background-color: rgba(255, 255, 255, 0.25);
@@ -842,9 +861,6 @@
 .contact {
   padding: 52px 0 64px;
   background-color: var(--light-gray);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 1s ease 2.3s forwards;
   width: 100%;
 }
 
@@ -876,16 +892,13 @@
   border-radius: 15px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   transition: var(--transition);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
   border-left: 5px solid var(--primary-teal);
 }
 
-.contact-item:nth-child(1) { animation-delay: 2.5s; }
-.contact-item:nth-child(2) { animation-delay: 2.7s; }
-.contact-item:nth-child(3) { animation-delay: 2.9s; }
-.contact-item:nth-child(4) { animation-delay: 3.1s; }
+.contact-item:nth-child(1) { }
+.contact-item:nth-child(2) { }
+.contact-item:nth-child(3) { }
+.contact-item:nth-child(4) { }
 
 .contact-item:hover {
   transform: translateY(-8px);
@@ -970,8 +983,6 @@
   background: linear-gradient(135deg, var(--primary-dark), #151821);
   color: var(--text-light);
   padding: 60px 0 25px;
-  opacity: 0;
-  animation: fadeIn 1s ease 3.3s forwards;
   width: 100%;
 }
 
@@ -986,9 +997,6 @@
 .footer-logo {
   flex: 1;
   min-width: 250px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease 3.5s forwards;
 }
 
 .footer-logo img {
@@ -1008,13 +1016,7 @@
 .footer-contact, .footer-hours {
   flex: 1;
   min-width: 200px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
 }
-
-.footer-contact { animation-delay: 3.7s; }
-.footer-hours { animation-delay: 3.9s; }
 
 .footer h4 {
   font-size: 1.3rem;
@@ -1041,8 +1043,6 @@
   text-align: center;
   padding-top: 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: 0;
-  animation: fadeIn 1s ease 4.1s forwards;
   font-size: 0.9rem;
 }
 

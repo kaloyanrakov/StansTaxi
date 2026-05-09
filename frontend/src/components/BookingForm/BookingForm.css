@@ -137,9 +137,30 @@
 .place-autocomplete-wrapper {
   width: 100% !important;
   height: var(--field-height) !important;
-  display: block;
-  flex-shrink: 0;
-  box-sizing: border-box;
+  min-height: var(--field-height) !important;
+  display: flex !important;
+  align-items: center !important;
+  border: 1.5px solid var(--border-light) !important;
+  border-radius: var(--field-radius) !important;
+  background-color: var(--input-bg) !important;
+  box-sizing: border-box !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.place-autocomplete-wrapper:focus-within {
+  border-color: var(--border-focus) !important;
+  box-shadow: 0 0 0 3px var(--focus-glow), 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  background-color: var(--input-bg-focus) !important;
+}
+
+.place-autocomplete-wrapper:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: var(--input-bg-hover) !important;
 }
 
 .place-autocomplete-wrapper > * {
@@ -150,7 +171,7 @@
 .place-autocomplete-wrapper gmp-place-autocomplete {
   width: 100% !important;
   height: 100% !important;
-  min-width: 100% !important;
+  min-height: var(--field-height) !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -234,9 +255,18 @@
 .place-autocomplete-wrapper gmp-place-autocomplete::part(input) {
   display: flex !important;
   align-items: center !important;
+  width: 100% !important;
   height: var(--field-height) !important;
   padding: 0 16px !important;
   line-height: 1.2 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: var(--text-light) !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
 }
 
 .passenger-controls {
