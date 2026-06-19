@@ -8,7 +8,7 @@
   position: relative;
   overflow: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, var(--primary-dark) 0%, #2a1b4d 100%);
+  background: linear-gradient(160deg, #0d1420 0%, var(--primary-dark) 60%, #0e2035 100%);
 }
 
 .login-background {
@@ -18,7 +18,7 @@
   right: 0;
   bottom: 0;
   z-index: 1;
-  background: linear-gradient(135deg, var(--primary-dark) 0%, #2a1b4d 100%);
+  background: linear-gradient(160deg, #0d1420 0%, var(--primary-dark) 60%, #0e2035 100%);
 }
 
 .login-background-shapes {
@@ -220,7 +220,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, var(--primary-dark), #2a1b4d);
+  background: linear-gradient(135deg, var(--primary-dark), #0a1f3a);
   color: var(--text-light);
   padding: 18px 30px;
   border-radius: 16px;
@@ -228,7 +228,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 8px 25px rgba(42, 27, 77, 0.3);
+  box-shadow: 0 8px 25px rgba(10, 31, 58, 0.4);
   border: 3px solid transparent;
   opacity: 1;
   transform: translateY(0);
@@ -251,9 +251,9 @@
 }
 
 .login-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #3a2a6d, var(--primary-dark));
+  background: linear-gradient(135deg, #162a45, var(--primary-dark));
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(42, 27, 77, 0.4);
+  box-shadow: 0 12px 30px rgba(10, 31, 58, 0.5);
 }
 
 .login-button:hover:not(:disabled)::before {

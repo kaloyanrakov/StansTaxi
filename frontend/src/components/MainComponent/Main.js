@@ -128,9 +128,6 @@ function Main() {
     }
     if (heroImgRef.current) {
       heroTl.to(heroImgRef.current, { x: 0, autoAlpha: 1, duration: 1, ease: 'power2.out' }, '-=0.8');
-      heroTl.call(function() {
-        gsap.to(heroImgRef.current, { y: -18, duration: 3.5, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-      });
     }
 
     // ── Navbar scroll shrink ──────────────────────────────────────
@@ -249,6 +246,29 @@ function Main() {
       },
       isCenter: isCenter
     };
+  };
+
+  // Wave divider — SVG wave that smoothly transitions between sections
+  var waveDivider = function(fillColor) {
+    return React.createElement(
+      'div',
+      { className: 'section-wave', 'aria-hidden': 'true' },
+      React.createElement(
+        'svg',
+        { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 1440 70', preserveAspectRatio: 'none' },
+        React.createElement('path', {
+          className: 'wave-front',
+          d: 'M0,35 C180,68 360,2 540,35 C720,68 900,2 1080,35 C1260,68 1380,20 1440,35 L1440,70 L0,70 Z',
+          fill: fillColor
+        }),
+        React.createElement('path', {
+          className: 'wave-back',
+          d: 'M0,50 C240,18 480,58 720,38 C960,18 1200,55 1440,40 L1440,70 L0,70 Z',
+          fill: fillColor,
+          opacity: '0.4'
+        })
+      )
+    );
   };
 
   return React.createElement(
@@ -442,7 +462,8 @@ function Main() {
           )
         ),
         React.createElement('div', { className: 'road-divider' })
-      )
+      ),
+      waveDivider('#f0f9fb')
     ),
 
     // Partners Section
@@ -568,7 +589,8 @@ function Main() {
             );
           })
         )
-      )
+      ),
+      waveDivider('#4bbccc')
     ),
 
     // About Section
@@ -672,7 +694,8 @@ function Main() {
               )
             )
           )
-        )
+        ),
+        waveDivider('#f5f5f7')
       )
     ),
 

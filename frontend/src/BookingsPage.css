@@ -7,7 +7,7 @@
   position: relative;
   overflow: auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, var(--primary-dark) 0%, #2a1b4d 100%);
+  background: linear-gradient(160deg, #0d1420 0%, var(--primary-dark) 60%, #0e2035 100%);
 }
 
 .bookings-background {
@@ -17,7 +17,7 @@
   right: 0;
   bottom: 0;
   z-index: 1;
-  background: linear-gradient(135deg, var(--primary-dark) 0%, #2a1b4d 100%);
+  background: linear-gradient(160deg, #0d1420 0%, var(--primary-dark) 60%, #0e2035 100%);
 }
 
 .bookings-background-shapes {
@@ -410,19 +410,19 @@
 }
 
 .btn-back {
-  background: linear-gradient(135deg, var(--primary-dark), #2a1b4d);
+  background: linear-gradient(135deg, var(--primary-dark), #0a1f3a);
   color: white;
   padding: 14px 28px;
   font-size: 1rem;
-  box-shadow: 0 4px 15px rgba(42, 27, 77, 0.3);
+  box-shadow: 0 4px 15px rgba(10, 31, 58, 0.4);
   align-self: center;
   margin-top: 20px;
 }
 
 .btn-back:hover {
-  background: linear-gradient(135deg, #3a2a6d, var(--primary-dark));
+  background: linear-gradient(135deg, #162a45, var(--primary-dark));
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(42, 27, 77, 0.4);
+  box-shadow: 0 6px 20px rgba(10, 31, 58, 0.5);
 }
 
 .btn-accept i, .btn-turn-down i, .btn-back i {

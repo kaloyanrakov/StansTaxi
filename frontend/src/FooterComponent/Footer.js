@@ -11,6 +11,10 @@ function Footer() {
         {/* Brand */}
         <div className="footer-brand">
           <img src="/variables/images/Logo.png" alt="Stan's Taxi" className="footer-logo" />
+          <div className="footer-brand-text">
+            <p className="footer-brand-name">Stan's Taxi</p>
+            <p className="footer-tagline">Premium island transportation<br/>on Nantucket, MA</p>
+          </div>
         </div>
 
         {/* Divider */}
