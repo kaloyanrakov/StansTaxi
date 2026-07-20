@@ -1,0 +1,14 @@
+{
+  "short_name": "Stans Taxi Driver",
+  "name": "Stan's Taxi - Driver App",
+  "icons": [
+    { "src": "logo192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "logo512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
