@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
 import Main from './components/MainComponent/Main';
-import LoginPage from './LoginPage';
-import BookingsPage from './BookingsPage';
 import Footer from './FooterComponent/Footer';
 
-
+function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {Page}
+        <Main />
+        <Footer />
       </header>
     </div>
   );
-
+}
 
 export default App;
