@@ -6,32 +6,30 @@ function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async function(e) {
-    e.preventDefault();
-    setIsLoading(true);
+  e.preventDefault();
+  setIsLoading(true);
 
-    try {
-      const res = await fetch('http://localhost:8080/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // IMPORTANT: so cookies/session stick
-        body: JSON.stringify({ password }),
-      });
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ password }),
+    });
 
-      if (res.ok) {
-        window.location.href = "/bookings";
-      } else {
-        const data = await res.json().catch(() => ({}));
-        alert(data.error || "Wrong password!");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Login failed, please try again.");
-    } finally {
-      setIsLoading(false);
+    if (res.ok) {
+      window.location.reload(); // let App.js re-check session and show BookingsPage
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert(data.error || "Wrong password!");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Login failed, please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handlePasswordChange = function(e) {
     setPassword(e.target.value);
