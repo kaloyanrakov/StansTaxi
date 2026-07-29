@@ -9,6 +9,7 @@ RUN npm run build
 # --- Build driver-app (PWA) ---
 FROM node:18-alpine AS build-driver
 WORKDIR /app
+ENV REACT_APP_API_URL=/api
 COPY driver-app/package*.json ./
 RUN npm install --legacy-peer-deps
 COPY driver-app/ .

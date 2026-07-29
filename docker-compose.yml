@@ -1,26 +1,6 @@
 name: stanstaxi
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: stanstaxi-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: stanstaxi
-      MYSQL_USER: stanstaxi
-      MYSQL_PASSWORD: stanstaxi123
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - stanstaxi-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   backend:
     build:
       context: ./backend
@@ -28,17 +8,14 @@ services:
     image: stanstaxi/backend:latest
     container_name: stanstaxi-backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/stanstaxi
-      SPRING_DATASOURCE_USERNAME: stanstaxi
-      SPRING_DATASOURCE_PASSWORD: stanstaxi123
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/taxi_booking
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
     networks:
       - stanstaxi-network
-    depends_on:
-      mysql:
-        condition: service_healthy
     restart: unless-stopped
 
   frontend:
@@ -55,10 +32,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-
-volumes:
-  mysql_data:
-    name: stanstaxi-mysql-data
 
 networks:
   stanstaxi-network:

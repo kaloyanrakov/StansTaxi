@@ -3,6 +3,8 @@
     /* Colors */
     --primary-color: #4BBCCC;
     --primary-hover: #297a85;
+    --primary-teal: #4BBCCC;       /* alias for primary-color, used in LoginPage.css */
+    --primary-dark: #0a1f3a;        /* dark navy used for gradients/text in LoginPage.css */
     --background-dark: #475560;
     --text-light: white;
     --text-dark: #333;

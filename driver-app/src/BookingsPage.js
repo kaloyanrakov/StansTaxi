@@ -56,9 +56,19 @@ function BookingsPage() {
       console.error("Error fetching settings:", err);
     });
 }, []);
-  const handleBack = function () {
-    window.location.href = "/";
-  };
+
+const handleLogout = async function () {
+  try {
+    await fetch("http://localhost:8080/auth/logout", {
+      method: "POST",
+      credentials: 'include'
+    });
+  } catch (err) {
+    console.error("Error logging out:", err);
+  } finally {
+    window.location.reload(); // App.js will re-check session and show LoginPage
+  }
+};
 
   const toggleBookings = async () => {
     try {
@@ -344,16 +354,15 @@ function BookingsPage() {
     mainContent = React.createElement('div', null, activeTable, pastTable);
   }
 
-  // Create back button
-  const backButton = React.createElement(
-    'button',
-    {
-      className: 'btn-back',
-      onClick: handleBack
-    },
-    React.createElement('i', { className: 'fas fa-arrow-left' }),
-    'Back to Home'
-  );
+  const logoutButton = React.createElement(
+  'button',
+  {
+    className: 'btn-back',
+    onClick: handleLogout
+  },
+  React.createElement('i', { className: 'fas fa-sign-out-alt' }),
+  'Log Out'
+);
 
   // Create main card content
   const cardContent = React.createElement(
@@ -362,7 +371,7 @@ function BookingsPage() {
     headerContent,
     topControls,
     mainContent,
-    backButton
+    logoutButton
   );
 
   // Create main container
