@@ -14,6 +14,10 @@
   --input-bg: rgba(255, 255, 255, 0.05);
   --input-bg-hover: rgba(255, 255, 255, 0.08);
   --input-bg-focus: rgba(75, 188, 204, 0.07);
+  /* Solid equivalents of the above for shadow-DOM ::part() elements */
+  --input-bg-solid: #272a38;
+  --input-bg-hover-solid: #2e313f;
+  --input-bg-focus-solid: #1f2a39;
   --form-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
   --field-height: 48px;
   --field-radius: 14px;
@@ -171,7 +175,7 @@
   width: 100% !important;
   height: 100% !important;
   min-height: var(--field-height) !important;
-  background: transparent !important;
+  background: var(--input-bg-solid) !important;
   border: none !important;
   box-shadow: none !important;
   display: block !important;
@@ -258,7 +262,7 @@
   height: var(--field-height) !important;
   padding: 0 16px !important;
   line-height: 1.2 !important;
-  background-color: var(--input-bg) !important;
+  background-color: var(--input-bg-solid) !important;
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
@@ -269,7 +273,7 @@
 }
 
 .place-autocomplete-wrapper gmp-place-autocomplete::part(prefix-icon) {
-  background-color: var(--input-bg) !important;
+  background-color: var(--input-bg-solid) !important;
   color: var(--text-light) !important;
   fill: currentColor !important;
 }
@@ -287,6 +291,18 @@
 .passenger-controls:hover {
   border-color: rgba(255, 255, 255, 0.2) !important;
   background-color: var(--input-bg-hover) !important;
+}
+
+.place-autocomplete-wrapper:hover gmp-place-autocomplete,
+.place-autocomplete-wrapper:hover gmp-place-autocomplete::part(input),
+.place-autocomplete-wrapper:hover gmp-place-autocomplete::part(prefix-icon) {
+  background-color: var(--input-bg-hover-solid) !important;
+}
+
+.place-autocomplete-wrapper:focus-within gmp-place-autocomplete,
+.place-autocomplete-wrapper:focus-within gmp-place-autocomplete::part(input),
+.place-autocomplete-wrapper:focus-within gmp-place-autocomplete::part(prefix-icon) {
+  background-color: var(--input-bg-focus-solid) !important;
 }
 
 .location-input input:focus,
